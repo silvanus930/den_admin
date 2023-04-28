@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Denbot Admin - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -23,23 +23,23 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 
-// Material Dashboard 2 React components
+// Denbot Admin components
 import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React example components
+// Denbot Admin example components
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 
-// Material Dashboard 2 React themes
+// Denbot Admin themes
 import theme from "assets/theme";
 
-// Material Dashboard 2 React Dark Mode themes
+// Denbot Admin Dark Mode themes
 import themeDark from "assets/theme-dark";
 
-// Material Dashboard 2 React routes
+// Denbot Admin routes
 import routes from "routes";
 
-// Material Dashboard 2 React contexts
+// Denbot Admin contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images
