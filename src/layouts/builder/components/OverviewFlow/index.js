@@ -15,8 +15,11 @@ import ReactFlow, {
   Background,
   MiniMap,
 } from "reactflow";
+
 import CustomNode from "../CustomNode";
 import MessageNode from "../MessageNode";
+import StartNode from "../StartNode";
+import EndNode from "../EndNode";
 
 const onNodeDragStart = (_, node, nodes) => console.log("drag start", node, nodes);
 const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
@@ -53,21 +56,16 @@ const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
 const nodeTypes = {
   selectorNode: CustomNode,
   thinkNode: MessageNode,
+  startNode: StartNode,
+  endNode: EndNode,
 };
 
 const initialNodes = [
   {
     id: "1",
-    type: "input",
-    data: {
-      label: (
-        <>
-          Welcome to <strong>Den Bot!</strong>
-        </>
-      ),
-      toolbarPosition: Position.Top,
-    },
-    position: { x: 250, y: -50 },
+    type: "startNode",
+    toolbarPosition: Position.Top,
+    position: { x: 250, y: -100 },
   },
   {
     id: "2",
@@ -89,6 +87,7 @@ const initialNodes = [
   },
   {
     id: "5",
+    type: "thinkNode",
     data: {
       label: (
         <>
@@ -100,53 +99,26 @@ const initialNodes = [
   },
   {
     id: "6",
-    type: "output",
-    data: {
-      label: (
-        <>
-          An <strong>output node (not deletable)</strong>
-        </>
-      ),
-    },
-    position: { x: 100, y: 480 },
+    type: "endNode",
+    data: { label: "Output node (not deletable)" },
+    position: { x: 0, y: 550 },
     deletable: false,
   },
   {
     id: "7",
-    type: "output",
+    type: "endNode",
     data: { label: "Another output node" },
-    position: { x: 400, y: 450 },
+    position: { x: 400, y: 550 },
   },
 ];
 
 const initialEdges = [
-  { id: "e1-2", source: "1", target: "2", type: "smoothstep" },
-  { id: "e1-3", source: "1", target: "3", type: "smoothstep" },
-  {
-    id: "e3-4",
-    source: "3",
-    target: "4",
-    type: "smoothstep",
-    animated: true,
-  },
-  { id: "e4-5", source: "4", target: "5", type: "smoothstep" },
-  {
-    id: "e5-6",
-    source: "5",
-    type: "smoothstep",
-    target: "6",
-    deletable: false,
-  },
-  {
-    id: "e5-7",
-    source: "5",
-    target: "7",
-    type: "step",
-    style: { stroke: "#f6ab6c" },
-    label: "a step edge",
-    animated: true,
-    labelStyle: { fill: "#f6ab6c", fontWeight: 700 },
-  },
+  { id: "e1-2", source: "1", target: "2", type: "smoothstep", animated: true },
+  { id: "e1-3", source: "1", target: "3", type: "smoothstep", animated: true },
+  { id: "e3-4", source: "3", target: "4", type: "smoothstep", animated: true },
+  { id: "e4-5", source: "4", target: "5", type: "smoothstep", animated: true },
+  { id: "e5-6", source: "5", animated: true, type: "smoothstep", target: "6", deletable: false },
+  { id: "e5-7", source: "5", target: "7", type: "step", animated: true },
 ];
 
 const connectionLineStyle = { stroke: "#ddd" };

@@ -1,0 +1,31 @@
+import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import React, { memo, useCallback } from "react";
+import { Handle, Position, useOnViewportChange } from "reactflow";
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+import Card from "@mui/material/Card";
+
+function EndNode({data}) {
+  const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
+  const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
+  const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
+
+  useOnViewportChange({
+    onStart,
+    onChange,
+    onEnd,
+  });
+
+  return (
+    <Card>
+      <MDBox mt={2} mb={2}>
+        <MDTypography variant="body1" component="p" color="text" mx={3}>
+          {data.label}
+        </MDTypography>
+      </MDBox>
+      <Handle type="target" className="w-2 h-2 bg-blue-900" position={Position.Top} id="a" />
+    </Card>
+  );
+}
+
+export default memo(EndNode);
