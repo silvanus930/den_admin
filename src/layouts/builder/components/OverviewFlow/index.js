@@ -1,19 +1,20 @@
 import { MouseEvent as ReactMouseEven, CSSProperties, useCallback } from "react";
 import ReactFlow, {
   addEdge,
-  Node,
-  Viewport,
   SnapGrid,
   Connection,
   Edge,
   ReactFlowInstance,
   useNodesState,
   useEdgesState,
+  useReactFlow,
   Position,
   OnSelectionChangeParams,
   Controls,
   Background,
-  MiniMap,
+  ConnectionLineType,
+  ConnectionMode,
+  ReactFlowProvider,
 } from "reactflow";
 
 import CustomNode from "../CustomNode";
@@ -25,7 +26,6 @@ const onNodeDragStart = (_, node, nodes) => console.log("drag start", node, node
 const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
 const onNodeDragStop = (_, node, nodes) => console.log("drag stop", node, nodes);
 const onNodeDoubleClick = (_, node) => console.log("node double click", node);
-const onPaneClick = (event) => console.log("pane click", event);
 const onPaneScroll = (event) => console.log("pane scroll", event);
 const onPaneContextMenu = (event) => console.log("pane context menu", event);
 const onSelectionDrag = (_, nodes) => console.log("selection drag", nodes);
@@ -59,6 +59,9 @@ const nodeTypes = {
   startNode: StartNode,
   endNode: EndNode,
 };
+
+let id = 8;
+const getId = () => `${id++}`;
 
 const initialNodes = [
   {
@@ -125,9 +128,29 @@ const connectionLineStyle = { stroke: "#ddd" };
 const snapGrid = [25, 25];
 
 function OverviewFlow() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge({ ...params, type: "smoothstep" }, eds)),
+    [setEdges]
+  );
+  const { project } = useReactFlow();
+  const onPaneClick = useCallback(
+    (evt) => {
+      setNodes((nds) =>
+        nds.concat({
+          id: getId(),
+          position: project({ x: evt.clientX - 330, y: evt.clientY - 110 }),
+          type: "selectorNode",
+          data: { color: "success", text: "Send message" },
+          targetPosition: Position.Left,
+          sourcePosition: Position.Right,
+        })
+      );
+      console.log("-------->", evt);
+    },
+    [project, setNodes]
+  );
 
   return (
     <ReactFlow
@@ -152,7 +175,10 @@ function OverviewFlow() {
       onMoveStart={onMoveStart}
       onMoveEnd={onMoveEnd}
       onInit={onInit}
+      connectionLineType={ConnectionLineType.SmoothStep}
       connectionLineStyle={connectionLineStyle}
+      connectionMode={ConnectionMode.Strict}
+      edgeTypes={"smoothstep"}
       snapToGrid
       snapGrid={snapGrid}
       onEdgeContextMenu={onEdgeContextMenu}
@@ -175,4 +201,10 @@ function OverviewFlow() {
   );
 }
 
-export default OverviewFlow;
+const WrappedFlow = () => (
+  <ReactFlowProvider>
+    <OverviewFlow />
+  </ReactFlowProvider>
+);
+
+export default WrappedFlow;
