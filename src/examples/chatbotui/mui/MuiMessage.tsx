@@ -74,7 +74,7 @@ export function MuiMessage({
         // style={{ overflowWrap: 'break-word' }}
         >
           {message.avatar && !message.self && ChatAvator}
-          {!message.self && <div style={{ marginRight: '-3px', zIndex: 1 }}>
+          {!message.self && <div style={{ marginRight: '-4px', zIndex: 1 }}>
             <svg width="11px" height="18px" viewBox="0 0 11 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
               <g id="Bot-designs" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="curve-arc" transform="translate(-801.000000, -515.000000)" fill="#fff">
@@ -92,7 +92,7 @@ export function MuiMessage({
               bgcolor={message.self ? 'primary.main' : 'background.paper'}
               color={message.self ? 'primary.contrastText' : 'text.primary'}
               borderRadius={!message.self ? '2px 12px 12px 12px' : '12px 2px 12px 12px'}
-              boxShadow='0 1px 28px 0 rgba(59, 68, 164, 0.31)'
+              boxShadow='0 1px 28px 0 rgba(59, 68, 164, 0.1)'
             >
               {message.type === 'text' && (
                 // <Typography variant="body1" style={{ whiteSpace: 'pre-wrap' }}>

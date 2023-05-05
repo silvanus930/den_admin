@@ -53,7 +53,9 @@ export function MuiTextInput({
         '& > * + *': {
           ml: 1,
         },
+        borderRadius: 100,
       }}
+      boxShadow='0 1px 2px 0 rgba(59, 68, 164, 0.31)'
     >
       <Input
         placeholder={actionRequest.placeholder}
