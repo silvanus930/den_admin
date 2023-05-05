@@ -79,7 +79,6 @@ export function MuiChat({
         bgcolor: 'transparent',
         display: 'flex',
         overflowY: 'auto',
-        overflow: 'hidden',
         flexDirection: 'column',
         '& > *': {
           maxWidth: '100%',
@@ -93,7 +92,6 @@ export function MuiChat({
         sx={{
           flex: '1 1 0%',
           overflowY: 'auto',
-          overflow: 'hidden',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
           flexDirection: 'column',

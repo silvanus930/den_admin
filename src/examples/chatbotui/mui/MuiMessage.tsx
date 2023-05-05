@@ -74,14 +74,15 @@ export function MuiMessage({
         // style={{ overflowWrap: 'break-word' }}
         >
           {message.avatar && !message.self && ChatAvator}
-          {/* <Box>
+          {!message.self && <div style={{ marginRight: '-3px', zIndex: 1 }}>
             <svg width="11px" height="18px" viewBox="0 0 11 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-              <g id="Bot-designs" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"><g id="curve-arc" transform="translate(-801.000000, -515.000000)" fill="rgba(255, 255, 0, 1)">
-                <path d="M811.765059,515.001687 L811.765059,533.001687 L809.049187,533.001644 C809.064813,532.611087 809.072751,532.217023 809.072751,531.819869 C809.072751,523.836843 805.865565,517.10228 801.481527,515.00007 L811.765059,515.001687 Z" id="Combined-Shape" />
-              </g>
+              <g id="Bot-designs" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="curve-arc" transform="translate(-801.000000, -515.000000)" fill="#fff">
+                  <path d="M811.765059,515.001687 L811.765059,533.001687 L809.049187,533.001644 C809.064813,532.611087 809.072751,532.217023 809.072751,531.819869 C809.072751,523.836843 805.865565,517.10228 801.481527,515.00007 L811.765059,515.001687 Z" id="Combined-Shape" />
+                </g>
               </g>
             </svg>
-          </Box> */}
+          </div>}
           <Box minWidth={0} display="flex" flexDirection="column">
             {message.username && ChatUsername}
             <Box
@@ -91,7 +92,7 @@ export function MuiMessage({
               bgcolor={message.self ? 'primary.main' : 'background.paper'}
               color={message.self ? 'primary.contrastText' : 'text.primary'}
               borderRadius={!message.self ? '2px 12px 12px 12px' : '12px 2px 12px 12px'}
-              boxShadow='0 1px 28px 0 rgba(59, 68, 164, 0.31)'
+              // boxShadow='0 0px 28px 0 rgba(59, 68, 164, 0.31)'
             >
               {message.type === 'text' && (
                 // <Typography variant="body1" style={{ whiteSpace: 'pre-wrap' }}>
@@ -101,7 +102,7 @@ export function MuiMessage({
                   sequence={[message.content as string]}
                   speed={50}
                   cursor={false}
-                  style={{ fontSize: '20px' }}
+                  style={{ fontSize: '16px', fontWeight: 600 }}
                 />
               )}
               {message.type === 'jsx' && <div>{message.content}</div>}

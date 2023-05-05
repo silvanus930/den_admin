@@ -1,4 +1,5 @@
-import { Box, Button, Icon, TextField } from '@mui/material';
+import { Box, Button, Icon, TextField, Input, IconButton } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
 import React from 'react';
 
 import { ChatController } from '../chat-controller';
@@ -52,33 +53,35 @@ export function MuiTextInput({
         '& > * + *': {
           ml: 1,
         },
-        '& :last-child': {
-          flex: '0 1 auto',
-        },
       }}
     >
-      <TextField
+      <Input
         placeholder={actionRequest.placeholder}
         value={value}
         onChange={(e): void => setValue(e.target.value)}
-        style={{ background: 'white', borderRadius: 10, borderColor: 'red', borderWidth: '2px', marginRight: 10}}
+        startAdornment={
+          <Icon sx={{ ml: 2, mr: 1 }} fontSize="medium" color="action">person</Icon>
+        }
+        endAdornment={
+          <IconButton sx={{
+            // ml: '-10px',
+            mr: 1, background: '#192230', color: 'Background', transform: 'rotate(-30deg)',
+            transition: 'transform 0.3s ease-in-out', '&:hover': {
+              background: '#192230ee', transform: 'rotate(0deg)'
+            },
+          }} onClick={setResponse} aria-label="add to shopping cart">
+            <Icon sx={{ ml: '3px' }}>send</Icon>
+          </IconButton>
+        }
+        style={{
+          background: 'white', borderRadius: 100, borderColor: 'red', borderWidth: '0', marginRight: 10,
+        }}
         autoFocus
+        disableUnderline
         multiline
         inputProps={{ onKeyDown: handleKeyDown }}
-        variant="outlined"
         maxRows={10}
       />
-      <Button
-        type="button"
-        onClick={setResponse}
-        disabled={!value}
-        variant="contained"
-        color="primary"
-        style={{ height: 50, alignSelf: 'center' }}
-        startIcon={<Icon>send</Icon>}
-      >
-        {sendButtonText}
-      </Button>
     </Box>
   );
 }

@@ -74,9 +74,9 @@ export function MuiFileInput({
             <Divider />
             <ListItem key={f.name}>
               <ListItemIcon>
-                <Icon>attach_file</Icon>
+                <Icon sx={{color: '#eee'}} fontSize='medium'>attach_file</Icon>
               </ListItemIcon>
-              <Typography style={{ overflowWrap: 'break-word', minWidth: 0 }}>
+              <Typography style={{ overflowWrap: 'break-word', minWidth: 0, color: 'white' }}>
                 {f.name}
               </Typography>
               {/* <ListItemText primary={f.name} /> */}
@@ -90,6 +90,7 @@ export function MuiFileInput({
           '& > *': {
             flex: '1 1 auto',
             minWidth: 0,
+            margin: 1,
           },
           '& > * + *': {
             ml: 1,

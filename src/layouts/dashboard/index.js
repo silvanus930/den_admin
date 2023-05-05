@@ -34,6 +34,7 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import EmbedChatBot from "examples/EmbedChatBot";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
@@ -156,6 +157,7 @@ function Dashboard() {
         </MDBox>
       </MDBox>
       <Footer />
+      <EmbedChatBot/>
     </DashboardLayout>
   );
 }

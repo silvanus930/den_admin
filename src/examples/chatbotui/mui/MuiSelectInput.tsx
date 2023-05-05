@@ -32,8 +32,12 @@ export function MuiSelectInput({
   return (
     <Box
       sx={{
+        margin: 1,
+        borderRadius: 2,
         flex: '1 1 auto',
         display: 'flex',
+        background: '#00000022',
+        padding: 1,
         flexDirection: 'column',
         '& > *': {
           flex: '0 0 auto',
@@ -48,10 +52,14 @@ export function MuiSelectInput({
         <Button
           key={actionRequest.options.indexOf(o)}
           type="button"
+          // color="success"
+          // variant="outlined"
+          variant="contained"
           value={o.value}
           onClick={(e): void => setResponse(e.currentTarget.value)}
-          variant="contained"
-          color="primary"
+          sx={{
+            margin: 1, background: '#ffffff', color: '#000000', textAlign: 'left !important', '&:hover': { background: '#ccc', color: '#000' }
+          }}
         >
           {o.text}
         </Button>

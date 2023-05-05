@@ -9,6 +9,7 @@ import {
   MuiChat,
 } from '../../examples/chatbotui';
 import React from 'react';
+import EmbedChatBot from 'examples/EmbedChatBot';
 
 export default function Preview() {
   const [chatCtl] = React.useState(
@@ -33,8 +34,13 @@ export default function Preview() {
           bgcolor: 'transparent',
         }}
       >
-        <Box sx={{ flex: '1 1 0%', minHeight: 0 }}>
-          <MuiChat chatController={chatCtl} />
+        <Box sx={{ flex: '1 2 0%', minHeight: 0, display: 'flex' }}>
+          <Box>
+            <MuiChat chatController={chatCtl} />
+          </Box>
+          <Box/>
+          {/* <MuiChat chatController={chatCtl} /> */}
+          <EmbedChatBot />
         </Box>
       </Box>
     </Box>
