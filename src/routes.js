@@ -38,6 +38,7 @@ Coded by www.creative-tim.com
 // Denbot Admin layouts
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
+import Preview from "layouts/preview";
 import Billing from "layouts/billing";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -64,6 +65,14 @@ const routes = [
     icon: <Icon fontSize="small">account_tree</Icon>,
     route: "/builder",
     component: <Builder />,
+  },
+  {
+    type: "collapse",
+    name: "Preview",
+    key: "Preview",
+    icon: <Icon fontSize="small">preview</Icon>,
+    route: "/preview",
+    component: <Preview />,
   },
   {
     type: "collapse",
