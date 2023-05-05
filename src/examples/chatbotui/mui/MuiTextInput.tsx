@@ -45,6 +45,7 @@ export function MuiTextInput({
     <Box
       sx={{
         flex: '1 1 auto',
+        mr: 7,
         display: 'flex',
         '& > *': {
           flex: '1 1 auto',

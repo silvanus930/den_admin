@@ -19,6 +19,7 @@ function EmbedChatBot() {
           id="iframe-bot-5f96ac4a-de23-44c0-9ead-8599de507e1e"
         //   src="http://localhost:3002/"
           // src="https://widget.enquirybot.com/#/bots/5f96ac4a-de23-44c0-9ead-8599de507e1e/7d24de732549490fa5cdab40b7c91580"
+          // src="http://localhost:3000/preview"
           src="https://app-denbot-co.onrender.com/preview"
           style={{ height: '100%', width: '150%' }}
         />
@@ -37,11 +38,11 @@ function EmbedChatBot() {
           <img id="bot-close" alt="bot-close" class="bot-close bot-cover"
             src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMDhweCIgaGVpZ2h0PSIwOHB4IiB2aWV3Qm94PSIwIDAgMTIgMTIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgPGRlZnM+CiAgPHBvbHlnb24gaWQ9InBhdGgtMSIgcG9pbnRzPSIxMS44MzMzMzMzIDEuMzQxNjY2NjcgMTAuNjU4MzMzMyAwLjE2NjY2NjY2NyA2IDQuODI1IDEuMzQxNjY2NjcgMC4xNjY2NjY2NjcgMC4xNjY2NjY2NjcgMS4zNDE2NjY2NyA0LjgyNSA2IDAuMTY2NjY2NjY3IDEwLjY1ODMzMzMgMS4zNDE2NjY2NyAxMS44MzMzMzMzIDYgNy4xNzUgMTAuNjU4MzMzMyAxMS44MzMzMzMzIDExLjgzMzMzMzMgMTAuNjU4MzMzMyA3LjE3NSA2Ij4KICA8L3BvbHlnb24+CiAgPC9kZWZzPgogIDxnIGlkPSJCb3QtZGVzaWducyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgPGcgaWQ9ImljX2Nsb3NlIj4KICA8bWFzayBpZD0ibWFzay0yIiBmaWxsPSJyZWQiPgogIDx1c2UgeGxpbms6aHJlZj0iI3BhdGgtMSI+CiAgPC91c2U+CiAgPC9tYXNrPgogIDx1c2UgaWQ9Ik1hc2siIGZpbGw9IiMxZTFmMWUiIHhsaW5rOmhyZWY9IiNwYXRoLTEiPgogIDwvdXNlPgogIDwvZz4KICA8L2c+CiAgPC9zdmc+CiAg" />
         </span>
-        <div class={`powered bot-right ${showIframe && 'bot-active'}`}>
+        {/* <div class={`powered bot-right ${showIframe && 'bot-active'}`}>
           <a href="https://denbot.co.uk" class={`bot-right power ${showIframe && 'bot-hide'}`} target="_blank" rel="noopener noreferrer">
             DenBot
           </a>
-        </div>
+        </div> */}
       </div>
     </>
   );
