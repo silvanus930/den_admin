@@ -18,8 +18,8 @@ function EmbedChatBot() {
         <iframe
           id="iframe-bot-5f96ac4a-de23-44c0-9ead-8599de507e1e"
         //   src="http://localhost:3002/"
-          src="https://widget.enquirybot.com/#/bots/5f96ac4a-de23-44c0-9ead-8599de507e1e/7d24de732549490fa5cdab40b7c91580"
-          // src="https://widget-denbot-co.onrender.com/"
+          // src="https://widget.enquirybot.com/#/bots/5f96ac4a-de23-44c0-9ead-8599de507e1e/7d24de732549490fa5cdab40b7c91580"
+          src="https://app-denbot-co.onrender.com/preview"
           style={{ height: '100%', width: '150%' }}
         />
       </div>}

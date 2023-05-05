@@ -92,7 +92,7 @@ export function MuiMessage({
               bgcolor={message.self ? 'primary.main' : 'background.paper'}
               color={message.self ? 'primary.contrastText' : 'text.primary'}
               borderRadius={!message.self ? '2px 12px 12px 12px' : '12px 2px 12px 12px'}
-              // boxShadow='0 0px 28px 0 rgba(59, 68, 164, 0.31)'
+              boxShadow='0 1px 28px 0 rgba(59, 68, 164, 0.31)'
             >
               {message.type === 'text' && (
                 // <Typography variant="body1" style={{ whiteSpace: 'pre-wrap' }}>

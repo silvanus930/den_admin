@@ -23,7 +23,8 @@ export default function Preview() {
   }, [chatCtl]);
 
   return (
-    <Box sx={{ height: '100vh', backgroundColor: '#1A2035' }}>
+    <Box sx={{ height: '100vh', backgroundColor: 'transparent' }}>
+    {/* <Box sx={{ height: '100vh', backgroundColor: '#1A2035' }}> */}
       <Box
         sx={{
           display: 'flex',
@@ -40,7 +41,7 @@ export default function Preview() {
           </Box>
           <Box/>
           {/* <MuiChat chatController={chatCtl} /> */}
-          <EmbedChatBot />
+          {/* <EmbedChatBot /> */}
         </Box>
       </Box>
     </Box>
