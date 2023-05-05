@@ -64,7 +64,6 @@ export function MuiTextInput({
         }
         endAdornment={
           <IconButton sx={{
-            // ml: '-10px',
             mr: 1, background: '#192230', color: 'Background', transform: 'rotate(-30deg)',
             transition: 'transform 0.3s ease-in-out', '&:hover': {
               background: '#192230ee', transform: 'rotate(0deg)'
