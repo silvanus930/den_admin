@@ -22,7 +22,6 @@ function CustomNode(data) {
         color={data.data.color ? data.data.color : 'success' }
         icon="weekend"
         title={data.data.text}
-        count={281}
         percentage={{
           color: "success",
           amount: "To: ",

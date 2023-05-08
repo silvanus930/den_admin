@@ -74,7 +74,7 @@ export function MuiMessage({
         // style={{ overflowWrap: 'break-word' }}
         >
           {message.avatar && !message.self && ChatAvator}
-          {!message.self && <div style={{ marginRight: '-4px', zIndex: 1 }}>
+          {/* {!message.self && <div style={{ marginRight: '-4px', zIndex: 1 }}>
             <svg width="11px" height="18px" viewBox="0 0 11 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
               <g id="Bot-designs" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="curve-arc" transform="translate(-801.000000, -515.000000)" fill="#fff">
@@ -82,7 +82,7 @@ export function MuiMessage({
                 </g>
               </g>
             </svg>
-          </div>}
+          </div>} */}
           <Box minWidth={0} display="flex" flexDirection="column">
             {message.username && ChatUsername}
             <Box

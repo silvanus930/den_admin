@@ -18,6 +18,7 @@ import ReactFlow, {
 } from "reactflow";
 
 import CustomNode from "../CustomNode";
+import MultiSelectorNode from "../MultiSelectorNode";
 import MessageNode from "../MessageNode";
 import StartNode from "../StartNode";
 import EndNode from "../EndNode";
@@ -55,6 +56,7 @@ const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
 
 const nodeTypes = {
   selectorNode: CustomNode,
+  multiSelectorNode: MultiSelectorNode,
   thinkNode: MessageNode,
   startNode: StartNode,
   endNode: EndNode,
@@ -84,7 +86,7 @@ const initialNodes = [
   },
   {
     id: "4",
-    type: "thinkNode",
+    type: "multiSelectorNode",
     data: { color: "primary", text: "Hello" },
     position: { x: 250, y: 150 },
   },
