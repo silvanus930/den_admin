@@ -6,7 +6,7 @@ import MDBox from "components/MDBox";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-function MessageNode(data) {
+function MessageNode() {
   const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
   const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);

@@ -29,7 +29,7 @@ const TextInput = ({ handleId }) => {
         />
       }
       style={{
-        background: 'white', borderRadius: 8, borderColor: 'red', borderWidth: '0', margin: 5, padding: 5, width: '400px'
+        background: 'white', borderRadius: 8, borderColor: 'red', borderWidth: '0', margin: 5, padding: 5, width: '300px'
       }}
       autoFocus
       disableUnderline
@@ -39,7 +39,7 @@ const TextInput = ({ handleId }) => {
   );
 }
 
-function MultiSelectorNode(data) {
+function MultiSelectorNode() {
 
   const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
@@ -71,9 +71,9 @@ function MultiSelectorNode(data) {
       <MDBox display="flex" py={1.2}>
         <MDBox
           variant="gradient"
-          bgColor={data.data.color ? data.data.color : 'primary'}
-          color={data.data.color === "light" ? "dark" : "white"}
-          coloredShadow={data.data.color ? data.data.color : 'primary'}
+          bgColor={'primary'}
+          color={"white"}
+          coloredShadow={'primary'}
           borderRadius="xl"
           display="flex"
           justifyContent="center"
@@ -90,7 +90,7 @@ function MultiSelectorNode(data) {
         <MDBox
           variant="gradient"
           bgColor={'secondary'}
-          color={data.color === "light" ? "dark" : "white"}
+          color={"dark"}
           borderRadius="30px"
           display="flex"
           sx={{ position: "absolute", right: -15, top: -15 }}
@@ -103,7 +103,6 @@ function MultiSelectorNode(data) {
             {'close'}
           </Icon>
         </MDBox>
-
 
         <MDBox textAlign="right" lineHeight={1} display="flex" sx={{ flexDirection: 'column' }}>
           {inputs.map((input) => (
@@ -127,7 +126,7 @@ function MultiSelectorNode(data) {
         <MDBox
           variant="gradient"
           bgColor={'success'}
-          color={data.data.color === "light" ? "dark" : "white"}
+          color={"dark"}
           coloredShadow={'success'}
           borderRadius='30px'
           display="flex"
@@ -146,7 +145,7 @@ function MultiSelectorNode(data) {
         {inputs.length > 1 && <MDBox
           variant="gradient"
           bgColor={'warning'}
-          color={data.data.color === "light" ? "dark" : "white"}
+          color={"dark"}
           coloredShadow={'warning'}
           borderRadius='30px'
           display="flex"

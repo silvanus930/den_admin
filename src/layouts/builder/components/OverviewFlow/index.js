@@ -73,23 +73,17 @@ const edgeTypes = {
   plusEdge: PlusEdge,
 };
 
-let id = 8;
-const getId = () => `${id++}`;
+let id = 3;
+const getId = () => `node-${id++}`;
+const getEdgeId = (startNode, endNode) => {
+  const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
+  const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
+  return `edge-${start}-${end}`;
+}
 
-const initialNodes = [
-  {
-    id: "1",
-    type: "startNode",
-    toolbarPosition: Position.Top,
-    position: { x: 0, y: -100 },
-  },
-  {
-    id: "2",
-    type: "endNode",
-    position: { x: 0, y: 70 },
-  },
 
-];
+
+
 // const initialNodes = [
 //   {
 //     id: "1",
@@ -150,23 +144,94 @@ const initialNodes = [
 //   { id: "e5-6", source: "5", animated: true, type: "smoothstep", target: "6", deletable: false },
 //   { id: "e5-7", source: "5", target: "7", type: "step", animated: true },
 // ];
-const initialEdges = [
-  { id: "e1-2", source: "1", target: "2", type: "plusEdge", animated: true },
-];
 
-const connectionLineStyle = { stroke: "#ddd" };
+
+const connectionLineStyle = { stroke: "#ddd", animated: true };
 const snapGrid = [25, 25];
 
 // const [elements, setElements, { undo, canUndo, redo, canRedo }] = useUndoable(initialNodes);
-
+/*
+  source,
+  target,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+*/
 function OverviewFlow() {
+
+  const [selectedEdge, setSelectedEdge] = useState('');
+
+
+
+
+  const handleClickOpen = (edge) => {
+    setSelectedValue('');
+    console.log('Selected Edge: ', edge);
+    setSelectedEdge(edge);
+    setOpenDialog(true);
+  };
+
+
+  const handleClose = (value) => {
+    setOpenDialog(false);
+    if (value.length) {
+      const newNode = {
+        id: getId(),
+        position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) /2  },
+        type: value,
+      };
+      const newEdgeStart = {
+        id: getEdgeId(selectedEdge.source, newNode.id),
+        source: selectedEdge.source,
+        target: newNode.id,
+        type: "plusEdge",
+        animated: true,
+        data: { handle: handleClickOpen }
+      };
+      const newEdgeEnd = {
+        id: getEdgeId(newNode.id, selectedEdge.target),
+        source: newNode.id,
+        target: selectedEdge.target,
+        type: "plusEdge",
+        animated: true,
+        data: { handle: handleClickOpen }
+      };
+
+      const updatedEdges = edges.filter((edge) => edge.id !== selectedEdge.id);
+      updatedEdges.push(newEdgeStart, newEdgeEnd);
+      console.log(updatedEdges);
+      setNodes((nds) => nds.concat(newNode));
+      setEdges(updatedEdges);
+      setSelectedValue(value);
+    }
+  };
+
+  const initialNodes = [
+    {
+      id: `node-${1}`,
+      type: "startNode",
+      toolbarPosition: Position.Top,
+      position: { x: 0, y: -100 },
+    },
+    {
+      id: `node-${2}`,
+      type: "endNode",
+      position: { x: 0, y: 500 },
+    },
+
+  ];
+  const initialEdges = [
+    { id: `edge-${1}-${2}`, source: `node-${1}`, target: `node-${2}`, type: "plusEdge", animated: true, data: { handle: handleClickOpen } },
+  ];
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   // const [nodes, setNodes, { undo, redo, onNodesChange}] = useUndoable(useNodesState(initialNodes));
   // const [edges, setEdges, { undo, redo }] = useUndoable(useEdgesState(initialEdges), { type: 'edges' });
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge({ ...params, type: "smoothstep" }, eds)),
+    (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
     [setEdges]
   );
   const { project } = useReactFlow();
@@ -175,34 +240,9 @@ function OverviewFlow() {
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
-  const handleClickOpen = () => {
-    setSelectedValue('');
-    setOpenDialog(true);
-  };
-
-  const handleClose = (value) => {
-    setOpenDialog(false);
-
-    if (value.length) {
-      setNodes((nds) =>
-        nds.concat({
-          id: getId(),
-          position: project({ x: selectedPosition.x, y: selectedPosition.y }),
-          type: value,
-          data: { color: "success", text: "Send message" },
-          targetPosition: Position.Left,
-          sourcePosition: Position.Right,
-        })
-      );
-      setSelectedValue(value);
-    }
-  };
-
   const onPaneClick = useCallback(
     (evt) => {
       setSelectedPosition({ x: evt.clientX - 330, y: evt.clientY - 110 });
-      handleClickOpen();
-      console.log("-------->", evt);
     },
     [project, setNodes]
   );
@@ -230,9 +270,9 @@ function OverviewFlow() {
       onMoveStart={onMoveStart}
       onMoveEnd={onMoveEnd}
       onInit={onInit}
-      connectionLineType={ConnectionLineType.SmoothStep}
+      // connectionLineType={ConnectionLineType.SmoothStep}
       connectionLineStyle={connectionLineStyle}
-      connectionMode={ConnectionMode.Strict}
+      // connectionMode={ConnectionMode.Loose}
       snapToGrid
       snapGrid={snapGrid}
       onEdgeContextMenu={onEdgeContextMenu}
@@ -242,7 +282,7 @@ function OverviewFlow() {
       onEdgeDoubleClick={onEdgeDoubleClick}
       fitView
       fitViewOptions={{ padding: 0.2 }}
-      attributionPosition="top-right"
+      // attributionPosition="top-right"
       maxZoom={Infinity}
       onNodesDelete={onNodesDelete}
       onEdgesDelete={onEdgesDelete}

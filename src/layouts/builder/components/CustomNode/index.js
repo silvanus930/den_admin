@@ -4,7 +4,7 @@ import { Handle, Position, useOnViewportChange } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-function CustomNode(data) {
+function CustomNode() {
 
   const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
@@ -19,9 +19,9 @@ function CustomNode(data) {
   return (
     <>
       <ComplexStatisticsCard
-        color={data.data.color ? data.data.color : 'success' }
+        color={'success' }
         icon="weekend"
-        title={data.data.text}
+        title={"Send Message"}
         percentage={{
           color: "success",
           amount: "To: ",

@@ -13,6 +13,8 @@ const onEdgeClick = (evt, id) => {
 
 export default function PlusEdge({
     id,
+    source,
+    target,
     sourceX,
     sourceY,
     targetX,
@@ -21,6 +23,7 @@ export default function PlusEdge({
     targetPosition,
     style = {},
     markerEnd,
+    data,
 }) {
     const [edgePath, labelX, labelY] = getBezierPath({
         sourceX,
@@ -49,8 +52,19 @@ export default function PlusEdge({
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
                 <div>
-                    <button className="edgebutton" onClick={(event) => onEdgeClick(event, id)}>
-                        <Icon fontSize="small" sx={{color: 'Highlight'}}>
+                    <button className="edgebutton" onClick={() => {
+                        data?.handle({
+                            id,
+                            source,
+                            target,
+                            sourceX,
+                            sourceY,
+                            targetX,
+                            targetY,
+                        });
+                    }
+                    }>
+                        <Icon fontSize="small" sx={{ color: 'Highlight' }}>
                             {'add'}
                         </Icon>
                     </button>
