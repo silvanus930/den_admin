@@ -1,4 +1,4 @@
-import { MouseEvent as ReactMouseEven, CSSProperties, useCallback } from "react";
+import { MouseEvent as ReactMouseEven, CSSProperties, useCallback, useState } from "react";
 import ReactFlow, {
   addEdge,
   SnapGrid,
@@ -16,12 +16,18 @@ import ReactFlow, {
   ConnectionMode,
   ReactFlowProvider,
 } from "reactflow";
+import useUndoable from "use-undoable";
 
 import CustomNode from "../CustomNode";
 import MultiSelectorNode from "../MultiSelectorNode";
 import MessageNode from "../MessageNode";
 import StartNode from "../StartNode";
 import EndNode from "../EndNode";
+import PlusNode from "../PlusNode";
+import PlusEdge from "../PlusEdge";
+
+import NodeSelectorDialog from "../NodeSelectorDialog";
+
 
 const onNodeDragStart = (_, node, nodes) => console.log("drag start", node, nodes);
 const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
@@ -60,6 +66,11 @@ const nodeTypes = {
   thinkNode: MessageNode,
   startNode: StartNode,
   endNode: EndNode,
+  plusNode: PlusNode,
+};
+
+const edgeTypes = {
+  plusEdge: PlusEdge,
 };
 
 let id = 8;
@@ -70,85 +81,127 @@ const initialNodes = [
     id: "1",
     type: "startNode",
     toolbarPosition: Position.Top,
-    position: { x: 250, y: -100 },
+    position: { x: 0, y: -100 },
   },
   {
     id: "2",
-    type: "selectorNode",
-    data: { color: "success", text: "Send message" },
-    position: { x: -50, y: 70 },
-  },
-  {
-    id: "3",
-    type: "selectorNode",
-    data: { color: "primary", text: "Hello" },
-    position: { x: 500, y: 70 },
-  },
-  {
-    id: "4",
-    type: "multiSelectorNode",
-    data: { color: "primary", text: "Hello" },
-    position: { x: 250, y: 150 },
-  },
-  {
-    id: "5",
-    type: "thinkNode",
-    data: {
-      label: (
-        <>
-          Or check out the other <strong>examples</strong>
-        </>
-      ),
-    },
-    position: { x: 250, y: 325 },
-  },
-  {
-    id: "6",
     type: "endNode",
-    data: { label: "Output node (not deletable)" },
-    position: { x: 0, y: 550 },
-    deletable: false,
+    position: { x: 0, y: 70 },
   },
-  {
-    id: "7",
-    type: "endNode",
-    data: { label: "Another output node" },
-    position: { x: 400, y: 550 },
-  },
-];
 
+];
+// const initialNodes = [
+//   {
+//     id: "1",
+//     type: "startNode",
+//     toolbarPosition: Position.Top,
+//     position: { x: 250, y: -100 },
+//   },
+//   {
+//     id: "2",
+//     type: "selectorNode",
+//     data: { color: "success", text: "Send message" },
+//     position: { x: -50, y: 70 },
+//   },
+//   {
+//     id: "3",
+//     type: "selectorNode",
+//     data: { color: "primary", text: "Hello" },
+//     position: { x: 500, y: 70 },
+//   },
+//   {
+//     id: "4",
+//     type: "multiSelectorNode",
+//     data: { color: "primary", text: "Hello" },
+//     position: { x: 250, y: 150 },
+//   },
+//   {
+//     id: "5",
+//     type: "thinkNode",
+//     data: {
+//       label: (
+//         <>
+//           Or check out the other <strong>examples</strong>
+//         </>
+//       ),
+//     },
+//     position: { x: 250, y: 325 },
+//   },
+//   {
+//     id: "6",
+//     type: "endNode",
+//     data: { label: "Output node (not deletable)" },
+//     position: { x: 0, y: 550 },
+//     deletable: false,
+//   },
+//   {
+//     id: "7",
+//     type: "endNode",
+//     data: { label: "Another output node" },
+//     position: { x: 400, y: 550 },
+//   },
+// ];
+
+// const initialEdges = [
+//   { id: "e1-2", source: "1", target: "2", type: "smoothstep", animated: true },
+//   { id: "e1-3", source: "1", target: "3", type: "smoothstep", animated: true },
+//   { id: "e3-4", source: "3", target: "4", type: "smoothstep", animated: true },
+//   { id: "e4-5", source: "4", target: "5", type: "smoothstep", animated: true },
+//   { id: "e5-6", source: "5", animated: true, type: "smoothstep", target: "6", deletable: false },
+//   { id: "e5-7", source: "5", target: "7", type: "step", animated: true },
+// ];
 const initialEdges = [
-  { id: "e1-2", source: "1", target: "2", type: "smoothstep", animated: true },
-  { id: "e1-3", source: "1", target: "3", type: "smoothstep", animated: true },
-  { id: "e3-4", source: "3", target: "4", type: "smoothstep", animated: true },
-  { id: "e4-5", source: "4", target: "5", type: "smoothstep", animated: true },
-  { id: "e5-6", source: "5", animated: true, type: "smoothstep", target: "6", deletable: false },
-  { id: "e5-7", source: "5", target: "7", type: "step", animated: true },
+  { id: "e1-2", source: "1", target: "2", type: "plusEdge", animated: true },
 ];
 
 const connectionLineStyle = { stroke: "#ddd" };
 const snapGrid = [25, 25];
 
+// const [elements, setElements, { undo, canUndo, redo, canRedo }] = useUndoable(initialNodes);
+
 function OverviewFlow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  // const [nodes, setNodes, { undo, redo, onNodesChange}] = useUndoable(useNodesState(initialNodes));
+  // const [edges, setEdges, { undo, redo }] = useUndoable(useEdgesState(initialEdges), { type: 'edges' });
+
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, type: "smoothstep" }, eds)),
     [setEdges]
   );
   const { project } = useReactFlow();
-  const onPaneClick = useCallback(
-    (evt) => {
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(0);
+  const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
+
+  const handleClickOpen = () => {
+    setSelectedValue('');
+    setOpenDialog(true);
+  };
+
+  const handleClose = (value) => {
+    setOpenDialog(false);
+
+    if (value.length) {
       setNodes((nds) =>
         nds.concat({
           id: getId(),
-          position: project({ x: evt.clientX - 330, y: evt.clientY - 110 }),
-          type: "selectorNode",
+          position: project({ x: selectedPosition.x, y: selectedPosition.y }),
+          type: value,
           data: { color: "success", text: "Send message" },
           targetPosition: Position.Left,
           sourcePosition: Position.Right,
         })
       );
+      setSelectedValue(value);
+    }
+  };
+
+  const onPaneClick = useCallback(
+    (evt) => {
+      setSelectedPosition({ x: evt.clientX - 330, y: evt.clientY - 110 });
+      handleClickOpen();
       console.log("-------->", evt);
     },
     [project, setNodes]
@@ -180,7 +233,6 @@ function OverviewFlow() {
       connectionLineType={ConnectionLineType.SmoothStep}
       connectionLineStyle={connectionLineStyle}
       connectionMode={ConnectionMode.Strict}
-      edgeTypes={"smoothstep"}
       snapToGrid
       snapGrid={snapGrid}
       onEdgeContextMenu={onEdgeContextMenu}
@@ -196,9 +248,15 @@ function OverviewFlow() {
       onEdgesDelete={onEdgesDelete}
       onPaneMouseMove={onPaneMouseMove}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
     >
       <Controls />
       <Background color="#aaa" gap={25} />
+      <NodeSelectorDialog
+        selectedValue={selectedValue}
+        open={openDialog}
+        onClose={handleClose}
+      />
     </ReactFlow>
   );
 }

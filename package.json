@@ -47,6 +47,7 @@
     "reactflow": "^11.7.0",
     "stylis": "4.0.13",
     "stylis-plugin-rtl": "2.1.1",
+    "use-undoable": "^3.3.12",
     "web-vitals": "2.1.4",
     "yup": "0.32.11"
   },

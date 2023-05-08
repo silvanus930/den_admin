@@ -17,16 +17,8 @@ function StartNode() {
   });
 
   return (
-    <Card
-      // sx={{
-      //   display: "flex",
-      //   flexDirection: "column",
-      //   backgroundColor: "#f44336",
-      //   boxShadow: "none",
-      //   overflow: "visible",
-      // }}
-    >
-      <MDBox mt={2} mb={2}>
+    <Card>
+      <MDBox mt={2} mb={2} display="flex" sx={{ width: 200, justifyContent: 'center' }}>
         <MDTypography variant="body1" component="p" color="text" mx={3}>
           Action Start
         </MDTypography>
