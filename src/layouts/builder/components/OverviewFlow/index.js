@@ -18,16 +18,17 @@ import ReactFlow, {
 } from "reactflow";
 import useUndoable from "use-undoable";
 
-import CustomNode from "../CustomNode";
-import MultiSelectorNode from "../MultiSelectorNode";
-import MessageNode from "../MessageNode";
-import StartNode from "../StartNode";
-import EndNode from "../EndNode";
-import PlusNode from "../PlusNode";
-import PlusEdge from "../PlusEdge";
+import MultiSelectorNode from "../Nodes/MultiSelectorNode";
+import ConditionalNode from "../Nodes/ConditionalNode";
+import StartNode from "../Nodes/StartNode";
+import EndNode from "../Nodes/EndNode";
+import MessageNode from "../Nodes/MessageNode";
+import CustomNode from "../Nodes/CustomNode";
+import PlusNode from "../Nodes/PlusNode";
+
+import PlusEdge from "../Edges/PlusEdge";
 
 import NodeSelectorDialog from "../NodeSelectorDialog";
-
 
 const onNodeDragStart = (_, node, nodes) => console.log("drag start", node, nodes);
 const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
@@ -63,6 +64,7 @@ const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
 const nodeTypes = {
   selectorNode: CustomNode,
   multiSelectorNode: MultiSelectorNode,
+  conditionalNode: ConditionalNode,
   thinkNode: MessageNode,
   startNode: StartNode,
   endNode: EndNode,
@@ -80,9 +82,6 @@ const getEdgeId = (startNode, endNode) => {
   const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
   return `edge-${start}-${end}`;
 }
-
-
-
 
 // const initialNodes = [
 //   {

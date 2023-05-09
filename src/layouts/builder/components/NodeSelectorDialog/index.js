@@ -19,7 +19,7 @@ export default function NodeSelectorDialog(props) {
     const nodeData = [
         { title: 'Send Message', value: 'thinkNode', icon: 'message' },
         { title: 'Send Image', value: 'selectorNode', icon: 'image' },
-        { title: 'NormalSelector', value: 'selectorNode', icon: 'dns' },
+        { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
         { title: 'MultiSelector', value: 'multiSelectorNode', icon: 'toc' }];
 
     const handleClose = () => {

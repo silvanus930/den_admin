@@ -45,11 +45,13 @@ function MultiSelectorNode() {
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
   const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
 
-  const [inputs, setInputs] = useState([<TextInput key={0} handleId={`handle-0`} />]);
+  const [inputs, setInputs] = useState([<TextInput key={0} handleId={`handle-0`} />, <TextInput key={1} handleId={`handle-1`} />]);
 
   const handleAddHandle = () => {
     const newInput = <TextInput key={inputs.length} handleId={`handle-${inputs.length}`} />;
-    setInputs([...inputs, newInput]);
+    const newInputs = [...inputs, newInput];
+    console.log('newInputs: ', newInputs);
+    setInputs(newInputs);
   };
 
   const handleDeleteHandle = () => {
@@ -83,9 +85,7 @@ function MultiSelectorNode() {
           mt={-2}
           ml={-2}
         >
-          <Icon fontSize="medium" color="inherit">
-            {'circle'}
-          </Icon>
+          <Icon fontSize="medium" color="inherit">{'toc'}</Icon>
         </MDBox>
         <MDBox
           variant="gradient"
@@ -103,11 +103,9 @@ function MultiSelectorNode() {
             {'close'}
           </Icon>
         </MDBox>
-
-        <MDBox textAlign="right" lineHeight={1} display="flex" sx={{ flexDirection: 'column' }}>
-          {inputs.map((input) => (
-            <TextInput key={input} handleId={`handle-${input}`} />
-          ))}
+        <MDBox lineHeight={1} display="flex" sx={{ flexDirection: 'column' }}>
+          <MDTypography ml={1} color="text">MultiSelectorNode</MDTypography>
+          {inputs.map((input) => (input))}
         </MDBox>
       </MDBox>
       <Handle
