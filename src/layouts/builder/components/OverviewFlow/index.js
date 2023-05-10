@@ -83,86 +83,12 @@ const getEdgeId = (startNode, endNode) => {
   return `edge-${start}-${end}`;
 }
 
-// const initialNodes = [
-//   {
-//     id: "1",
-//     type: "startNode",
-//     toolbarPosition: Position.Top,
-//     position: { x: 250, y: -100 },
-//   },
-//   {
-//     id: "2",
-//     type: "selectorNode",
-//     data: { color: "success", text: "Send message" },
-//     position: { x: -50, y: 70 },
-//   },
-//   {
-//     id: "3",
-//     type: "selectorNode",
-//     data: { color: "primary", text: "Hello" },
-//     position: { x: 500, y: 70 },
-//   },
-//   {
-//     id: "4",
-//     type: "multiSelectorNode",
-//     data: { color: "primary", text: "Hello" },
-//     position: { x: 250, y: 150 },
-//   },
-//   {
-//     id: "5",
-//     type: "thinkNode",
-//     data: {
-//       label: (
-//         <>
-//           Or check out the other <strong>examples</strong>
-//         </>
-//       ),
-//     },
-//     position: { x: 250, y: 325 },
-//   },
-//   {
-//     id: "6",
-//     type: "endNode",
-//     data: { label: "Output node (not deletable)" },
-//     position: { x: 0, y: 550 },
-//     deletable: false,
-//   },
-//   {
-//     id: "7",
-//     type: "endNode",
-//     data: { label: "Another output node" },
-//     position: { x: 400, y: 550 },
-//   },
-// ];
-
-// const initialEdges = [
-//   { id: "e1-2", source: "1", target: "2", type: "smoothstep", animated: true },
-//   { id: "e1-3", source: "1", target: "3", type: "smoothstep", animated: true },
-//   { id: "e3-4", source: "3", target: "4", type: "smoothstep", animated: true },
-//   { id: "e4-5", source: "4", target: "5", type: "smoothstep", animated: true },
-//   { id: "e5-6", source: "5", animated: true, type: "smoothstep", target: "6", deletable: false },
-//   { id: "e5-7", source: "5", target: "7", type: "step", animated: true },
-// ];
-
-
 const connectionLineStyle = { stroke: "#ddd", animated: true };
 const snapGrid = [25, 25];
 
-// const [elements, setElements, { undo, canUndo, redo, canRedo }] = useUndoable(initialNodes);
-/*
-  source,
-  target,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-*/
 function OverviewFlow() {
 
   const [selectedEdge, setSelectedEdge] = useState('');
-
-
-
 
   const handleClickOpen = (edge) => {
     setSelectedValue('');
@@ -177,7 +103,7 @@ function OverviewFlow() {
     if (value.length) {
       const newNode = {
         id: getId(),
-        position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) /2  },
+        position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) / 2 },
         type: value,
       };
       const newEdgeStart = {
@@ -221,13 +147,18 @@ function OverviewFlow() {
 
   ];
   const initialEdges = [
-    { id: `edge-${1}-${2}`, source: `node-${1}`, target: `node-${2}`, type: "plusEdge", animated: true, data: { handle: handleClickOpen } },
+    {
+      id: `edge-${1}-${2}`,
+      source: `node-${1}`,
+      target: `node-${2}`,
+      type: "plusEdge",
+      animated: true,
+      data: { handle: handleClickOpen }
+    },
   ];
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  // const [nodes, setNodes, { undo, redo, onNodesChange}] = useUndoable(useNodesState(initialNodes));
-  // const [edges, setEdges, { undo, redo }] = useUndoable(useEdgesState(initialEdges), { type: 'edges' });
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
