@@ -39,6 +39,12 @@
       "layouts": [
         "public/src/layouts/*"
       ],
+      "library": [
+        "public/src/library/*"
+      ],
+      "utils": [
+        "public/src/utils/*"
+      ],
     }
   }
 }

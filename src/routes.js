@@ -41,7 +41,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Nodes",
+    name: "Sessions",
     key: "Nodes",
     icon: <Icon fontSize="small">preview</Icon>,
     route: "/nodes",

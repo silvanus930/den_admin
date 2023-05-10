@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -34,6 +34,9 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import MDSnackbar from "components/MDSnackbar";
+
+import Slide from '@mui/material/Slide';
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -41,8 +44,50 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
+import { loginApi } from 'library/apis/login'
+
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
+
+  const [alert, setAlert] = useState(false);
+  const openAlert = () => setAlert(true);
+  const closeAlert = () => setAlert(false);
+
+  function TransitionRight(props) {
+    return <Slide {...props} direction="left" />;
+  }
+
+  const renderAlert = (
+    <MDSnackbar
+      color="error"
+      icon="warning"
+      title="SignIn Error"
+      content="Something else, please try again."
+      open={alert}
+      TransitionComponent={TransitionRight}
+      onClose={closeAlert}
+      close={closeAlert}
+      bgWhite
+    />
+  )
+
+  const handleSignIn = async () => {
+    console.log("userData: ", userData);
+    try {
+      const result = await loginApi(userData);
+      navigate('/nodes');
+      console.log('singin result: ', result);
+    } catch (error) {
+      console.log(error);
+      openAlert();
+    }
+  };
+
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  })
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
@@ -60,49 +105,25 @@ function Basic() {
           mb={1}
           textAlign="center"
         >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+          <MDTypography variant="h4" fontWeight="medium" color="white">
             Sign in
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GitHubIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GoogleIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-          </Grid>
+          {renderAlert}
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput type="email" label="Email" fullWidth onChange={(event) => {
+                setUserData({ ...userData, email: event.target.value });
+              }} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
-            </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-              <MDTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-              >
-                &nbsp;&nbsp;Remember me
-              </MDTypography>
+              <MDInput type="password" label="Password" fullWidth onChange={(event) => {
+                setUserData({ ...userData, password: event.target.value });
+              }} />
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={handleSignIn}>
                 sign in
               </MDButton>
             </MDBox>
