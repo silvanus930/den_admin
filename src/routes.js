@@ -25,7 +25,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sessions",
+    name: "Dashboard",
     key: "Nodes",
     icon: <Icon fontSize="small">preview</Icon>,
     route: "/nodes",
@@ -33,7 +33,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Builder",
+    name: "Bot Flow Design",
     key: "builder",
     icon: <Icon fontSize="small">account_tree</Icon>,
     route: "/builder",
@@ -57,7 +57,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Billing",
+    name: "Princing",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",

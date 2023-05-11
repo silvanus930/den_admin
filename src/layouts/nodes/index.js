@@ -14,7 +14,8 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-import { getSessionApi } from 'library/apis/session';
+import { getSessionApi, deleteSessionApi, createSessionApi } from 'library/apis/session';
+import CustomizedMenus from './menu';
 
 const ClickableCard = styled(Card)`
   cursor: pointer;
@@ -25,30 +26,61 @@ const ClickableCard = styled(Card)`
   }
 `;
 
-const SessionCard = ({ item }) => {
+const SessionCard = ({ item, fetchData }) => {
   const navigate = useNavigate();
   const handleNav = () => {
     navigate('/builder', { state: { item: item } });
   }
 
+  const actionEdit = () => {
+
+  }
+  const actionDuplicate = async () => {
+    try {
+      const data = {nodes: item.nodes, edges: item.edges}
+      const result = await createSessionApi(data);
+      fetchData().catch(console.error);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const actionDelete = async () => {
+    try {
+      const result = await deleteSessionApi(item._id);
+      fetchData().catch(console.error);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleMenuAction = (id) => {
+    if (id == 'edit') actionEdit()
+    else if (id === 'filecopy') actionDuplicate()
+    else actionDelete();
+  }
+
   return (
     <ClickableCard onClick={handleNav}>
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2} flexDirection="column">
-        <MDBox
-          variant="gradient"
-          bgColor="dark"
-          color="white"
-          coloredShadow="dark"
-          borderRadius="xl"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="4rem"
-          height="4rem"
-          mt={-3}
-          ml={-1}
-        >
-          <Icon fontSize="medium" color="inherit">message</Icon>
+        <MDBox display="flex" justifyContent="space-between">
+          <MDBox
+            variant="gradient"
+            bgColor="dark"
+            color="white"
+            coloredShadow="dark"
+            borderRadius="xl"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="4rem"
+            height="4rem"
+            mt={-3}
+            ml={-1}
+          >
+            <Icon fontSize="medium" color="inherit">message</Icon>
+          </MDBox>
+          <CustomizedMenus handleMenuAction={handleMenuAction} />
         </MDBox>
         <MDBox mt={1}>
           <MDTypography variant="h5" noWrap={true}>{item?.title || 'No title'}</MDTypography>
@@ -74,17 +106,18 @@ const SessionCard = ({ item }) => {
 function Nodes() {
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getSessionApi();
-        console.log(data.data);
-        setItem(data.data);
-      } catch (error) {
-        console.log('Error');
-      }
-    }
     fetchData().catch(console.error);
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const data = await getSessionApi();
+      console.log(data.data);
+      setItem(data.data);
+    } catch (error) {
+      console.log('Error');
+    }
+  }
 
   const [item, setItem] = useState([]);
   const navigate = useNavigate();
@@ -104,7 +137,7 @@ function Nodes() {
         <Grid container spacing={3}>
           {item.map((i) => (
             <Grid item xs={6} md={4} lg={2}>
-              <SessionCard item={i} />
+              <SessionCard item={i} fetchData={fetchData} />
             </Grid>
           ))}
         </Grid>
