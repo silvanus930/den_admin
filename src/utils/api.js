@@ -24,11 +24,13 @@ export const checkUserAuth = () => localStorage.getItem('login user')
 
 export function getHeaders() {
     let data = JSON.parse(localStorage.getItem('login user'));
-    
+
     const headers = {
-     'Authorization': `Bearer ${data && data.token}` || '',
+     'Authorization': `Bearer ${data && data.data.token}` || '',
         'Content-Type': 'application/json',
     }
+
+    console.log('Headers: ', headers);
     return headers
 }
 

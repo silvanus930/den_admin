@@ -100,13 +100,18 @@ export default function App() {
       }
 
       if (route.route) {
-        console.log("Path: ", route);
-        if (route.key === 'sign-out' || route.key === 'preview')
+        if (route.key === 'sign-up' || route.key === 'Preview') {
+          console.log('Public Router', route.key);
           return <Route exact path={route.route} element={route.component} key={route.key} />;
-        else if (route.key === 'sign-in')
+        }
+        else if (route.key === 'sign-in') {
+          console.log('LogIn Router', route.key);
           return <Route exact path={route.route} element={ !checkUserAuth() ? route.component : <Navigate to="/nodes" />} key={route.key} />;
-        else 
+        }
+        else {
+          console.log('Private Router', route.key);
           return <Route exact path={route.route} element={ checkUserAuth() ? route.component : <Navigate to="/authentication/sign-in" />} key={route.key} />;
+        }
       }
       return null;
     });

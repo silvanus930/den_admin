@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
+import Slide from '@mui/material/Slide';
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import MDSnackbar from "components/MDSnackbar";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
@@ -17,16 +19,30 @@ import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 import { createUserApi } from 'library/apis/user'
 
 const Cover = () => {
+  const [error, setError] = useState('');
+  const [alert, setAlert] = useState(false);
+  const openAlert = (error) => {
+    setError(error.toString());
+    setAlert(true);
+  }
+  const closeAlert = () => setAlert(false);
 
   const handleSignUp = async () => {
     console.log("userData: ", userData);
     try {
-      const result = await createUserApi(userData);
-      console.log('signup result: ', result);
+      const createResult = await createUserApi(userData);
+      const loginResult = await loginApi(createResult);
+      localStorage.setItem("login user", JSON.stringify(loginResult));
+      navigate('/nodes');
     } catch (error) {
       console.log(error);
+      openAlert(error);
     }
   };
+
+  function TransitionRight(props) {
+    return <Slide {...props} direction="left" />;
+  }
 
   const [userData, setUserData] = useState({
     name: "",
@@ -73,6 +89,17 @@ const Cover = () => {
               <MDButton variant="gradient" color="info" fullWidth onClick={handleSignUp}>
                 Create
               </MDButton>
+              <MDSnackbar
+                color="error"
+                icon="warning"
+                title="Register Error"
+                content={error}
+                open={alert}
+                TransitionComponent={TransitionRight}
+                onClose={closeAlert}
+                close={closeAlert}
+                bgWhite
+              />
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
