@@ -16,7 +16,8 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
-import { createUserApi } from 'library/apis/user'
+import { createUserApi } from 'library/apis/user';
+import { loginApi } from 'library/apis/login';
 
 const Cover = () => {
   const [error, setError] = useState('');
