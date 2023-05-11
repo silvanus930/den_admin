@@ -42,6 +42,8 @@ import routes from "routes";
 // Denbot Admin contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
+import { checkUserAuth } from 'utils/api';
+
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
@@ -98,37 +100,36 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        console.log("Path: ", route);
+        if (route.key === 'sign-out' || route.key === 'preview')
+          return <Route exact path={route.route} element={route.component} key={route.key} />;
+        else if (route.key === 'sign-in')
+          return <Route exact path={route.route} element={ !checkUserAuth() ? route.component : <Navigate to="/nodes" />} key={route.key} />;
+        else 
+          return <Route exact path={route.route} element={ checkUserAuth() ? route.component : <Navigate to="/authentication/sign-in" />} key={route.key} />;
       }
-
       return null;
     });
 
-  const configsButton = (
-    <MDBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.25rem"
-      height="3.25rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="small" color="inherit">
-        settings
-      </Icon>
-    </MDBox>
-  );
-
   const isPreview = pathname === '/preview';
+
+  const routesForNav = (routes) => {
+    const excludeKeys = ['sign-up', 'dashboard', 'notifications', 'tables'];
+    let updateRoutes = routes.filter(route => !excludeKeys.includes(route.key));
+    updateRoutes = updateRoutes.map((route) => {
+      if (route.key === 'sign-in') {
+        return {
+          ...route,
+          name: 'Log Out',
+          icon: <Icon fontSize="small">logout</Icon>,
+        };
+      }
+      return route;
+    });
+
+    return updateRoutes;
+    // return routes.filter(route => route.key !== 'sign-in' || route.key !== 'sign-up');
+  }
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
@@ -140,12 +141,11 @@ export default function App() {
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
               brandName="Denbot"
-              routes={routes}
+              routes={routesForNav(routes)}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
             <Configurator />
-            {/* {configsButton} */}
           </>
         )}
         {layout === "vr" && <Configurator />}

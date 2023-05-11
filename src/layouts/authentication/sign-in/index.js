@@ -78,6 +78,7 @@ function Basic() {
       const result = await loginApi(userData);
       navigate('/nodes');
       console.log('singin result: ', result);
+      localStorage.setItem("login user", JSON.stringify(result));
     } catch (error) {
       console.log(error);
       openAlert();

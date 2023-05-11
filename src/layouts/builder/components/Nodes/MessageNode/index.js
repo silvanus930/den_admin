@@ -10,13 +10,12 @@ import { Handle, Position, useOnViewportChange } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-const TextInput = () => {
-  const [value, setValue] = useState('');
+const TextInput = ({ text, setText }) => {
   return (
     <Input
       placeholder={'Input text'}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
+      value={text}
+      onChange={(e) => setText(e.target.value)}
       style={{
         background: 'white',
         borderRadius: 8,
@@ -35,11 +34,13 @@ const TextInput = () => {
   );
 }
 
-function MessageNode() {
+function MessageNode({ data }) {
 
   const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
   const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
+
+  const [text, setText] = useState(data?.text || '');
 
   useOnViewportChange({
     onStart,
@@ -84,7 +85,9 @@ function MessageNode() {
         </MDBox>
         <MDBox display="flex" sx={{ flexDirection: 'column' }}>
           <MDTypography ml={1} color="text">MessageNode</MDTypography>
-          <TextInput/>
+          <TextInput
+            text={text}
+            setText={setText} />
         </MDBox>
       </MDBox>
       <Handle

@@ -14,13 +14,30 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDButton from "components/MDButton";
 
+import { styled } from "@mui/material/styles";
+
+const ClickableCard = styled(Card)`
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5); /* Add your desired hover effect styles */
+  }
+`;
+
 const SessionCard = ({ title = "No Title", count = 10 }) => {
+
+  const navigate = useNavigate();
+
+  const handleNav = () => {
+    navigate('/builder', { state: "idd" });
+  }
 
   const color = "dark";
   const icon = "message";
 
   return (
-    <Card>
+    <ClickableCard onClick={handleNav}>
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2} flexDirection="column">
         <MDBox
           variant="gradient"
@@ -57,7 +74,7 @@ const SessionCard = ({ title = "No Title", count = 10 }) => {
           {'details'}
         </MDTypography>
       </MDBox>
-    </Card>
+    </ClickableCard>
   );
 }
 
@@ -69,7 +86,7 @@ function Nodes() {
   const handleAdd = () => {
     const newItem = { title: `Session-${item.length}`, count: item.length };
     setItem([...item, newItem]);
-    navigate('/builder');
+    // navigate('/builder', { state: "idd" });
   }
 
   return (

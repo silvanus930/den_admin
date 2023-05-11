@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -47,11 +47,20 @@ import {
   setWhiteSidenav,
 } from "context";
 
+import { logOut } from 'utils/api';
+
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logOut();
+    navigate('/athentication/sign-in');
+  }
 
   let textColor = "white";
 
@@ -87,7 +96,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {
     let returnValue;
 
-    if (type === "collapse") {
+    if (key === "sign-in") {
+      returnValue = (
+        <MDBox onClick={handleLogout}>
+          <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
+        </MDBox>
+      )
+    } else if (type === "collapse") {
       returnValue = href ? (
         <Link
           href={href}

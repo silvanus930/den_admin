@@ -16,6 +16,8 @@ export function logOut() {
     localStorage.removeItem('selected member')
     localStorage.removeItem('myFormData')
     sessionStorage.removeItem('authentication')
+
+    console.log("Logged Out.");
 }
 
 export const checkUserAuth = () => localStorage.getItem('login user')
@@ -31,12 +33,6 @@ export function getHeaders() {
 }
 
 export function apiReq(endPoint, data, method, headers, requestOptions = {}, shouldRefreshToken = true) {
-    console.log('endPoint:', endPoint);
-    console.log('data:', data);
-    console.log('method:', method);
-    console.log('headers:', headers);
-    console.log( process.env.REACT_APP_API_URL);
-
     return new Promise((resolve, reject) => {
         headers = {
             ...getHeaders(),

@@ -18,6 +18,9 @@ import ReactFlow, {
 } from "reactflow";
 import useUndoable from "use-undoable";
 
+import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
+
 import MultiSelectorNode from "../Nodes/MultiSelectorNode";
 import ConditionalNode from "../Nodes/ConditionalNode";
 import StartNode from "../Nodes/StartNode";
@@ -29,6 +32,8 @@ import PlusNode from "../Nodes/PlusNode";
 import PlusEdge from "../Edges/PlusEdge";
 
 import NodeSelectorDialog from "../NodeSelectorDialog";
+
+import { createSessionApi } from 'library/apis/session';
 
 const onNodeDragStart = (_, node, nodes) => console.log("drag start", node, nodes);
 const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
@@ -144,7 +149,6 @@ function OverviewFlow() {
       type: "endNode",
       position: { x: 0, y: 500 },
     },
-
   ];
   const initialEdges = [
     {
@@ -176,6 +180,32 @@ function OverviewFlow() {
     },
     [project, setNodes]
   );
+
+  const handleSave = async () => {
+    console.log('Nodes: ', nodes);
+    console.log('Edges: ', edges);
+
+    const updatedEdges = edges.map((edge) => {
+      const { data, ...rest } = edge;
+      return rest;
+    });
+
+    const updatedNodes = nodes.map((node) => {
+      return { ...node, data: {texts: [], uri: ''} };
+    });
+
+    const data = {
+      nodes: updatedNodes,
+      edges: updatedEdges,
+    }
+    try {
+      const result = await createSessionApi(data);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
   return (
     <ReactFlow
@@ -213,7 +243,7 @@ function OverviewFlow() {
       fitView
       fitViewOptions={{ padding: 0.2 }}
       // attributionPosition="top-right"
-      maxZoom={Infinity}
+      maxZoom={5}
       onNodesDelete={onNodesDelete}
       onEdgesDelete={onEdgesDelete}
       onPaneMouseMove={onPaneMouseMove}
@@ -227,6 +257,9 @@ function OverviewFlow() {
         open={openDialog}
         onClose={handleClose}
       />
+      <MDBox mt={0} mr={0} position="fixed" right={10} bottom={5} zIndex={10}>
+        <MDButton variant="contained" color="success" onClick={handleSave}>Save</MDButton>
+      </MDBox>
     </ReactFlow>
   );
 }

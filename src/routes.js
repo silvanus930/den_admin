@@ -25,6 +25,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Sessions",
+    key: "Nodes",
+    icon: <Icon fontSize="small">preview</Icon>,
+    route: "/nodes",
+    component: <Nodes />,
+  },
+  {
+    type: "collapse",
     name: "Builder",
     key: "builder",
     icon: <Icon fontSize="small">account_tree</Icon>,
@@ -38,14 +46,6 @@ const routes = [
     icon: <Icon fontSize="small">preview</Icon>,
     route: "/preview",
     component: <Preview />,
-  },
-  {
-    type: "collapse",
-    name: "Sessions",
-    key: "Nodes",
-    icon: <Icon fontSize="small">preview</Icon>,
-    route: "/nodes",
-    component: <Nodes />,
   },
   {
     type: "collapse",

@@ -1,4 +1,7 @@
+import { useLocation } from "react-router-dom";
+
 import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import "assets/css/bot.css";
 import "reactflow/dist/style.css";
@@ -7,12 +10,14 @@ import EmbedChatBot from 'examples/EmbedChatBot';
 
 function Builder() {
 
+  const data = useLocation();
+  console.log(data);
+
   return (
     <DashboardLayout>
-      <MDBox mt={1} mb={1} height="95vh">
-          <OverviewFlow/>
+      <MDBox mt={0} mb={0} height="95vh">
+        <OverviewFlow />
       </MDBox>
-      <EmbedChatBot/>
     </DashboardLayout>
   );
 }
