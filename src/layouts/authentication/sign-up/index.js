@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Slide from '@mui/material/Slide';
 
@@ -22,6 +22,7 @@ import { loginApi } from 'library/apis/login';
 const Cover = () => {
   const [error, setError] = useState('');
   const [alert, setAlert] = useState(false);
+  const navigate = useNavigate();
   const openAlert = (error) => {
     setError(error.toString());
     setAlert(true);
@@ -32,7 +33,7 @@ const Cover = () => {
     console.log("userData: ", userData);
     try {
       const createResult = await createUserApi(userData);
-      const loginResult = await loginApi(createResult);
+      const loginResult = await loginApi({email: userData.email, password: userData.password});
       localStorage.setItem("login user", JSON.stringify(loginResult));
       navigate('/nodes');
     } catch (error) {
