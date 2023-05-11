@@ -1,4 +1,5 @@
-import { MouseEvent as ReactMouseEven, CSSProperties, useCallback, useState } from "react";
+import { MouseEvent as ReactMouseEven, CSSProperties, useCallback, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import ReactFlow, {
   addEdge,
   SnapGrid,
@@ -33,7 +34,7 @@ import PlusEdge from "../Edges/PlusEdge";
 
 import NodeSelectorDialog from "../NodeSelectorDialog";
 
-import { createSessionApi } from 'library/apis/session';
+import { createSessionApi, updateSessionApi } from 'library/apis/session';
 
 const onNodeDragStart = (_, node, nodes) => console.log("drag start", node, nodes);
 const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
@@ -80,20 +81,104 @@ const edgeTypes = {
   plusEdge: PlusEdge,
 };
 
-let id = 3;
-const getId = () => `node-${id++}`;
-const getEdgeId = (startNode, endNode) => {
-  const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
-  const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
-  return `edge-${start}-${end}`;
-}
-
 const connectionLineStyle = { stroke: "#ddd", animated: true };
 const snapGrid = [25, 25];
 
-function OverviewFlow() {
+const OverviewFlow = ({ item }) => {
 
+  const navigate = useNavigate();
+  const [isCreate, setIsCreate] = useState(!item);
   const [selectedEdge, setSelectedEdge] = useState('');
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { project } = useReactFlow();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(0);
+  const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
+
+  const getId = () => `node-${nodes.length + 1}`;
+  const getEdgeId = (startNode, endNode) => {
+    const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
+    const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
+    return `edge-${start}-${end}`;
+  }
+
+  useEffect(() => {
+    if (item) {
+      setIsCreate(false);
+      setNodes(item.nodes);
+      setEdges(item.edges.map(edge => {
+        const data = { ...edge, data: { handle: handleClickOpen } };
+        return data;
+      }))
+    } else {
+      const initialNodes = [
+        {
+          id: `node-${1}`,
+          type: "startNode",
+          toolbarPosition: Position.Top,
+          position: { x: 0, y: -100 },
+        },
+        {
+          id: `node-${2}`,
+          type: "endNode",
+          position: { x: 0, y: 500 },
+        },
+      ];
+      const initialEdges = [
+        {
+          id: `edge-${1}-${2}`,
+          source: `node-${1}`,
+          target: `node-${2}`,
+          type: "plusEdge",
+          animated: true,
+        },
+      ];
+      setIsCreate(true);
+      setNodes(initialNodes);
+      setEdges(initialEdges.map(edge => {
+        const data = { ...edge, data: { handle: handleClickOpen } };
+        return data;
+      }))
+    }
+  }, []);
+
+  const handleSave = async () => {
+    console.log('Nodes: ', nodes);
+    console.log('Edges: ', edges);
+
+    const updatedEdges = edges.map((edge) => {
+      const { data, ...rest } = edge;
+      return rest;
+    });
+
+    const updatedNodes = nodes.map((node) => {
+      return { ...node, data: { texts: [], uri: '' } };
+    });
+
+    const data = {
+      nodes: updatedNodes,
+      edges: updatedEdges,
+    }
+
+    if (isCreate) {
+      try {
+        const result = await createSessionApi(data);
+        console.log(result);
+        handleNavBack();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const result = await updateSessionApi(item._id, data);
+        console.log(result);
+        handleNavBack();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   const handleClickOpen = (edge) => {
     setSelectedValue('');
@@ -101,7 +186,6 @@ function OverviewFlow() {
     setSelectedEdge(edge);
     setOpenDialog(true);
   };
-
 
   const handleClose = (value) => {
     setOpenDialog(false);
@@ -137,42 +221,14 @@ function OverviewFlow() {
     }
   };
 
-  const initialNodes = [
-    {
-      id: `node-${1}`,
-      type: "startNode",
-      toolbarPosition: Position.Top,
-      position: { x: 0, y: -100 },
-    },
-    {
-      id: `node-${2}`,
-      type: "endNode",
-      position: { x: 0, y: 500 },
-    },
-  ];
-  const initialEdges = [
-    {
-      id: `edge-${1}-${2}`,
-      source: `node-${1}`,
-      target: `node-${2}`,
-      type: "plusEdge",
-      animated: true,
-      data: { handle: handleClickOpen }
-    },
-  ];
-
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const handleNavBack = () => {
+    navigate(-1);
+  }
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
+    (params) => setEdges((eds) => addEdge({ ...params, animated: true, type: "plusEdge", data: { handle: handleClickOpen } }, eds)),
     [setEdges]
   );
-  const { project } = useReactFlow();
-
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(0);
-  const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
   const onPaneClick = useCallback(
     (evt) => {
@@ -180,32 +236,6 @@ function OverviewFlow() {
     },
     [project, setNodes]
   );
-
-  const handleSave = async () => {
-    console.log('Nodes: ', nodes);
-    console.log('Edges: ', edges);
-
-    const updatedEdges = edges.map((edge) => {
-      const { data, ...rest } = edge;
-      return rest;
-    });
-
-    const updatedNodes = nodes.map((node) => {
-      return { ...node, data: {texts: [], uri: ''} };
-    });
-
-    const data = {
-      nodes: updatedNodes,
-      edges: updatedEdges,
-    }
-    try {
-      const result = await createSessionApi(data);
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
-
-  }
 
   return (
     <ReactFlow
@@ -258,15 +288,15 @@ function OverviewFlow() {
         onClose={handleClose}
       />
       <MDBox mt={0} mr={0} position="fixed" right={10} bottom={5} zIndex={10}>
-        <MDButton variant="contained" color="success" onClick={handleSave}>Save</MDButton>
+        <MDButton variant="contained" color="success" onClick={handleSave}>{item ? "Update" : "Save"}</MDButton>
       </MDBox>
     </ReactFlow>
   );
 }
 
-const WrappedFlow = () => (
+const WrappedFlow = ({ item }) => (
   <ReactFlowProvider>
-    <OverviewFlow />
+    <OverviewFlow item={item} />
   </ReactFlowProvider>
 );
 

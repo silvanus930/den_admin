@@ -11,12 +11,12 @@ import EmbedChatBot from 'examples/EmbedChatBot';
 function Builder() {
 
   const data = useLocation();
-  console.log(data);
+  console.log('Builder Initial Data: ', data?.state?.item);
 
   return (
     <DashboardLayout>
       <MDBox mt={0} mb={0} height="95vh">
-        <OverviewFlow />
+        <OverviewFlow item={data?.state?.item}/>
       </MDBox>
     </DashboardLayout>
   );

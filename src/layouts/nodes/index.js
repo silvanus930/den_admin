@@ -1,20 +1,20 @@
-import { useState } from 'react';
-
-import Grid from "@mui/material/Grid";
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Grid from "@mui/material/Grid";
 import { Icon, Card, Divider } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 // Denbot Admin components
 import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 
 // Denbot Admin example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import MDButton from "components/MDButton";
 
-import { styled } from "@mui/material/styles";
+import { getSessionApi } from 'library/apis/session';
 
 const ClickableCard = styled(Card)`
   cursor: pointer;
@@ -25,25 +25,20 @@ const ClickableCard = styled(Card)`
   }
 `;
 
-const SessionCard = ({ title = "No Title", count = 10 }) => {
-
+const SessionCard = ({ item }) => {
   const navigate = useNavigate();
-
   const handleNav = () => {
-    navigate('/builder', { state: "idd" });
+    navigate('/builder', { state: { item: item } });
   }
-
-  const color = "dark";
-  const icon = "message";
 
   return (
     <ClickableCard onClick={handleNav}>
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2} flexDirection="column">
         <MDBox
           variant="gradient"
-          bgColor={color}
-          color={color === "light" ? "dark" : "white"}
-          coloredShadow={color}
+          bgColor="dark"
+          color="white"
+          coloredShadow="dark"
           borderRadius="xl"
           display="flex"
           justifyContent="center"
@@ -53,12 +48,10 @@ const SessionCard = ({ title = "No Title", count = 10 }) => {
           mt={-3}
           ml={-1}
         >
-          <Icon fontSize="medium" color="inherit">
-            {icon}
-          </Icon>
+          <Icon fontSize="medium" color="inherit">message</Icon>
         </MDBox>
         <MDBox mt={1}>
-          <MDTypography variant="h5" noWrap={true}>{title}</MDTypography>
+          <MDTypography variant="h5" noWrap={true}>{item?.title || 'No title'}</MDTypography>
         </MDBox>
       </MDBox>
       <Divider />
@@ -68,7 +61,7 @@ const SessionCard = ({ title = "No Title", count = 10 }) => {
           fontWeight="bold"
           color="success"
         >
-          {count}
+          {item?.nodes?.length || 0}
         </MDTypography>
         <MDTypography component="p" variant="button" color="text" display="flex" maxHeight={48} lineHeight={1.5} overflow="hidden">
           {'details'}
@@ -80,13 +73,24 @@ const SessionCard = ({ title = "No Title", count = 10 }) => {
 
 function Nodes() {
 
-  const [item, setItem] = useState([{ title: "Session", count: '10' }, { title: "Session2", count: '10' }, { title: "Session3", count: '30' }])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getSessionApi();
+        console.log(data.data);
+        setItem(data.data);
+      } catch (error) {
+        console.log('Error');
+      }
+    }
+    fetchData().catch(console.error);
+  }, []);
+
+  const [item, setItem] = useState([]);
   const navigate = useNavigate();
 
   const handleAdd = () => {
-    const newItem = { title: `Session-${item.length}`, count: item.length };
-    setItem([...item, newItem]);
-    // navigate('/builder', { state: "idd" });
+    navigate('/builder');
   }
 
   return (
@@ -100,7 +104,7 @@ function Nodes() {
         <Grid container spacing={3}>
           {item.map((i) => (
             <Grid item xs={6} md={4} lg={2}>
-              <SessionCard title={i.title} count={i.count} />
+              <SessionCard item={i} />
             </Grid>
           ))}
         </Grid>
