@@ -107,10 +107,12 @@ const OverviewFlow = ({ item }) => {
     if (item) {
       setIsCreate(false);
       setNodes(item.nodes);
-      setEdges(item.edges.map(edge => {
+      const edges = item.edges.map(edge => {
         const data = { ...edge, data: { handle: handleClickOpen } };
         return data;
-      }))
+      });
+      setEdges(edges);
+      setHistory([{ nodes: item.nodes, edges: edges }]);
     } else {
       const initialNodes = [
         {
@@ -136,10 +138,12 @@ const OverviewFlow = ({ item }) => {
       ];
       setIsCreate(true);
       setNodes(initialNodes);
-      setEdges(initialEdges.map(edge => {
+      const edges = initialEdges.map(edge => {
         const data = { ...edge, data: { handle: handleClickOpen } };
         return data;
-      }))
+      });
+      setEdges(edges);
+      setHistory([{ nodes: item.nodes, edges: edges }]);
     }
   }, []);
 
@@ -237,6 +241,70 @@ const OverviewFlow = ({ item }) => {
     [project, setNodes]
   );
 
+  const handleKeyDown = useCallback((event) => {
+    // Handle key down event
+    if (event.ctrlKey && (event.key === 'z' || event.key === 'Z')) {
+      handleUndo();
+      console.log(`Undo Pressed!`);
+    } else if (event.ctrlKey && (event.key === 'y' || event.key === 'Y')) {
+      handleRedo();
+      console.log(`Redo Pressed!`);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+  const handleUndo = () => {
+    if (historyHandler <= 0 ) return;
+    historyHandler > 0 && setHistoryHandler((historyHandler) => {
+      console.log(history);
+      console.log('Handler Id', historyHandler);
+      history[historyHandler - 1]?.nodes && setNodes(history[historyHandler - 1].nodes);
+      history[historyHandler - 1]?.edges && setEdges(history[historyHandler - 1].edges);
+      return historyHandler - 1;
+    });
+  }
+
+  const handleRedo = () => {
+    if (historyHandler >= history.length - 1) return;
+    historyHandler < history.length - 1 && setHistoryHandler((historyHandler) => {
+      console.log(history);
+      console.log('Handler Id', historyHandler);
+      history[historyHandler + 1]?.nodes && setNodes(history[historyHandler + 1].nodes);
+      history[historyHandler + 1]?.edges && setEdges(history[historyHandler + 1].edges);
+      return historyHandler + 1;
+    });
+  }
+
+  const [history, setHistory] = useState([]);
+  const [isDrag, setIsDrag] = useState(false);
+  const [historyHandler, setHistoryHandler] = useState(0);
+
+  const onNodeDragStart = (_, node, nodes) => {
+    console.log("drag start", node, nodes);
+    setIsDrag(true);
+  }
+  const onNodeDrag = (_, node, nodes) => console.log("drag", node, nodes);
+  const onNodeDragStop = (_, node) => {
+    console.log("drag stop", node, nodes);
+    handlePushHistory({ nodes: nodes, edges: edges })
+    setIsDrag(false);
+  }
+
+  const handlePushHistory = (value) => {
+    const temp = history.slice(0, historyHandler + 1);
+    temp.push(value)
+    setHistory(temp);
+    setHistoryHandler(temp.length - 1);
+    console.log('temp: ', temp);
+    console.log('Update Handler: ', historyHandler);
+  }
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -274,9 +342,10 @@ const OverviewFlow = ({ item }) => {
       fitViewOptions={{ padding: 0.2 }}
       // attributionPosition="top-right"
       maxZoom={5}
-      onNodesDelete={onNodesDelete}
-      onEdgesDelete={onEdgesDelete}
-      onPaneMouseMove={onPaneMouseMove}
+      // onNodesDelete={onNodesDelete}
+      // onEdgesDelete={onEdgesDelete}
+      disableKeyboardA11y
+      // onPaneMouseMove={onPaneMouseMove}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
     >
@@ -289,6 +358,10 @@ const OverviewFlow = ({ item }) => {
       />
       <MDBox mt={0} mr={0} position="fixed" right={10} bottom={5} zIndex={10}>
         <MDButton variant="contained" color="success" onClick={handleSave}>{item ? "Update" : "Save"}</MDButton>
+      </MDBox>
+      <MDBox mt={0} mr={0} position="fixed" right={10} top={5} zIndex={10}>
+        <MDButton variant="contained" disabled={historyHandler >= history.length - 1 } color="secondary" onClick={handleRedo} style={{ margin: 5 }}>{"Redo"}</MDButton>
+        <MDButton variant="contained" disabled={historyHandler <= 0 } color="warning" onClick={handleUndo} style={{ margin: 5 }}>{"Undo"}</MDButton>
       </MDBox>
     </ReactFlow>
   );

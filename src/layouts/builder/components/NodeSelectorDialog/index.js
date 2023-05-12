@@ -20,6 +20,9 @@ export default function NodeSelectorDialog(props) {
         { title: 'Send Message', value: 'thinkNode', icon: 'message' },
         { title: 'Send Image', value: 'selectorNode', icon: 'image' },
         { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
+        { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
+        { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
+        { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
         { title: 'MultiSelector', value: 'multiSelectorNode', icon: 'toc' }];
 
     const handleClose = () => {
@@ -31,12 +34,8 @@ export default function NodeSelectorDialog(props) {
     };
 
     return (
-        <Dialog onClose={handleClose} open={open} fullWidth={true} sx={{ width: '500px', margin: 'auto' }}
-            PaperProps={{
-                style: {
-                    backgroundColor: 'transparent', boxShadow: 'none',
-                },
-            }}
+        <Dialog onClose={handleClose} open={open} fullWidth={true} sx={{ maxWidth: '400px', margin: 'auto' }}
+            PaperProps={{ style: { backgroundColor: 'transparent', boxShadow: 'none', }, }}
         >
             <MDBox sx={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '12px' }}>
                 {nodeData.map((node) => (
