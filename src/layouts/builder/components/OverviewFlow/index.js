@@ -23,6 +23,7 @@ import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 
 import MultiSelectorNode from "../Nodes/MultiSelectorNode";
+import ImageNode from "../Nodes/ImageNode";
 import ConditionalNode from "../Nodes/ConditionalNode";
 import StartNode from "../Nodes/StartNode";
 import EndNode from "../Nodes/EndNode";
@@ -69,6 +70,7 @@ const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
 
 const nodeTypes = {
   selectorNode: CustomNode,
+  imageNode: ImageNode,
   multiSelectorNode: MultiSelectorNode,
   conditionalNode: ConditionalNode,
   thinkNode: MessageNode,
@@ -143,7 +145,7 @@ const OverviewFlow = ({ item }) => {
         return data;
       });
       setEdges(edges);
-      setHistory([{ nodes: item.nodes, edges: edges }]);
+      setHistory([{ nodes: initialNodes, edges: edges }]);
     }
   }, []);
 

@@ -18,8 +18,8 @@ export default function NodeSelectorDialog(props) {
 
     const nodeData = [
         { title: 'Send Message', value: 'thinkNode', icon: 'message' },
-        { title: 'Send Image', value: 'selectorNode', icon: 'image' },
-        { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
+        { title: 'Send Image', value: 'imageNode', icon: 'image' },
+        { title: 'ConditionalNode', value: 'imageNode', icon: 'dns' },
         { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
         { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
         { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },

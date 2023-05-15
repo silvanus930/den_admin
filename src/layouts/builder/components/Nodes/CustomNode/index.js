@@ -36,21 +36,9 @@ function CustomNode() {
       />
       <Handle
         type="source"
-        className="left-1/4 w-2 h-2 bg-blue-900"
+        className="left-2/4 w-2 h-2 bg-blue-900"
         position={Position.Bottom}
         id="a"
-      />
-      <Handle
-        type="source"
-        className="right-2/3 w-2 h-2 bg-blue-900"
-        position={Position.Bottom}
-        id="b"
-      />
-      <Handle
-        type="source"
-        className="left-3/4 w-2 h-2 bg-blue-900"
-        position={Position.Bottom}
-        id="c"
       />
     </>
   );
