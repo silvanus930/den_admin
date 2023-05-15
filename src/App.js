@@ -119,8 +119,8 @@ export default function App() {
   const isPreview = pathname === '/preview';
 
   const routesForNav = (routes) => {
-    const excludeKeys = ['sign-up', 'dashboard', 'notifications', 'tables'];
-    let updateRoutes = routes.filter(route => !excludeKeys.includes(route.key));
+    const includeKeys = ['Nodes', 'builder', 'Preview', 'billing', 'profile', 'sign-in'];
+    let updateRoutes = routes.filter(route => includeKeys.includes(route.key));
     updateRoutes = updateRoutes.map((route) => {
       if (route.key === 'sign-in') {
         return {

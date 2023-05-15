@@ -37,7 +37,7 @@ const SessionCard = ({ item, fetchData }) => {
   }
   const actionDuplicate = async () => {
     try {
-      const data = {nodes: item.nodes, edges: item.edges}
+      const data = { nodes: item.nodes, edges: item.edges }
       const result = await createSessionApi(data);
       fetchData().catch(console.error);
       console.log(result);
@@ -130,7 +130,8 @@ function Nodes() {
     <DashboardLayout>
       <DashboardNavbar />
       <MDButton
-        variant="outlined"
+        variant="gradient"
+        color="dark"
         startIcon={<Icon>add</Icon>}
         onClick={handleAdd}>Create a bot</MDButton>
       <MDBox py={3}>

@@ -11,6 +11,9 @@ import Builder from "layouts/builder";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
+import Princing from "layouts/billing/Pages/Princing";
+import Stripe from "layouts/billing/Pages/Stripe";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -93,7 +96,23 @@ const routes = [
     key: "sign-up",
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
-    component: <SignUp />,
+    component: <Princing />,
+  },
+  {
+    type: "collapse",
+    name: "Billing-Princing",
+    key: "billing-princing",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/billing/princing",
+    component: <Princing />,
+  },
+  {
+    type: "collapse",
+    name: "Billing-Stripe",
+    key: "billing-stripe",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/billing/stripe",
+    component: <Stripe />,
   },
 ];
 
