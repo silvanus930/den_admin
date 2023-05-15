@@ -16,9 +16,11 @@ import { FileActionRequest, FileActionResponse } from '../chat-types';
 export function MuiFileInput({
   chatController,
   actionRequest,
+  color,
 }: {
   chatController: ChatController;
   actionRequest: FileActionRequest;
+  color: string;
 }): React.ReactElement {
   const chatCtl = chatController;
   const [files, setFiles] = React.useState<File[]>([]);

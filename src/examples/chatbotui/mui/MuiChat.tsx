@@ -22,8 +22,10 @@ import { MuiTextInput } from './MuiTextInput';
 
 export function MuiChat({
   chatController,
+  color,
 }: React.PropsWithChildren<{
   chatController: ChatController;
+  color: string;
 }>): React.ReactElement {
   const chatCtl = chatController;
   const [messages, setMessages] = React.useState(chatCtl.getMessages());
@@ -52,6 +54,7 @@ export function MuiChat({
   type CustomComponentType = React.FC<{
     chatController: ChatController;
     actionRequest: ActionRequest;
+    color: string;
   }>;
   const CustomComponent = React.useMemo((): CustomComponentType => {
     if (!actReq || actReq.type !== 'custom') {
@@ -76,7 +79,6 @@ export function MuiChat({
         height: '100%',
         width: '100%',
         p: 1,
-        bgcolor: 'transparent',
         display: 'flex',
         overflowY: 'auto',
         flexDirection: 'column',
@@ -102,32 +104,13 @@ export function MuiChat({
         ref={msgRef}
       >
         {messages.map((msg): React.ReactElement => {
-          let showDate = false;
-          let showTime = !!chatCtl.getOption().showDateTime;
-          if (!!chatCtl.getOption().showDateTime && !msg.deletedAt) {
-            const current = dayjs(
-              msg.updatedAt ? msg.updatedAt : msg.createdAt,
-            );
-
-            if (current.format('YYYYMMDD') !== prevDate.format('YYYYMMDD')) {
-              showDate = true;
-            }
-            prevDate = current;
-
-            if (current.diff(prevTime) < 60_000) {
-              showTime = false;
-            } else {
-              prevTime = current;
-            }
-          }
           if (msg.type === 'text' || msg.type === 'jsx') {
             return (
               <MuiMessage
                 key={messages.indexOf(msg)}
                 id={`cu-msg-${messages.indexOf(msg) + 1}`}
+                color={color}
                 message={msg}
-                showDate={showDate}
-                showTime={showTime}
               />
             );
           }
@@ -135,9 +118,8 @@ export function MuiChat({
             <MuiMessage
               key={messages.indexOf(msg)}
               id={`cu-msg-${messages.indexOf(msg) + 1}`}
+              color={color}
               message={unknownMsg}
-              showDate={showDate}
-              showTime={showTime}
             />
           );
         })}
@@ -154,36 +136,42 @@ export function MuiChat({
       >
         {actReq && actReq.type === 'text' && (
           <MuiTextInput
+            color={color}
             chatController={chatCtl}
             actionRequest={actReq as TextActionRequest}
           />
         )}
         {actReq && actReq.type === 'select' && (
           <MuiSelectInput
+            color={color}
             chatController={chatCtl}
             actionRequest={actReq as SelectActionRequest}
           />
         )}
         {actReq && actReq.type === 'multi-select' && (
           <MuiMultiSelectInput
+            color={color}
             chatController={chatCtl}
             actionRequest={actReq as MultiSelectActionRequest}
           />
         )}
         {actReq && actReq.type === 'file' && (
           <MuiFileInput
+            color={color}
             chatController={chatCtl}
             actionRequest={actReq as FileActionRequest}
           />
         )}
         {actReq && actReq.type === 'audio' && (
           <MuiAudioInput
+            color={color}
             chatController={chatCtl}
             actionRequest={actReq as AudioActionRequest}
           />
         )}
         {actReq && actReq.type === 'custom' && (
           <CustomComponent
+            color={color}
             chatController={chatCtl}
             actionRequest={actReq as CustomActionRequest}
           />

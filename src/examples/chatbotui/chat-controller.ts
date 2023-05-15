@@ -54,14 +54,14 @@ export class ChatController {
   }
 
   addMessage(message: Message<MessageContent>): Promise<number> {
-    const delay = this.state.messages.length > 0 ? this.state.messages[this.state.messages.length-1].content.toString().length * 50 : 600;
+    const len = this.state.messages.push(message);
+    const idx = len - 1;
+    const typingDelay = (this.state.messages.length > 0 && this.state.messages[idx]?.self) ? 0 : 1300;
+    const delay = message.content.toString().length * 50 + typingDelay;
+    this.state.messages[idx].createdAt = new Date();
+    this.callOnMessagesChanged();
     return new Promise((resolve) => {
       setTimeout(() => {
-        const len = this.state.messages.push(message);
-        const idx = len - 1;
-        this.state.messages[idx].createdAt = new Date();
-        this.callOnMessagesChanged();
-
         resolve(idx);
       }, delay);
     });

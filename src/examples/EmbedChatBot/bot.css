@@ -1,13 +1,55 @@
 @import url("https://use.typekit.net/uul8cph.css");
 
 .app-active {
-  right: 300 !important;
+  right: 450 !important;
   transition: right 0.5s ease;
 }
 
 .app-inActive {
-  right: -300px !important;
+  right: -450px !important;
   transition: right 0.5s ease;
+}
+
+.button-active {
+  width: 100%;
+  transition: width 0.3s ease-in-out;
+}
+
+.button-inactive {
+  width: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.svg-animation {
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.fade-in-animation {
+  animation-name: fade-in;
+}
+
+.fade-out-animation {
+  animation-name: fade-out;
 }
 
 .dev-widget {

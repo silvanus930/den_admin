@@ -7,9 +7,11 @@ import { SelectActionRequest, SelectActionResponse } from '../chat-types';
 export function MuiSelectInput({
   chatController,
   actionRequest,
+  color,
 }: {
   chatController: ChatController;
   actionRequest: SelectActionRequest;
+  color: string;
 }): React.ReactElement {
   const chatCtl = chatController;
 
@@ -36,8 +38,6 @@ export function MuiSelectInput({
         borderRadius: 2,
         flex: '1 1 auto',
         display: 'flex',
-        background: '#00000022',
-        padding: 1,
         flexDirection: 'column',
         '& > *': {
           flex: '0 0 auto',
@@ -52,13 +52,13 @@ export function MuiSelectInput({
         <Button
           key={actionRequest.options.indexOf(o)}
           type="button"
-          // color="success"
-          // variant="outlined"
-          variant="contained"
+          variant="outlined"
           value={o.value}
           onClick={(e): void => setResponse(e.currentTarget.value)}
           sx={{
-            margin: 1, background: '#ffffff', color: '#000000', textAlign: 'left !important', '&:hover': { background: '#ccc', color: '#000' }
+            margin: 1, background: '#ffffff', color: color, textAlign: 'left !important', borderColor: color, '&:hover': {
+              borderColor: color + 'A9',
+            }
           }}
         >
           {o.text}

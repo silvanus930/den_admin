@@ -27,35 +27,23 @@ const StyledMenu = styled((props) => (
     }}
     {...props}
   />
-))(({ theme }) => ({
+))(({ theme, color }) => ({
   '& .MuiPaper-root': {
     borderRadius: 6,
     marginTop: theme.spacing(1),
-    maxWidth: 150,
-    backgroundColor: 'red',
-    color:
-      theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 220, 0.5) 2px 2px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
+    minWidth: 120,
+    color: '#00ff00',
+    backgroundColor: `${color} !important`,
     '& .MuiMenuItem-root': {
       '& .MuiSvgIcon-root': {
         fontSize: 18,
         marginRight: theme.spacing(1.5),
       },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
-      },
     },
   },
 }));
 
-const CustomizedMenus = ({ handleMenuAction }) => {
+const CustomizedMenus = ({ handleMenuAction, color }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -69,39 +57,29 @@ const CustomizedMenus = ({ handleMenuAction }) => {
   };
 
   return (
-    <Box mr={-2}>
-      <IconButton
-        aria-label="more"
-        id="long-button"
-        color="white"
-        aria-controls={open ? 'long-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
+    <Box>
+      <IconButton size="small" onClick={handleClick} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: color + '50', marginRight: 10 }}>
+        <MoreVertIcon fontSize="medium" style={{ color: color }} />
       </IconButton>
       <StyledMenu
         id="demo-customized-menu"
-        MenuListProps={{
-          'aria-labelledby': 'demo-customized-button',
-        }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        color={color}
       >
-        <MenuItem onClick={(e) => handleClose(e, "edit")} disableRipple>
+        <MenuItem onClick={(e) => handleClose(e, "toggle")} disableRipple>
           <EditIcon />
-          Edit
+          Toggle Theme
         </MenuItem>
-        <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
+        {/* <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
           <FileCopyIcon />
           Duplicate
         </MenuItem>
         <MenuItem onClick={(e) => handleClose(e, "delete")} disableRipple>
           <DeleteIcon />
-          Delete
-        </MenuItem>
+          Delete */}
+        {/* </MenuItem> */}
       </StyledMenu>
     </Box >
   );

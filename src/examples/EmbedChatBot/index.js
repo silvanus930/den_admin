@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "assets/css/bot.css";
+import "./bot.css";
 import "reactflow/dist/style.css";
 
 function EmbedChatBot() {
@@ -14,35 +14,34 @@ function EmbedChatBot() {
 
   return (
     <>
-      {initial && <div className={`zIndexInfinite fixed right-36 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
+      {initial && <div
+        style={{ height: '100%', maxWidth: '400px', width: '100%', padding: 10, }}
+        className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
           id="iframe-bot-5f96ac4a-de23-44c0-9ead-8599de507e1e"
-        //   src="http://localhost:3002/"
+          //   src="http://localhost:3002/"
           // src="https://widget.enquirybot.com/#/bots/5f96ac4a-de23-44c0-9ead-8599de507e1e/7d24de732549490fa5cdab40b7c91580"
           src="http://localhost:3000/preview"
           // src="https://app-denbot-co.onrender.com/preview"
-          style={{ height: '100%', width: '150%' }}
+          style={{ height: '100%', width: '100%', }}
         />
       </div>}
 
-      <div class={`bot-right bot-eb-trigger bot-popup ${showIframe && 'bot-active'}`} id="eb-bot-trigger" onClick={toggleIframe}
-        style={{ backgroundImage: 'linear-gradient(to right, rgb(41, 41, 41), rgb(95, 80, 17))' }}>
-        <div class="bot-eb-tooltip fade" id="bot-tooltip" data-title="You're offline" style={{ opacity: 0 }}></div>
-        <span class="count">1</span>
-        <div class="bot-e-text">
-          <span class="bot-text">Make an DenBot</span>
-        </div>
-        <span class="round-container" style={{background: 'rgb(255, 255, 255)'}}>
-          <img id="bot-logo" alt="bot-logo" class="bot-open"
-            src="data:image/svg+xml;base64,CiAgPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzc1cHQiIGhlaWdodD0iMzc0Ljk5OTk5MXB0IiB2aWV3Qm94PSIwIDAgMzc1IDM3NC45OTk5OTEiIHZlcnNpb249IjEuMiI+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAxIj4KICA8cGF0aCBkPSJNIDE5Ljc2OTUzMSAzNyBMIDM1Mi4wMTk1MzEgMzcgTCAzNTIuMDE5NTMxIDM0MiBMIDE5Ljc2OTUzMSAzNDIgWiBNIDE5Ljc2OTUzMSAzNyAiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8ZyBpZD0ic3VyZmFjZTEiPgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMzc1IiBoZWlnaHQ9IjM3NC45OTk5OTEiIHN0eWxlPSJmaWxsOnRyYW5zcGFyZW50O2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lOyIvPgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMzc1IiBoZWlnaHQ9IjM3NC45OTk5OTEiIHN0eWxlPSJmaWxsOnRyYW5zcGFyZW50O2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lOyIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDEpIiBjbGlwLXJ1bGU9Im5vbnplcm8iPgo8cGF0aCBzdHlsZT0iIHN0cm9rZTpub25lO2ZpbGwtcnVsZTpub256ZXJvO2ZpbGw6IzFlMWYxZTtmaWxsLW9wYWNpdHk6MTsiIGQ9Ik0gNTIuOTkyMTg4IDM3LjAxMTcxOSBDIDM0LjcxODc1IDM3LjAxMTcxOSAxOS43Njk1MzEgNTEuOTY4NzUgMTkuNzY5NTMxIDcwLjI1IEwgMTkuNzY5NTMxIDI0OS42MTMyODEgQyAxOS43Njk1MzEgMjU3LjAwNzgxMiAyOC43MTQ4NDQgMjYwLjcyMjY1NiAzMy45NDkyMTkgMjU1LjQ4ODI4MSBMIDY5LjYwNTQ2OSAyMTkuODE2NDA2IEwgMjE5LjExNzE4OCAyMTkuODE2NDA2IEMgMjM3LjM5NDUzMSAyMTkuODE2NDA2IDI1Mi4zNDM3NSAyMDQuODU5Mzc1IDI1Mi4zNDM3NSAxODYuNTc4MTI1IEwgMjUyLjM0Mzc1IDcwLjI1IEMgMjUyLjM0Mzc1IDUxLjk2ODc1IDIzNy4zOTQ1MzEgMzcuMDExNzE5IDIxOS4xMTcxODggMzcuMDExNzE5IFogTSAyODUuNTcwMzEyIDEyMC4xMDU0NjkgTCAyODUuNTcwMzEyIDE4Ni41NzgxMjUgQyAyODUuNTcwMzEyIDIyMy4yODkwNjIgMjU1LjgxNjQwNiAyNTMuMDU0Njg4IDIxOS4xMTcxODggMjUzLjA1NDY4OCBMIDExOS40NDUzMTIgMjUzLjA1NDY4OCBMIDExOS40NDUzMTIgMjY5LjY3MTg3NSBDIDExOS40NDUzMTIgMjg3Ljk1MzEyNSAxMzQuMzk0NTMxIDMwMi45MTAxNTYgMTUyLjY2Nzk2OSAzMDIuOTEwMTU2IEwgMzAyLjE3OTY4OCAzMDIuOTEwMTU2IEwgMzM3LjgzOTg0NCAzMzguNTgyMDMxIEMgMzQzLjA3NDIxOSAzNDMuODE2NDA2IDM1Mi4wMTk1MzEgMzQwLjEwMTU2MiAzNTIuMDE5NTMxIDMzMi43MDcwMzEgTCAzNTIuMDE5NTMxIDE1My4zNDM3NSBDIDM1Mi4wMTk1MzEgMTM1LjA2MjUgMzM3LjA2NjQwNiAxMjAuMTA1NDY5IDMxOC43OTI5NjkgMTIwLjEwNTQ2OSBaIE0gMjg1LjU3MDMxMiAxMjAuMTA1NDY5ICIvPgo8L2c+CjwvZz4KPC9zdmc+" />
-          <img id="bot-close" alt="bot-close" class="bot-close bot-cover"
-            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMDhweCIgaGVpZ2h0PSIwOHB4IiB2aWV3Qm94PSIwIDAgMTIgMTIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgPGRlZnM+CiAgPHBvbHlnb24gaWQ9InBhdGgtMSIgcG9pbnRzPSIxMS44MzMzMzMzIDEuMzQxNjY2NjcgMTAuNjU4MzMzMyAwLjE2NjY2NjY2NyA2IDQuODI1IDEuMzQxNjY2NjcgMC4xNjY2NjY2NjcgMC4xNjY2NjY2NjcgMS4zNDE2NjY2NyA0LjgyNSA2IDAuMTY2NjY2NjY3IDEwLjY1ODMzMzMgMS4zNDE2NjY2NyAxMS44MzMzMzMzIDYgNy4xNzUgMTAuNjU4MzMzMyAxMS44MzMzMzMzIDExLjgzMzMzMzMgMTAuNjU4MzMzMyA3LjE3NSA2Ij4KICA8L3BvbHlnb24+CiAgPC9kZWZzPgogIDxnIGlkPSJCb3QtZGVzaWducyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgPGcgaWQ9ImljX2Nsb3NlIj4KICA8bWFzayBpZD0ibWFzay0yIiBmaWxsPSJyZWQiPgogIDx1c2UgeGxpbms6aHJlZj0iI3BhdGgtMSI+CiAgPC91c2U+CiAgPC9tYXNrPgogIDx1c2UgaWQ9Ik1hc2siIGZpbGw9IiMxZTFmMWUiIHhsaW5rOmhyZWY9IiNwYXRoLTEiPgogIDwvdXNlPgogIDwvZz4KICA8L2c+CiAgPC9zdmc+CiAg" />
+      <div
+        className={`bot-right bot-eb-trigger bot-popup bot-active`}
+        id="eb-bot-trigger"
+        onClick={toggleIframe}
+      >
+        <span
+          className="round-container"
+          style={{ background: '#F0675A' }}>
+          <svg className={`${!showIframe ? 'button-active svg-animation fade-in-animation' : 'button-inactive svg-animation fade-out-animation'}`} width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.95 0H4.05C1.755 0 0 1.755 0 4.05V17.55C0 19.845 1.755 21.6 4.05 21.6H18.2247C19.816 21.6 21.3421 22.2321 22.4674 23.3574L24.705 25.595C25.245 26.135 26.055 26.135 26.595 25.595C26.865 25.325 27 25.055 27 24.65V4.05C27 1.755 25.245 0 22.95 0ZM14.85 14.85H6.75C5.94 14.85 5.4 14.31 5.4 13.5C5.4 12.69 5.94 12.15 6.75 12.15H14.85C15.66 12.15 16.2 12.69 16.2 13.5C16.2 14.31 15.66 14.85 14.85 14.85ZM20.25 9.45H6.75C5.94 9.45 5.4 8.91 5.4 8.1C5.4 7.29 5.94 6.75 6.75 6.75H20.25C21.06 6.75 21.6 7.29 21.6 8.1C21.6 8.91 21.06 9.45 20.25 9.45Z" fill="white" />
+          </svg>
+          <svg className={`${showIframe ? 'button-active svg-animation fade-in-animation' : 'button-inactive svg-animation fade-out-animation'}`} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 2L9 9.00001M9 9.00001L16 16M9 9.00001L16 2M9 9.00001L2 16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
         </span>
-        {/* <div class={`powered bot-right ${showIframe && 'bot-active'}`}>
-          <a href="https://denbot.co.uk" class={`bot-right power ${showIframe && 'bot-hide'}`} target="_blank" rel="noopener noreferrer">
-            DenBot
-          </a>
-        </div> */}
       </div>
     </>
   );

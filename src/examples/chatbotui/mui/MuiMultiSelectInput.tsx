@@ -10,9 +10,11 @@ import {
 export function MuiMultiSelectInput({
   chatController,
   actionRequest,
+  color,
 }: {
   chatController: ChatController;
   actionRequest: MultiSelectActionRequest;
+  color: string;
 }): React.ReactElement {
   const chatCtl = chatController;
   const [values, setValues] = React.useState<string[]>([]);
@@ -67,7 +69,7 @@ export function MuiMultiSelectInput({
           type="button"
           value={o.value}
           onClick={(e): void => handleSelect(e.currentTarget.value)}
-          variant={!values.includes(o.value) ? 'outlined' : 'contained'}
+          variant={values.includes(o.value) ? 'outlined' : 'contained'}
           color="primary"
         >
           {o.text}

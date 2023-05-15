@@ -1,5 +1,6 @@
 import { Box, Button, Icon, TextField, Input, IconButton } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
+import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import React from 'react';
 
 import { ChatController } from '../chat-controller';
@@ -8,9 +9,11 @@ import { TextActionRequest, TextActionResponse } from '../chat-types';
 export function MuiTextInput({
   chatController,
   actionRequest,
+  color,
 }: {
   chatController: ChatController;
   actionRequest: TextActionRequest;
+  color: string;
 }): React.ReactElement {
   const chatCtl = chatController;
   const [value, setValue] = React.useState(actionRequest.defaultValue);
@@ -44,8 +47,7 @@ export function MuiTextInput({
   return (
     <Box
       sx={{
-        flex: '1 1 auto',
-        mr: 7,
+        flex: '1 auto',
         display: 'flex',
         '& > *': {
           flex: '1 1 auto',
@@ -54,29 +56,25 @@ export function MuiTextInput({
         '& > * + *': {
           ml: 1,
         },
-        borderRadius: 100,
+        borderRadius: 2,
+        borderWidth: 1,
       }}
-      boxShadow='0 1px 2px 0 rgba(59, 68, 164, 0.31)'
     >
       <Input
         placeholder={actionRequest.placeholder}
         value={value}
         onChange={(e): void => setValue(e.target.value)}
-        startAdornment={
-          <Icon sx={{ ml: 2, mr: 1 }} fontSize="medium" color="action">person</Icon>
-        }
         endAdornment={
           <IconButton sx={{
-            mr: 1, background: '#192230', color: 'Background', transform: 'rotate(-30deg)',
-            transition: 'transform 0.3s ease-in-out', '&:hover': {
-              background: '#192230ee', transform: 'rotate(0deg)'
+            background: color + '19' ,'&:hover': {
+              background: color + '29',
             },
           }} onClick={setResponse} aria-label="add to shopping cart">
-            <Icon sx={{ ml: '3px' }}>send</Icon>
+            <ArrowUpward sx={{ color: color }} />
           </IconButton>
         }
         style={{
-          background: 'white', borderRadius: 100, borderColor: 'red', borderWidth: '0', marginRight: 10,
+          background: 'white', borderRadius: 10, borderColor: 'red', borderWidth: '0', marginRight: 10, paddingLeft: 10,
         }}
         autoFocus
         disableUnderline

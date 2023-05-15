@@ -1,9 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import "assets/css/bot.css";
 import "reactflow/dist/style.css";
 import OverviewFlow from "./components/OverviewFlow";
 import EmbedChatBot from 'examples/EmbedChatBot';
@@ -11,7 +10,10 @@ import EmbedChatBot from 'examples/EmbedChatBot';
 function Builder() {
 
   const data = useLocation();
+  const {id, name} = useParams();
   console.log('Builder Initial Data: ', data?.state?.item);
+  console.log('Builder Initial Data: ', data);
+  console.log('Builder Initial Data: ', id, name);
 
   return (
     <DashboardLayout>

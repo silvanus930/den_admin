@@ -8,9 +8,11 @@ import { AudioActionRequest, AudioActionResponse } from '../chat-types';
 export function MuiAudioInput({
   chatController,
   actionRequest,
+  color,
 }: {
   chatController: ChatController;
   actionRequest: AudioActionRequest;
+  color: string;
 }): React.ReactElement {
   const chatCtl = chatController;
   const [audioRec] = React.useState(AudioMediaRecorder.getInstance());
