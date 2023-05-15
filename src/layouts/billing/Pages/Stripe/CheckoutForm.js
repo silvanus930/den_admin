@@ -95,22 +95,24 @@ const CheckoutForm = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <CardElement
-                            options={{
-                                style: {
-                                    base: {
-                                        fontSize: '16px',
-                                        color: '#bab7c4',
-                                        '::placeholder': {
-                                            color: '#aab7c4',
+                        <Card sx={{padding: 3}}>
+                            <CardElement
+                                options={{
+                                    style: {
+                                        base: {
+                                            fontSize: '18px',
+                                            color: '#eab7c4',
+                                            '::placeholder': {
+                                                color: '#aab7c4',
+                                            },
+                                        },
+                                        invalid: {
+                                            color: '#9e2146',
                                         },
                                     },
-                                    invalid: {
-                                        color: '#9e2146',
-                                    },
-                                },
-                            }}
-                        />
+                                }}
+                            />
+                        </Card>
                         <MDButton onClick={createSubscription} color="dark" variant="gradient">
                             Subscribe
                         </MDButton>
