@@ -57,7 +57,7 @@ const SessionCard = ({ item, fetchData }) => {
   const handleMenuAction = (id) => {
     if (id == 'edit') actionEdit()
     else if (id === 'filecopy') actionDuplicate()
-    else if (id === 'delete') actionDuplicate()
+    else if (id === 'delete') actionDelete()
   }
 
   return (

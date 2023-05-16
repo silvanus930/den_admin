@@ -28,7 +28,7 @@ import ConditionalNode from "../Nodes/ConditionalNode";
 import StartNode from "../Nodes/StartNode";
 import EndNode from "../Nodes/EndNode";
 import MessageNode from "../Nodes/MessageNode";
-import CustomNode from "../Nodes/CustomNode";
+import { NameInputNode, EmailInputNode, PhoneInputNode } from "../Nodes/CustomNode";
 import PlusNode from "../Nodes/PlusNode";
 
 import PlusEdge from "../Edges/PlusEdge";
@@ -69,11 +69,13 @@ const onEdgesDelete = (edges) => console.log("edges delete", edges);
 const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
 
 const nodeTypes = {
-  selectorNode: CustomNode,
+  nameNode: NameInputNode,
+  emailNode: EmailInputNode,
+  phoneNode: PhoneInputNode,
   imageNode: ImageNode,
   multiSelectorNode: MultiSelectorNode,
   conditionalNode: ConditionalNode,
-  thinkNode: MessageNode,
+  messageNode: MessageNode,
   startNode: StartNode,
   endNode: EndNode,
   plusNode: PlusNode,
@@ -106,29 +108,27 @@ const OverviewFlow = ({ item }) => {
   }
 
   const setData = (id, data) => {
-    console.log('Set Data on over:', id, data);
-    // const updatedNodes = nodes.map((node) => {
-    //   if (node.id === id) {
-    //     return { ...node, data };
-    //   }
-    //   return node;
-    // });
-    // setNodes(updatedNodes);
+    setNodes(prev => {
+      console.log('PrevData>>>', prev);
+      const index = prev.findIndex(item => item.id === id);
+      const length = prev.length;
+      return [...prev.slice(0, index), { ...prev[index], data: data }, ...prev.slice(index + 1, length)];
+    })
   }
 
   useEffect(() => {
     if (item) {
       setIsCreate(false);
-      setNodes(item.nodes);
       const edges = item.edges.map(edge => {
         const data = { ...edge, data: { handle: handleClickOpen } };
         return data;
       });
       const nodes = item.nodes.map(node => {
-        const data = { ...node, setData: { handle: setData } };
+        const data = { ...node, data: { ...node?.data, handle: setData } };
         return data;
       });
       setEdges(edges);
+      setNodes(nodes);
       setHistory([{ nodes: nodes, edges: edges }]);
     } else {
       const initialNodes = [
@@ -173,10 +173,6 @@ const OverviewFlow = ({ item }) => {
       return rest;
     });
 
-    // const updatedNodes = nodes.map((node) => {
-    //   return { ...node, data: { texts: [], uri: '' } };
-    // });
-
     const data = {
       nodes: nodes,
       edges: updatedEdges,
@@ -215,9 +211,9 @@ const OverviewFlow = ({ item }) => {
         id: getId(),
         position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) / 2 },
         type: value,
-        setData: {handle: setData},
+        data: { handle: setData },
       };
-      console.log('New Node', newNode);
+      console.log('New Node===>', newNode);
       const newEdgeStart = {
         id: getEdgeId(selectedEdge.source, newNode.id),
         source: selectedEdge.source,
@@ -373,7 +369,7 @@ const OverviewFlow = ({ item }) => {
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
     >
-      <Controls />
+      {/* <Controls /> */}
       <Background color="#aaa" gap={25} />
       <NodeSelectorDialog
         selectedValue={selectedValue}

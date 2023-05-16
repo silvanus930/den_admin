@@ -35,13 +35,13 @@ const TextInput = ({ text, setText }) => {
   );
 }
 
-function ImageNode({ id, data, setData }) {
+function ImageNode({ id, data }) {
 
   const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
   const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
 
-  console.log("Loaded Image Data: ", id, data, setData);
+  console.log("Loaded Image Data: ", id, data);
 
   const [text, setText] = useState(data?.text || '');
 
@@ -58,8 +58,9 @@ function ImageNode({ id, data, setData }) {
 
   const handleSetText = value => {
     setText(value);
-    console.log(value);
-    setData?.handle(id, { ...elementData, text: value });
+    console.log("Text Value====>", value);
+    console.log('Handle Value=====', data?.handle);
+    data?.handle(id, { ...elementData, text: value });
     setElementData({ ...elementData, text: value });
   }
 
@@ -68,7 +69,7 @@ function ImageNode({ id, data, setData }) {
     console.log(fileUploaded);
     setImageUri(window.URL.createObjectURL(fileUploaded))
     setFile(fileUploaded);
-    setData?.handle(id, { ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
+    data?.handle(id, { ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
     setElementData({ ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
   };
 
@@ -132,7 +133,7 @@ function ImageNode({ id, data, setData }) {
             onChange={handleChange}
             style={{ display: 'none' }}
           />
-          {file && (
+          {imageUri && (
             <img
               src={imageUri}
               alt="File"

@@ -1,16 +1,14 @@
 import { Icon, Input, Card } from '@mui/material';
-import { memo, useCallback, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
-import MDInput from "components/MDInput";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-import { Handle, Position, useOnViewportChange } from "reactflow";
+import { Handle, Position } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-const TextInput = ({ handleId }) => {
-  const [value, setValue] = useState('');
+const TextInput = ({ handleId, value, setValue }) => {
   return (
     <Input
       placeholder={'Input text'}
@@ -38,19 +36,21 @@ const TextInput = ({ handleId }) => {
   );
 }
 
-function ConditionalNode() {
+function ConditionalNode({ id, data }) {
 
-  const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
-  const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
-  const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
+  const [text1, setText1] = useState(data?.texts && data?.texts[0] || '');
+  const [text2, setText2] = useState(data?.texts && data?.texts[1] || '');
 
-  const inputs = [<TextInput key={0} handleId={`handle-0`} />, <TextInput key={1} handleId={`handle-1`} />];
+  const inputs = [
+    <TextInput key={0} handleId={`handle-0`} value={text1} setValue={setText1} />,
+    <TextInput key={1} handleId={`handle-1`} value={text2} setValue={setText2} />
+  ];
 
-  useOnViewportChange({
-    onStart,
-    onChange,
-    onEnd,
-  });
+  useEffect(() => {
+    console.log('Text1: ', text1);
+    console.log('Text2: ', text2);
+    data.handle && data.handle(id, { ...data, texts: [text1, text2] });
+  }, [text1, text2]);
 
   return (
     <Card>

@@ -1,12 +1,12 @@
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import { Box, Button, IconButton, Icon, TextField, Input, Card, Divider, colorManipulator } from '@mui/material';
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 
 import MDInput from "components/MDInput";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-import { Handle, Position, useOnViewportChange } from "reactflow";
+import { Handle, Position } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
@@ -34,19 +34,13 @@ const TextInput = ({ text, setText }) => {
   );
 }
 
-function MessageNode({ data }) {
-
-  const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
-  const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
-  const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
+function MessageNode({ id, data }) {
 
   const [text, setText] = useState(data?.text || '');
 
-  useOnViewportChange({
-    onStart,
-    onChange,
-    onEnd,
-  });
+  useEffect(()=>{
+    data.handle && data.handle(id, {...data, text: text})
+  }, [text]);
 
   return (
     <Card>
