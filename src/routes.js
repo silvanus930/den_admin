@@ -96,7 +96,7 @@ const routes = [
     key: "sign-up",
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
-    component: <Princing />,
+    component: <SignUp />,
   },
   {
     type: "collapse",

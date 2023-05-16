@@ -11,9 +11,6 @@ function Builder() {
 
   const data = useLocation();
   const {id, name} = useParams();
-  console.log('Builder Initial Data: ', data?.state?.item);
-  console.log('Builder Initial Data: ', data);
-  console.log('Builder Initial Data: ', id, name);
 
   return (
     <DashboardLayout>

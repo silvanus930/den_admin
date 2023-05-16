@@ -35,16 +35,20 @@ const TextInput = ({ text, setText }) => {
   );
 }
 
-function ImageNode({ data }) {
+function ImageNode({ id, data, setData }) {
 
   const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
   const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
   const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
 
+  console.log("Loaded Image Data: ", id, data, setData);
+
   const [text, setText] = useState(data?.text || '');
 
   const [file, setFile] = useState(null);
-  const [imageUri, setImageUri] = useState('');
+  const [imageUri, setImageUri] = useState(data?.uri || '');
+
+  const [elementData, setElementData] = useState(data || {});
 
   const hiddenFileInput = React.useRef(null);
 
@@ -52,11 +56,20 @@ function ImageNode({ data }) {
     hiddenFileInput.current.click();
   };
 
+  const handleSetText = value => {
+    setText(value);
+    console.log(value);
+    setData?.handle(id, { ...elementData, text: value });
+    setElementData({ ...elementData, text: value });
+  }
+
   const handleChange = event => {
     const fileUploaded = event.target.files[0];
     console.log(fileUploaded);
     setImageUri(window.URL.createObjectURL(fileUploaded))
     setFile(fileUploaded);
+    setData?.handle(id, { ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
+    setElementData({ ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
   };
 
   useOnViewportChange({
@@ -104,7 +117,7 @@ function ImageNode({ data }) {
           <MDTypography ml={1} color="text">Image Node</MDTypography>
           <TextInput
             text={text}
-            setText={setText} />
+            setText={handleSetText} />
           <MDButton
             variant="contained"
             color="warning"

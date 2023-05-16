@@ -1,12 +1,8 @@
 import {
   Box,
   Button,
-  Grid,
   Typography,
-  IconButton,
-  Icon,
 } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   ActionRequest,
   ChatController,
@@ -15,7 +11,6 @@ import {
 } from '../../examples/chatbotui';
 import React, { useState } from 'react';
 import CustomizedMenus from './menu';
-import EmbedChatBot from 'examples/EmbedChatBot';
 
 export default function Preview() {
 
@@ -44,12 +39,14 @@ export default function Preview() {
       borderRadius: '12px',
       position: 'absolute',
       bottom: 70,
+      display: "flex",
+      flexDirection: "column"
     }}>
       <Box flexDirection='row' display="flex" m={1.5} justifyContent='center' alighItems='center'>
         <Typography sx={{ color: botThemeColor, textAlign: 'center', flex: 1, display: 'flex', justifyContent: 'center' }}>Welcome to Denbot!</Typography>
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
-      <Box px={1} sx={{ height: '85%', borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#00000020' }}>
+      <Box px={1} style={{ overflowY: 'scroll', flex: 1, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#00000020'}}>
         <MuiChat chatController={chatCtl} color={botThemeColor} />
       </Box>
       <Box>

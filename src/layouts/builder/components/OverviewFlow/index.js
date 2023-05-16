@@ -105,6 +105,17 @@ const OverviewFlow = ({ item }) => {
     return `edge-${start}-${end}`;
   }
 
+  const setData = (id, data) => {
+    console.log('Set Data on over:', id, data);
+    // const updatedNodes = nodes.map((node) => {
+    //   if (node.id === id) {
+    //     return { ...node, data };
+    //   }
+    //   return node;
+    // });
+    // setNodes(updatedNodes);
+  }
+
   useEffect(() => {
     if (item) {
       setIsCreate(false);
@@ -113,8 +124,12 @@ const OverviewFlow = ({ item }) => {
         const data = { ...edge, data: { handle: handleClickOpen } };
         return data;
       });
+      const nodes = item.nodes.map(node => {
+        const data = { ...node, setData: { handle: setData } };
+        return data;
+      });
       setEdges(edges);
-      setHistory([{ nodes: item.nodes, edges: edges }]);
+      setHistory([{ nodes: nodes, edges: edges }]);
     } else {
       const initialNodes = [
         {
@@ -158,12 +173,12 @@ const OverviewFlow = ({ item }) => {
       return rest;
     });
 
-    const updatedNodes = nodes.map((node) => {
-      return { ...node, data: { texts: [], uri: '' } };
-    });
+    // const updatedNodes = nodes.map((node) => {
+    //   return { ...node, data: { texts: [], uri: '' } };
+    // });
 
     const data = {
-      nodes: updatedNodes,
+      nodes: nodes,
       edges: updatedEdges,
     }
 
@@ -200,7 +215,9 @@ const OverviewFlow = ({ item }) => {
         id: getId(),
         position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) / 2 },
         type: value,
+        setData: {handle: setData},
       };
+      console.log('New Node', newNode);
       const newEdgeStart = {
         id: getEdgeId(selectedEdge.source, newNode.id),
         source: selectedEdge.source,
@@ -218,6 +235,9 @@ const OverviewFlow = ({ item }) => {
         data: { handle: handleClickOpen }
       };
 
+      if (selectedEdge.sourceHandle) newEdgeStart = { ...newEdgeStart, sourceHandle: selectedEdge.sourceHandle }
+      if (selectedEdge.targetHandle) newEdgeEnd = { ...newEdgeEnd, targetHandle: selectedEdge.targetHandle }
+
       const updatedEdges = edges.filter((edge) => edge.id !== selectedEdge.id);
       updatedEdges.push(newEdgeStart, newEdgeEnd);
       console.log(updatedEdges);
@@ -232,8 +252,10 @@ const OverviewFlow = ({ item }) => {
   }
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge({ ...params, animated: true, type: "plusEdge", data: { handle: handleClickOpen } }, eds)),
-    [setEdges]
+    (params) => {
+      console.log('Connect Edge: ', params);
+      setEdges((eds) => addEdge({ ...params, animated: true, type: "plusEdge", data: { handle: handleClickOpen } }, eds));
+    }, [setEdges]
   );
 
   const onPaneClick = useCallback(
@@ -262,7 +284,7 @@ const OverviewFlow = ({ item }) => {
   }, [handleKeyDown]);
 
   const handleUndo = () => {
-    if (historyHandler <= 0 ) return;
+    if (historyHandler <= 0) return;
     historyHandler > 0 && setHistoryHandler((historyHandler) => {
       console.log(history);
       console.log('Handler Id', historyHandler);
@@ -362,8 +384,8 @@ const OverviewFlow = ({ item }) => {
         <MDButton variant="contained" color="success" onClick={handleSave}>{item ? "Update" : "Save"}</MDButton>
       </MDBox>
       <MDBox mt={0} mr={0} position="fixed" right={10} top={5} zIndex={10}>
-        <MDButton variant="contained" disabled={historyHandler >= history.length - 1 } color="secondary" onClick={handleRedo} style={{ margin: 5 }}>{"Redo"}</MDButton>
-        <MDButton variant="contained" disabled={historyHandler <= 0 } color="warning" onClick={handleUndo} style={{ margin: 5 }}>{"Undo"}</MDButton>
+        <MDButton variant="contained" disabled={historyHandler >= history.length - 1} color="secondary" onClick={handleRedo} style={{ margin: 5 }}>{"Redo"}</MDButton>
+        <MDButton variant="contained" disabled={historyHandler <= 0} color="warning" onClick={handleUndo} style={{ margin: 5 }}>{"Undo"}</MDButton>
       </MDBox>
     </ReactFlow>
   );
