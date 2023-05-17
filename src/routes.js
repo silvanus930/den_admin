@@ -47,7 +47,7 @@ const routes = [
     name: "Preview",
     key: "Preview",
     icon: <Icon fontSize="small">preview</Icon>,
-    route: "/preview",
+    route: "/preview/:id",
     component: <Preview />,
   },
   {

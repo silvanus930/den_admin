@@ -102,7 +102,7 @@ export default function App() {
       return null;
     });
 
-  const isPreview = pathname === '/preview';
+  const isPreview = pathname.includes('/preview');
 
   const routesForNav = (routes) => {
     const includeKeys = ['Nodes', 'builder', 'Preview', 'billing', 'profile', 'sign-in'];

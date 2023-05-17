@@ -118,6 +118,14 @@ const OverviewFlow = ({ item }) => {
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
+  const getId = () => `node-${nodes.length + 1}`;
+  const getEdgeId = (startNode, endNode) => {
+    const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
+    const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
+    return `edge-${start}-${end}`;
+  }
+
+
   const onNodesDelete = (
     (deleted) => {
       updateNodeForDelete(deleted);
@@ -133,7 +141,7 @@ const OverviewFlow = ({ item }) => {
         const remainingEdges = acc.filter((edge) => !connectedEdges.includes(edge));
 
         const createdEdges = incomers.flatMap(({ id: source }) =>
-          outgoers.map(({ id: target }) => ({ id: `${source}->${target}`, source, target, type: 'plusEdge', animated: true, data: { handle: handleClickOpen } }))
+          outgoers.map(({ id: target }) => ({ id: getEdgeId(source, target), source, target, type: 'plusEdge', animated: true, data: { handle: handleClickOpen } }))
         );
 
         return [...remainingEdges, ...createdEdges];
@@ -146,13 +154,6 @@ const OverviewFlow = ({ item }) => {
     updateNodeForDelete(node);
     setNodes((prev) => prev.filter(n => n.id !== id));
 
-  }
-
-  const getId = () => `node-${nodes.length + 1}`;
-  const getEdgeId = (startNode, endNode) => {
-    const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
-    const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
-    return `edge-${start}-${end}`;
   }
 
   const setData = (id, data) => {

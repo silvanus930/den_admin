@@ -14,7 +14,7 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-import { getSessionApi, deleteSessionApi, createSessionApi } from 'library/apis/session';
+import { getSessionsApi, deleteSessionApi, createSessionApi } from 'library/apis/session';
 import CustomizedMenus from './menu';
 
 const ClickableCard = styled(Card)`
@@ -111,7 +111,7 @@ function Nodes() {
 
   const fetchData = async () => {
     try {
-      const data = await getSessionApi();
+      const data = await getSessionsApi();
       console.log(data.data);
       setItem(data.data);
     } catch (error) {

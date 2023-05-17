@@ -10,7 +10,10 @@ import EmbedChatBot from 'examples/EmbedChatBot';
 function Builder() {
 
   const data = useLocation();
-  const {id, name} = useParams();
+  const param = useParams();
+
+  console.log('Data: ', data);
+  console.log('Param: ', param);
 
   return (
     <DashboardLayout>
