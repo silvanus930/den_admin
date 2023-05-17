@@ -1,12 +1,10 @@
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import { Box, Button, IconButton, Icon, TextField, Input, Card, Divider, colorManipulator } from '@mui/material';
 import React, { memo, useCallback, useState } from "react";
 
-import MDInput from "components/MDInput";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-import { Handle, Position, useOnViewportChange } from "reactflow";
+import { Handle, Position, } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
@@ -39,11 +37,7 @@ const TextInput = ({ handleId }) => {
   );
 }
 
-function MultiSelectorNode() {
-
-  const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
-  const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
-  const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
+function MultiSelectorNode({ id, data }) {
 
   const [inputs, setInputs] = useState([<TextInput key={0} handleId={`handle-0`} />, <TextInput key={1} handleId={`handle-1`} />]);
 
@@ -61,12 +55,6 @@ function MultiSelectorNode() {
       setInputs(newInputs);
     }
   };
-
-  useOnViewportChange({
-    onStart,
-    onChange,
-    onEnd,
-  });
 
   return (
     <Card>

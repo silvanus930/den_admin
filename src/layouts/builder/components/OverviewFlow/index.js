@@ -60,8 +60,9 @@ const onInit = (reactFlowInstance) => {
 const onMoveStart = (_, viewport) => console.log("zoom/move start", viewport);
 const onMoveEnd = (_, viewport) => console.log("zoom/move end", viewport);
 const onEdgeContextMenu = (_, edge) => console.log("edge context menu", edge);
-const onEdgeMouseEnter = (_, edge) => console.log("edge mouse enter", edge);
-const onEdgeMouseMove = (_, edge) => console.log("edge mouse move", edge);
+const onEdgeMouseMove = (_, edge) => {
+  // console.log("edge mouse move", edge)
+};
 const onEdgeMouseLeave = (_, edge) => console.log("edge mouse leave", edge);
 const onEdgeDoubleClick = (_, edge) => console.log("edge double click", edge);
 const onNodesDelete = (nodes) => console.log("nodes delete", nodes);
@@ -197,15 +198,26 @@ const OverviewFlow = ({ item }) => {
     }
   }
 
+  const onEdgeMouseEnter = (_, edge) => {
+    console.log('Selected Edge on MouseEnter: ', edge);
+
+    setSelectedEdge(edge);
+  };
+
   const handleClickOpen = (edge) => {
     setSelectedValue('');
-    console.log('Selected Edge: ', edge);
-    setSelectedEdge(edge);
+    console.log('Selected Edge on Open: ', edge);
+    setSelectedEdge((prevEdge)=> {
+      const updateEdge = { ...prevEdge, sourceX: edge.sourceX, sourceY: edge.sourceY, targetX: edge.targetX, targetY: edge.targetY };
+      console.log('Selected Edge on Open Updated: ', updateEdge); 
+      return updateEdge;
+    });
     setOpenDialog(true);
   };
 
   const handleClose = (value) => {
     setOpenDialog(false);
+    console.log('Selected Edge on Close: ', selectedEdge);
     if (value.length) {
       const newNode = {
         id: getId(),
@@ -214,7 +226,7 @@ const OverviewFlow = ({ item }) => {
         data: { handle: setData },
       };
       console.log('New Node===>', newNode);
-      const newEdgeStart = {
+      let newEdgeStart = {
         id: getEdgeId(selectedEdge.source, newNode.id),
         source: selectedEdge.source,
         target: newNode.id,
@@ -222,7 +234,7 @@ const OverviewFlow = ({ item }) => {
         animated: true,
         data: { handle: handleClickOpen }
       };
-      const newEdgeEnd = {
+      let newEdgeEnd = {
         id: getEdgeId(newNode.id, selectedEdge.target),
         source: newNode.id,
         target: selectedEdge.target,
@@ -233,6 +245,9 @@ const OverviewFlow = ({ item }) => {
 
       if (selectedEdge.sourceHandle) newEdgeStart = { ...newEdgeStart, sourceHandle: selectedEdge.sourceHandle }
       if (selectedEdge.targetHandle) newEdgeEnd = { ...newEdgeEnd, targetHandle: selectedEdge.targetHandle }
+
+      console.log('New Edge Start: ', newEdgeStart);
+      console.log('New Edge End: ', newEdgeEnd);
 
       const updatedEdges = edges.filter((edge) => edge.id !== selectedEdge.id);
       updatedEdges.push(newEdgeStart, newEdgeEnd);
@@ -250,7 +265,9 @@ const OverviewFlow = ({ item }) => {
   const onConnect = useCallback(
     (params) => {
       console.log('Connect Edge: ', params);
-      setEdges((eds) => addEdge({ ...params, animated: true, type: "plusEdge", data: { handle: handleClickOpen } }, eds));
+      const newEdge = { ...params, animated: true, type: "plusEdge", data: { handle: handleClickOpen } };
+      console.log('New Edge: ', newEdge);
+      setEdges((eds) => addEdge(newEdge, eds));
     }, [setEdges]
   );
 

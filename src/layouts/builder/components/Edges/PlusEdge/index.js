@@ -21,6 +21,8 @@ export default function PlusEdge({
     targetY,
     sourcePosition,
     targetPosition,
+    sourceHandle,
+    targetHandle,
     style = {},
     markerEnd,
     data,
@@ -61,6 +63,8 @@ export default function PlusEdge({
                             sourceY,
                             targetX,
                             targetY,
+                            sourceHandle,
+                            targetHandle,
                         });
                     }
                     }>
