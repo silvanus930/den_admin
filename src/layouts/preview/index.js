@@ -107,7 +107,7 @@ export default function Preview() {
       return { type: node.type, result };
 
     } else if (node.type === 'imageNode') {
-      const result = await chatCtl.addMessage({ type: 'jsx', content: <div><img src={node.data.uri} />{node.data.text}</div>, });
+      const result = await chatCtl.addMessage({ type: 'jsx', content: `<span style="font-size: 16px; font-weight: 400; font-family: Inter;">${node.data.text}</span><img src=${node.data.uri} alt="File" style="width: 250px; height: auto; border-radius: 16px; margin-top: 3px;" data-nsfw-filter-status="sfw">` });
       return { type: node.type, result };
 
     } else if (node.type === 'messageNode') {
@@ -335,7 +335,7 @@ async function echo(chatCtl) {
   });
   const good = await chatCtl.setActionRequest({
     type: 'custom',
-    Component: GoodInput,
+    Component: <GoodInput />,
   });
   await chatCtl.addMessage({
     type: 'text',

@@ -7,6 +7,7 @@ import MDTypography from "components/MDTypography";
 
 import { Handle, Position } from "reactflow";
 import { uploadImageFile } from 'library/apis/upload';
+import { uploadFile } from 'library/apis/s3Upload';
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
@@ -59,11 +60,15 @@ function ImageNode({ id, data }) {
   const handleChange = async event => {
     const fileUploaded = event.target.files[0];
     const uri = window.URL.createObjectURL(fileUploaded);
-    setImageUri(uri)
     setFile(fileUploaded);
-    const upload_url = await uploadImageFile(fileUploaded);
-    data?.handle(id, { ...elementData, uri: upload_url });
-    setElementData({ ...elementData, uri: upload_url });
+    try {
+      const s3Url = await uploadFile(fileUploaded);
+      setImageUri(s3Url)
+      data?.handle(id, { ...elementData, uri: s3Url });
+      setElementData({ ...elementData, uri: s3Url });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useLayoutEffect(() => {

@@ -7,6 +7,7 @@ import Icon from '@mui/material/Icon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -41,6 +42,7 @@ const StyledMenu = styled((props) => (
       padding: '4px 0',
     },
     '& .MuiMenuItem-root': {
+      minWidth: `80px !important`,
       '& .MuiSvgIcon-root': {
         fontSize: 18,
         marginRight: theme.spacing(1.5),
@@ -93,6 +95,10 @@ const CustomizedMenus = ({ handleMenuAction }) => {
         <MenuItem onClick={(e) => handleClose(e, "edit")} disableRipple>
           <EditIcon />
           Edit
+        </MenuItem>
+        <MenuItem onClick={(e) => handleClose(e, "test")} disableRipple>
+          <DoubleArrowIcon />
+          Test
         </MenuItem>
         <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
           <FileCopyIcon />

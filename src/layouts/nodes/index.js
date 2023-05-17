@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Grid from "@mui/material/Grid";
-import { Icon, Card, Divider } from "@mui/material";
+import { Icon, Card, Divider, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // Denbot Admin components
@@ -35,6 +35,11 @@ const SessionCard = ({ item, fetchData }) => {
   const actionEdit = () => {
 
   }
+
+  const actionTest = () => {
+    navigate(`/preview/${item._id}`);
+  }
+
   const actionDuplicate = async () => {
     try {
       const data = { nodes: item.nodes, edges: item.edges }
@@ -56,8 +61,14 @@ const SessionCard = ({ item, fetchData }) => {
 
   const handleMenuAction = (id) => {
     if (id == 'edit') actionEdit()
+    else if (id === 'test') actionTest()
     else if (id === 'filecopy') actionDuplicate()
     else if (id === 'delete') actionDelete()
+  }
+
+  const handleCopyID = (event) => {
+    event.stopPropagation();
+    navigator.clipboard.writeText(item._id);
   }
 
   return (
@@ -89,15 +100,20 @@ const SessionCard = ({ item, fetchData }) => {
       <Divider />
       <MDBox mx={1} mb={1}>
         <MDTypography
-          variant="button"
+          variant="h5"
           fontWeight="bold"
           color="success"
         >
           {item?.nodes?.length || 0}
         </MDTypography>
-        <MDTypography component="p" variant="button" color="text" display="flex" maxHeight={48} lineHeight={1.5} overflow="hidden">
-          {'details'}
-        </MDTypography>
+        <MDBox display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+          <MDTypography noWrap variant="button" color="text" display="inline-block">
+            {`ID: ${item._id}`}
+          </MDTypography>
+          <IconButton onClick={handleCopyID}>
+            <Icon fontSize="small" sx={{ color: '#ffffff88' }}>copy</Icon>
+          </IconButton>
+        </MDBox>
       </MDBox>
     </ClickableCard>
   );

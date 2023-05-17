@@ -39,6 +39,9 @@ const StyledMenu = styled((props) => (
         fontSize: 18,
         marginRight: theme.spacing(1.5),
       },
+      '&:hover': {
+        backgroundColor: '#00000022 !important',
+      },
     },
   },
 }));

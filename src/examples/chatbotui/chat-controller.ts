@@ -56,8 +56,9 @@ export class ChatController {
   addMessage(message: Message<MessageContent>): Promise<number> {
     const len = this.state.messages.push(message);
     const idx = len - 1;
-    const typingDelay = (this.state.messages.length > 0 && this.state.messages[idx]?.self) ? 0 : 1300;
-    const delay = message.content.toString().length * 50 + typingDelay;
+    const typingDelay = (this.state.messages.length > 0 && this.state.messages[idx]?.self) ? 0 : 500;
+    const delay = typingDelay;
+    // const delay = message.content.toString().length * 50 + typingDelay;
     this.state.messages[idx].createdAt = new Date();
     this.callOnMessagesChanged();
     return new Promise((resolve) => {

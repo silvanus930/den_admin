@@ -21,7 +21,7 @@ export function MuiMessage({
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIndicator(false);
-    }, !message?.self ? 1000 : 0);
+    }, !message?.self ? 700 : 0);
 
     return () => clearTimeout(timer);
   }, []);
@@ -40,6 +40,8 @@ export function MuiMessage({
       <Avatar alt={message.username} src={avatar} />
     </Box>
   );
+
+  console.log('Message', message);
 
   return (
     <Grow in>
@@ -62,23 +64,23 @@ export function MuiMessage({
               bgcolor={!message.self ? color + '1A' : '#0000000A'}
               borderRadius={'6px'}
             >
-              {showIndicator ? <BeatLoader color={color} size={10} /> :
-                message.type === 'text' && (
-                  <TypeAnimation
-                    sequence={[message.content as string]}
-                    speed={50}
-                    cursor={false}
-                    style={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Inter' }}
-                  />
-                )
-              }
-              {message.type === 'jsx' && <div>{message.content}</div>}
-
+              {showIndicator && <BeatLoader color={color} size={10} />}
+              {!showIndicator && (
+                message.type === 'text' ? (
+                  <Typography style={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Inter' }}>{message.content}</Typography>
+                  // <TypeAnimation
+                  //   sequence={[message.content as string]}
+                  //   speed={50}
+                  //   cursor={false}
+                  //   style={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Inter' }}
+                  // />
+                ) :
+                  message.type === 'jsx' ? <div dangerouslySetInnerHTML={{ __html: message.content as string }}></div> : <div />)}
             </Box>
           </Box>
           {message.avatar && message.self && ChatAvator}
         </Box>
-      </Box>
-    </Grow>
+      </Box >
+    </Grow >
   );
 }
