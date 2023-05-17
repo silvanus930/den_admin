@@ -1,6 +1,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
+import MDInput from "components/MDInput";
 import Input from "@mui/material/Input";
 import Card from "@mui/material/Card";
 import { useState } from "react";
@@ -83,19 +84,15 @@ const CheckoutForm = () => {
                         justifyContent="space-between"
                         px={1.5}
                         gap={4} >
-                        <Input
-                            placeholder="Name"
-                            type="text"
+                        <MDInput
+                            label="Name"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                        <Input
-                            placeholder="Email"
-                            type="text"
+                            onChange={(e) => setName(e.target.value)} />
+                        <MDInput
+                            label="Email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <Card sx={{padding: 3}}>
+                            onChange={(e) => setEmail(e.target.value)} />
+                        <Card sx={{ padding: 3 }}>
                             <CardElement
                                 options={{
                                     style: {

@@ -28,7 +28,6 @@ const TextInput = ({ text, setText }) => {
       autoFocus
       disableUnderline
       multiline
-      maxRows={5}
       rows={3}
     />
   );

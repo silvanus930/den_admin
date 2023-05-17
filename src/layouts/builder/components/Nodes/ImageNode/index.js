@@ -1,13 +1,12 @@
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-import { Box, Button, IconButton, Icon, TextField, Input, Card, Divider, colorManipulator } from '@mui/material';
-import React, { memo, useCallback, useState } from "react";
+import { Icon, Input, Card, } from '@mui/material';
+import React, { memo, useState } from "react";
 
-import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-import { Handle, Position, useOnViewportChange } from "reactflow";
+import { Handle, Position } from "reactflow";
+import { uploadImageFile } from 'library/apis/upload';
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
@@ -29,19 +28,12 @@ const TextInput = ({ text, setText }) => {
       autoFocus
       disableUnderline
       multiline
-      maxRows={3}
       rows={2}
     />
   );
 }
 
 function ImageNode({ id, data }) {
-
-  const onStart = useCallback((viewport) => console.log("onStart", viewport), []);
-  const onChange = useCallback((viewport) => console.log("onChange", viewport), []);
-  const onEnd = useCallback((viewport) => console.log("onEnd", viewport), []);
-
-  console.log("Loaded Image Data: ", id, data);
 
   const [text, setText] = useState(data?.text || '');
 
@@ -58,26 +50,19 @@ function ImageNode({ id, data }) {
 
   const handleSetText = value => {
     setText(value);
-    console.log("Text Value====>", value);
-    console.log('Handle Value=====', data?.handle);
     data?.handle(id, { ...elementData, text: value });
     setElementData({ ...elementData, text: value });
   }
 
-  const handleChange = event => {
+  const handleChange = async event => {
     const fileUploaded = event.target.files[0];
-    console.log(fileUploaded);
-    setImageUri(window.URL.createObjectURL(fileUploaded))
+    const uri = window.URL.createObjectURL(fileUploaded);
+    setImageUri(uri)
     setFile(fileUploaded);
-    data?.handle(id, { ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
-    setElementData({ ...elementData, uri: window.URL.createObjectURL(fileUploaded) });
+    const upload_url = await uploadImageFile(fileUploaded);
+    data?.handle(id, { ...elementData, uri: upload_url });
+    setElementData({ ...elementData, uri: upload_url });
   };
-
-  useOnViewportChange({
-    onStart,
-    onChange,
-    onEnd,
-  });
 
   return (
     <Card>
@@ -124,7 +109,7 @@ function ImageNode({ id, data }) {
             color="warning"
             onClick={handleClick}
             style={{ margin: 5 }}>
-            {!file ? 'Load' : 'Update'}
+            {!imageUri.length ? 'Load' : 'Update'}
           </MDButton>
           <input
             type="file"

@@ -29,14 +29,14 @@ const StyledMenu = styled((props) => (
   />
 ))(({ theme }) => ({
   '& .MuiPaper-root': {
-    borderRadius: 6,
+    borderRadius: 16,
     marginTop: theme.spacing(1),
-    maxWidth: 150,
-    backgroundColor: 'red',
+    maxWidth: 120,
+    backgroundColor: '#012234 !important',
     color:
       theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
     boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 220, 0.5) 2px 2px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 2px 2px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     '& .MuiMenu-list': {
       padding: '4px 0',
     },
