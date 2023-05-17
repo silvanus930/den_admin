@@ -82,6 +82,9 @@ function ConditionalNode({ id, data }) {
           alignItems="center"
           width='30px'
           height='30px'
+          onClick={() => {
+            data?.handleDelete(id);
+          }}
         >
           <Icon fontSize="medium" color="inherit">
             {'close'}

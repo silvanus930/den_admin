@@ -16,6 +16,9 @@ import ReactFlow, {
   ConnectionLineType,
   ConnectionMode,
   ReactFlowProvider,
+  getIncomers,
+  getOutgoers,
+  getConnectedEdges,
 } from "reactflow";
 import useUndoable from "use-undoable";
 
@@ -65,9 +68,23 @@ const onEdgeMouseMove = (_, edge) => {
 };
 const onEdgeMouseLeave = (_, edge) => console.log("edge mouse leave", edge);
 const onEdgeDoubleClick = (_, edge) => console.log("edge double click", edge);
-const onNodesDelete = (nodes) => console.log("nodes delete", nodes);
+
 const onEdgesDelete = (edges) => console.log("edges delete", edges);
 const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
+
+const SIZE = {
+  imageNode: { width: 342, height: 159 },
+  nameNode: { width: 342, height: 159 },
+  emailNode: { width: 342, height: 159 },
+  phoneNode: { width: 342, height: 159 },
+  imageNode: { width: 342, height: 159 },
+  multiSelectorNode: { width: 342, height: 159 },
+  conditionalNode: { width: 342, height: 159 },
+  messageNode: { width: 342, height: 159 },
+  startNode: { width: 342, height: 159 },
+  endNode: { width: 342, height: 159 },
+  plusNode: { width: 342, height: 159 },
+}
 
 const nodeTypes = {
   nameNode: NameInputNode,
@@ -101,6 +118,36 @@ const OverviewFlow = ({ item }) => {
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
+  const onNodesDelete = (
+    (deleted) => {
+      updateNodeForDelete(deleted);
+    });
+
+  const updateNodeForDelete = (node) => {
+    setEdges(
+      node.reduce((acc, node) => {
+        const incomers = getIncomers(node, nodes, edges);
+        const outgoers = getOutgoers(node, nodes, edges);
+        const connectedEdges = getConnectedEdges([node], edges);
+
+        const remainingEdges = acc.filter((edge) => !connectedEdges.includes(edge));
+
+        const createdEdges = incomers.flatMap(({ id: source }) =>
+          outgoers.map(({ id: target }) => ({ id: `${source}->${target}`, source, target, type: 'plusEdge', animated: true, data: { handle: handleClickOpen } }))
+        );
+
+        return [...remainingEdges, ...createdEdges];
+      }, edges)
+    );
+  };
+
+  const handleDeleteNode = (id) => {
+    const node = nodes.filter(node => id === node.id);
+    updateNodeForDelete(node);
+    setNodes((prev) => prev.filter(n => n.id !== id));
+
+  }
+
   const getId = () => `node-${nodes.length + 1}`;
   const getEdgeId = (startNode, endNode) => {
     const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
@@ -125,7 +172,7 @@ const OverviewFlow = ({ item }) => {
         return data;
       });
       const nodes = item.nodes.map(node => {
-        const data = { ...node, data: { ...node?.data, handle: setData } };
+        const data = { ...node, data: { ...node?.data, handle: setData, handleDelete: handleDeleteNode } };
         return data;
       });
       setEdges(edges);
@@ -207,9 +254,9 @@ const OverviewFlow = ({ item }) => {
   const handleClickOpen = (edge) => {
     setSelectedValue('');
     console.log('Selected Edge on Open: ', edge);
-    setSelectedEdge((prevEdge)=> {
+    setSelectedEdge((prevEdge) => {
       const updateEdge = { ...prevEdge, sourceX: edge.sourceX, sourceY: edge.sourceY, targetX: edge.targetX, targetY: edge.targetY };
-      console.log('Selected Edge on Open Updated: ', updateEdge); 
+      console.log('Selected Edge on Open Updated: ', updateEdge);
       return updateEdge;
     });
     setOpenDialog(true);
@@ -219,11 +266,15 @@ const OverviewFlow = ({ item }) => {
     setOpenDialog(false);
     console.log('Selected Edge on Close: ', selectedEdge);
     if (value.length) {
+
+      const width = SIZE[value]?.width ? SIZE[value].width : 0;
+      const height = SIZE[value]?.height ? SIZE[value].height : 0;
+
       const newNode = {
         id: getId(),
-        position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) / 2 },
+        position: { x: (selectedEdge.targetX + selectedEdge.sourceX) / 2 - width / 2, y: (selectedEdge.targetY + selectedEdge.sourceY) / 2 - height / 2 },
         type: value,
-        data: { handle: setData },
+        data: { handle: setData, handleDelete: handleDeleteNode },
       };
       console.log('New Node===>', newNode);
       let newEdgeStart = {
@@ -379,7 +430,7 @@ const OverviewFlow = ({ item }) => {
       fitViewOptions={{ padding: 0.2 }}
       // attributionPosition="top-right"
       maxZoom={5}
-      // onNodesDelete={onNodesDelete}
+      onNodesDelete={onNodesDelete}
       // onEdgesDelete={onEdgesDelete}
       disableKeyboardA11y
       // onPaneMouseMove={onPaneMouseMove}

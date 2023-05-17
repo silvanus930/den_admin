@@ -1,5 +1,5 @@
 import { Box, Button, IconButton, Icon, TextField, Input, Card, Divider, colorManipulator } from '@mui/material';
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -8,8 +8,7 @@ import { Handle, Position, } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-const TextInput = ({ handleId }) => {
-  const [value, setValue] = useState('');
+const TextInput = ({ handleId, value, setValue }) => {
   return (
     <Input
       placeholder={'Input text'}
@@ -27,7 +26,13 @@ const TextInput = ({ handleId }) => {
         />
       }
       style={{
-        background: 'white', borderRadius: 8, borderColor: 'red', borderWidth: '0', margin: 5, padding: 5, width: '300px'
+        background: 'white',
+        borderRadius: 8,
+        borderColor: 'red',
+        borderWidth: '0',
+        margin: 5,
+        padding: 5,
+        width: '300px'
       }}
       autoFocus
       disableUnderline
@@ -39,22 +44,37 @@ const TextInput = ({ handleId }) => {
 
 function MultiSelectorNode({ id, data }) {
 
-  const [inputs, setInputs] = useState([<TextInput key={0} handleId={`handle-0`} />, <TextInput key={1} handleId={`handle-1`} />]);
+  const initialTexts = data?.texts?.length > 1 ? data?.texts : data?.texts?.length === 1 ? [...data?.texts, ''] : ['', ''];
+  const [texts, setTexts] = useState(initialTexts);
 
   const handleAddHandle = () => {
-    const newInput = <TextInput key={inputs.length} handleId={`handle-${inputs.length}`} />;
-    const newInputs = [...inputs, newInput];
-    console.log('newInputs: ', newInputs);
-    setInputs(newInputs);
+    const addTexts = [...texts];
+    addTexts.push('');
+    console.log('AddTexts: ', addTexts);
+    data?.handle(id, { ...data, texts: addTexts });
+    setTexts(addTexts);
   };
 
   const handleDeleteHandle = () => {
-    if (inputs.length > 1) {
-      const newInputs = [...inputs];
-      newInputs.pop();
-      setInputs(newInputs);
+    if (texts.length > 1) {
+      const removeTexts = [...texts];
+      removeTexts.pop();
+      console.log('RemoveTexts: ', removeTexts);
+      data?.handle(id, { ...data, texts: removeTexts });
+      setTexts(removeTexts);
     }
   };
+
+  const handleSetTexts = (value, index) => {
+    setTexts((prevTexts) => {
+      const updateTexts = prevTexts.map((prevText, textIndex) => {
+        if (index === textIndex) return value;
+        return prevText;
+      });
+      data?.handle(id, { ...data, texts: updateTexts });
+      return updateTexts;
+    });
+  }
 
   return (
     <Card>
@@ -86,6 +106,9 @@ function MultiSelectorNode({ id, data }) {
           alignItems="center"
           width='30px'
           height='30px'
+          onClick={() => {
+            data?.handleDelete(id);
+          }}
         >
           <Icon fontSize="medium" color="inherit">
             {'close'}
@@ -93,7 +116,16 @@ function MultiSelectorNode({ id, data }) {
         </MDBox>
         <MDBox lineHeight={1} display="flex" sx={{ flexDirection: 'column' }}>
           <MDTypography ml={1} color="text">MultiSelectorNode</MDTypography>
-          {inputs.map((input) => (input))}
+          {texts.map((text, index) => {
+            return (
+              <TextInput
+                key={index}
+                handleId={`handle-${index}`}
+                value={text}
+                setValue={(value) => handleSetTexts(value, index)}
+              />
+            )
+          })}
         </MDBox>
       </MDBox>
       <Handle
@@ -128,7 +160,7 @@ function MultiSelectorNode({ id, data }) {
             </Icon>
           </IconButton>
         </MDBox>
-        {inputs.length > 1 && <MDBox
+        {texts.length > 1 && <MDBox
           variant="gradient"
           bgColor={'warning'}
           color={"dark"}

@@ -1,5 +1,5 @@
 import { Icon, Input, Card, } from '@mui/material';
-import React, { memo, useState } from "react";
+import React, { memo, useState, useLayoutEffect, useRef } from "react";
 
 import MDButton from "components/MDButton";
 import MDBox from "components/MDBox";
@@ -35,6 +35,8 @@ const TextInput = ({ text, setText }) => {
 
 function ImageNode({ id, data }) {
 
+  const ref = useRef(null);
+
   const [text, setText] = useState(data?.text || '');
 
   const [file, setFile] = useState(null);
@@ -64,8 +66,13 @@ function ImageNode({ id, data }) {
     setElementData({ ...elementData, uri: upload_url });
   };
 
+  useLayoutEffect(() => {
+    console.log('Image Component Width: ', ref.current.offsetWidth);
+    console.log('Image Component Height: ', ref.current.offsetHeight);
+  }, []);
+
   return (
-    <Card>
+    <Card ref={ref}>
       <MDBox display="flex" py={1.2}>
         <MDBox
           variant="gradient"
@@ -94,6 +101,9 @@ function ImageNode({ id, data }) {
           alignItems="center"
           width='30px'
           height='30px'
+          onClick={() => {
+            data?.handleDelete(id);
+          }}
         >
           <Icon fontSize="medium" color="inherit">
             {'close'}
@@ -140,7 +150,6 @@ function ImageNode({ id, data }) {
         id={'handle-0'}
       />
     </Card>
-
   );
 }
 

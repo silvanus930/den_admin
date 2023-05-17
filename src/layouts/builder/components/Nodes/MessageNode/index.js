@@ -37,8 +37,8 @@ function MessageNode({ id, data }) {
 
   const [text, setText] = useState(data?.text || '');
 
-  useEffect(()=>{
-    data.handle && data.handle(id, {...data, text: text})
+  useEffect(() => {
+    data.handle && data.handle(id, { ...data, text: text })
   }, [text]);
 
   return (
@@ -71,6 +71,9 @@ function MessageNode({ id, data }) {
           alignItems="center"
           width='30px'
           height='30px'
+          onClick={() => {
+            data?.handleDelete(id);
+          }}
         >
           <Icon fontSize="medium" color="inherit">
             {'close'}

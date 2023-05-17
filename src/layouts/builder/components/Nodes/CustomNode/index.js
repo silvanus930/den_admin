@@ -10,7 +10,7 @@ import MDTypography from "components/MDTypography";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-function CustomNode({ title, icon, placeHodler }) {
+function CustomNode({ title, icon, placeHodler, id, data }) {
 
   return (
     <>
@@ -34,6 +34,25 @@ function CustomNode({ title, icon, placeHodler }) {
           </MDBox>
           <MDBox textAlign="right">
             <MDTypography ml={1} color="text">{title}</MDTypography>
+          </MDBox>
+          <MDBox
+            variant="gradient"
+            bgColor={'secondary'}
+            color={"dark"}
+            borderRadius="30px"
+            display="flex"
+            sx={{ position: "absolute", right: -15, top: -15 }}
+            justifyContent="center"
+            alignItems="center"
+            width='30px'
+            height='30px'
+            onClick={() => {
+              data?.handleDelete(id);
+            }}
+          >
+            <Icon fontSize="medium" color="inherit">
+              {'close'}
+            </Icon>
           </MDBox>
         </MDBox>
         <Divider mt={-1} />
@@ -64,25 +83,31 @@ function CustomNode({ title, icon, placeHodler }) {
   );
 }
 
-export const NameInputNode = () =>
+export const NameInputNode = ({ id, data }) =>
   <CustomNode
     title="Input Name"
     placeHodler="Please Input your name."
     icon="message"
+    id={id}
+    data={data}
   />
 
-export const EmailInputNode = () =>
+export const EmailInputNode = ({ id, data }) =>
   <CustomNode
     title="Input Email"
     placeHodler="Please Input your email address."
     icon="email"
+    id={id}
+    data={data}
   />
 
-export const PhoneInputNode = () =>
+export const PhoneInputNode = ({ id, data }) =>
   <CustomNode
     title="Input Phone"
     placeHodler="Please Input your phone number."
     icon="phone"
+    id={id}
+    data={data}
   />
 
 
