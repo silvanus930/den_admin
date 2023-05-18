@@ -15,7 +15,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import { getSessionsApi, deleteSessionApi, createSessionApi } from 'library/apis/session';
-import CustomizedMenus from './menu';
+import CustomizedMenus from './components/menu';
+import CreateModal from './components/createModal';
 
 const ClickableCard = styled(Card)`
   cursor: pointer;
@@ -32,8 +33,10 @@ const SessionCard = ({ item, fetchData }) => {
     navigate('/builder', { state: { item: item } });
   }
 
-  const actionEdit = () => {
+  const [openModal, setOpenModal] = useState(false);
 
+  const actionEdit = () => {
+    setOpenModal(true);
   }
 
   const actionTest = () => {
@@ -43,16 +46,15 @@ const SessionCard = ({ item, fetchData }) => {
   const actionDuplicate = async () => {
     try {
       const data = { nodes: item.nodes, edges: item.edges }
-      const result = await createSessionApi(data);
+      await createSessionApi(data);
       fetchData().catch(console.error);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
   }
   const actionDelete = async () => {
     try {
-      const result = await deleteSessionApi(item._id);
+      await deleteSessionApi(item._id);
       fetchData().catch(console.error);
     } catch (error) {
       console.log(error);
@@ -72,54 +74,61 @@ const SessionCard = ({ item, fetchData }) => {
   }
 
   return (
-    <ClickableCard onClick={handleNav}>
-      <MDBox display="flex" justifyContent="space-between" pt={1} px={2} flexDirection="column">
-        <MDBox display="flex" justifyContent="space-between">
-          <MDBox
-            variant="gradient"
-            bgColor="dark"
-            color="white"
-            coloredShadow="dark"
-            borderRadius="xl"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            width="4rem"
-            height="4rem"
-            mt={-3}
-            ml={-1}
-          >
-            <Icon fontSize="medium" color="inherit">message</Icon>
+    <div>
+      <ClickableCard onClick={handleNav}>
+        <MDBox display="flex" justifyContent="space-between" pt={1} px={2} flexDirection="column">
+          <MDBox display="flex" justifyContent="space-between">
+            <MDBox
+              variant="gradient"
+              bgColor="dark"
+              color="white"
+              coloredShadow="dark"
+              borderRadius="xl"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="4rem"
+              height="4rem"
+              mt={-3}
+              ml={-1}
+            >
+              {!item?.avatar && <Icon fontSize="medium" color="inherit">message</Icon>}
+              {item?.avatar && <MDBox component="img" src={item?.avatar} sx={{ borderRadius: 3 }} />}
+
+            </MDBox>
+            <CustomizedMenus handleMenuAction={handleMenuAction} />
           </MDBox>
-          <CustomizedMenus handleMenuAction={handleMenuAction} />
+          <MDBox mt={1}>
+            <MDTypography variant="h5" noWrap={true}>{item?.name || 'No title'}</MDTypography>
+          </MDBox>
         </MDBox>
-        <MDBox mt={1}>
-          <MDTypography variant="h5" noWrap={true}>{item?.title || 'No title'}</MDTypography>
-        </MDBox>
-      </MDBox>
-      <Divider />
-      <MDBox mx={1} mb={1}>
-        <MDTypography
-          variant="h5"
-          fontWeight="bold"
-          color="success"
-        >
-          {item?.nodes?.length || 0}
-        </MDTypography>
-        <MDBox display="flex" flexDirection="row" justifyContent="center" alignItems="center">
-          <MDTypography noWrap variant="button" color="text" display="inline-block">
-            {`ID: ${item._id}`}
+        <Divider />
+        <MDBox mx={1} mb={1}>
+          <MDTypography
+            variant="h5"
+            fontWeight="bold"
+            color="success"
+          >
+            {item?.nodes?.length || 0}
           </MDTypography>
-          <IconButton onClick={handleCopyID}>
-            <Icon fontSize="small" sx={{ color: '#ffffff88' }}>copy</Icon>
-          </IconButton>
+          <MDBox display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+            <MDTypography noWrap variant="button" color="text" display="inline-block">
+              {`ID: ${item._id}`}
+            </MDTypography>
+            <IconButton onClick={handleCopyID}>
+              <Icon fontSize="small" sx={{ color: '#ffffff88' }}>copy</Icon>
+            </IconButton>
+          </MDBox>
         </MDBox>
-      </MDBox>
-    </ClickableCard>
+      </ClickableCard>
+      <CreateModal item={item} open={openModal} setOpen={setOpenModal} fetchData={fetchData} />
+    </div>
   );
 }
 
 function Nodes() {
+
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   useEffect(() => {
     fetchData().catch(console.error);
@@ -142,6 +151,7 @@ function Nodes() {
     navigate('/builder');
   }
 
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -159,6 +169,7 @@ function Nodes() {
           ))}
         </Grid>
       </MDBox>
+      <CreateModal open={openCreateModal} setOpen={setOpenCreateModal} />
     </DashboardLayout>
   );
 }
