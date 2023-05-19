@@ -34,8 +34,12 @@ export default function Preview() {
   //   echo(chatCtl);
   // }, [chatCtl]);
 
-  const handleMenuAction = (id) => {
-    id === 'toggle' && setIsRedTheme(!isRedTheme);
+  const handleMenuAction = (index) => {
+    if (index === 'toggle') setIsRedTheme(!isRedTheme);
+    else if (index === 'repeat') {
+      chatCtl.clearMessages();
+      fetchData(id).catch(console.error);
+    }
   }
 
   useEffect(() => {
@@ -107,11 +111,11 @@ export default function Preview() {
       return { type: node.type, result };
 
     } else if (node.type === 'imageNode') {
-      const result = await chatCtl.addMessage({ type: 'jsx', content: `<span style="font-size: 16px; font-weight: 400; font-family: Inter;">${node.data.text}</span><img src=${node.data.uri} alt="File" style="width: 250px; height: auto; border-radius: 16px; margin-top: 3px;" data-nsfw-filter-status="sfw">` });
+      const result = await chatCtl.addMessage({ type: 'jsx', avatar: botData?.avatar, content: `<span style="font-size: 16px; font-weight: 400; font-family: Inter;">${node.data.text}</span><img src=${node.data.uri} alt="File" style="width: 250px; height: auto; border-radius: 16px; margin-top: 3px;" data-nsfw-filter-status="sfw">` });
       return { type: node.type, result };
 
     } else if (node.type === 'messageNode') {
-      const result = await chatCtl.addMessage({ type: 'text', content: node.data.text });
+      const result = await chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: node.data.text });
       return { type: node.type, result };
 
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
@@ -133,17 +137,19 @@ export default function Preview() {
       position: 'absolute',
       bottom: 70,
       display: "flex",
+      borderWidth: 1,
+      borderColor: '#00000010',
       flexDirection: "column"
     }}>
       <Box flexDirection='row' display="flex" m={1.5} justifyContent='center' alighItems='center'>
-        <Typography sx={{ color: botThemeColor, textAlign: 'center', flex: 1, display: 'flex', justifyContent: 'center' }}>Welcome to Denbot!</Typography>
+        <Typography sx={{ color: botThemeColor, textAlign: 'left', flex: 1, marginLeft: 1 }}>Welcome to Denbot!</Typography>
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
-      <Box px={1} style={{ overflowY: 'scroll', flex: 1, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#00000020' }}>
+      <Box px={1} style={{ overflowY: 'scroll', flex: 1, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#00000010' }}>
         <MuiChat chatController={chatCtl} color={botThemeColor} />
       </Box>
       <Box>
-        <Typography sx={{ color: '#00000020', textAlign: 'center' }}>powered by Denbot</Typography>
+        <Typography sx={{ color: '#00000010', textAlign: 'center' }}>powered by Denbot</Typography>
       </Box>
     </Box>
   );

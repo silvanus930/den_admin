@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ChatController } from '../chat-controller';
 import { SelectActionRequest, SelectActionResponse } from '../chat-types';
@@ -14,6 +14,12 @@ export function MuiSelectInput({
   color: string;
 }): React.ReactElement {
   const chatCtl = chatController;
+
+  const [animationClass, setAnimationClass] = useState('slide-init');
+
+  useEffect(() => {
+    setAnimationClass('slide-up');
+  }, []);
 
   const setResponse = React.useCallback(
     (value: string): void => {
@@ -46,24 +52,41 @@ export function MuiSelectInput({
         '& > * + *': {
           mt: 1,
         },
+        '&.slide-up': {
+          transform: "translate(0%, 0%)",
+          transition: "transform 0.3s ease-in-out",
+        },
+        '&.slide-down': {
+          transform: "translate(0%, 120%)",
+          transition: "transform 0.3s ease-in-out",
+        },
+        '&.slide-init': {
+          transform: "translate(0%, 120%)",
+        }
       }}
+      className={animationClass}
     >
-      {actionRequest.options.map((o) => (
-        <Button
-          key={actionRequest.options.indexOf(o)}
-          type="button"
-          variant="outlined"
-          value={o.value}
-          onClick={(e): void => setResponse(e.currentTarget.value)}
-          sx={{
-            margin: 1, background: '#ffffff', color: color, textAlign: 'left !important', borderColor: color, '&:hover': {
-              borderColor: color + 'A9',
-            }
-          }}
-        >
-          {o.text}
-        </Button>
-      ))}
-    </Box>
+      {
+        actionRequest.options.map((o) => (
+          <Button
+            key={actionRequest.options.indexOf(o)}
+            type="button"
+            variant="outlined"
+            value={o.value}
+            onClick={(e): void => {
+              setAnimationClass('slide-down');
+              setResponse(e.currentTarget.value);
+            }}
+            sx={{
+              margin: 1, background: '#ffffff', textTransform: 'none !important', color: color, textAlign: 'left !important', borderColor: color, '&:hover': {
+                borderColor: color + 'A9',
+              }
+            }}
+          >
+            {o.text}
+          </Button>
+        ))
+      }
+    </Box >
   );
 }

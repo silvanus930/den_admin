@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import ReplayIcon from '@mui/icons-material/Replay';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -75,14 +76,10 @@ const CustomizedMenus = ({ handleMenuAction, color }) => {
           <EditIcon />
           Toggle Theme
         </MenuItem>
-        {/* <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
-          <FileCopyIcon />
-          Duplicate
+        <MenuItem onClick={(e) => handleClose(e, "repeat")} disableRipple>
+          <ReplayIcon />
+          Repeat
         </MenuItem>
-        <MenuItem onClick={(e) => handleClose(e, "delete")} disableRipple>
-          <DeleteIcon />
-          Delete */}
-        {/* </MenuItem> */}
       </StyledMenu>
     </Box >
   );

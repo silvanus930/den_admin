@@ -37,7 +37,7 @@ export function MuiMessage({
       ml={message.self ? 1 : 0}
       mr={message.self ? 0 : 1}
     >
-      <Avatar alt={message.username} src={avatar} />
+      <Avatar alt={message.username} src={message.avatar} />
     </Box>
   );
 
@@ -50,7 +50,7 @@ export function MuiMessage({
           id={id}
           maxWidth="100%"
           my={1}
-          pl={message.self ? '10%' : 0}
+          pl={message.self ? '14%' : 0}
           pr={message.self ? 0 : '10%'}
           display="flex"
           justifyContent={message.self ? 'flex-end' : 'flex-start'}

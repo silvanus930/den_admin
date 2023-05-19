@@ -153,8 +153,8 @@ function Nodes() {
 
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
+    <DashboardLayout >
+      <DashboardNavbar isMini/>
       <MDButton
         variant="gradient"
         color="dark"

@@ -4,6 +4,7 @@ import "reactflow/dist/style.css";
 
 function EmbedChatBot({ id }) {
 
+  const [botId, setBotId] = useState(id);
   const [showIframe, setShowIframe] = useState(false);
   const [initial, setInitial] = useState(true);
 
@@ -11,27 +12,21 @@ function EmbedChatBot({ id }) {
     !initial && setInitial(true);
     setShowIframe(!showIframe);
   };
-
-  const [botId, setBotId] = useState(id);
-
-  useEffect(() => {
-    setBotId(id);
-    console.log('BotId', id);
-  }, [id]);
-
+  
+  useEffect(() => setBotId(id), [id]);
 
   return (
     <>
       {initial && <div
-        style={{ height: '100%', maxWidth: '400px', width: '100%', padding: 10, }}
+        style={{ height: '100%', maxWidth: '400px', width: '100%', padding: 10 }}
         className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
-          id="iframe-bot-5f96ac4a-de23-44c0-9ead-8599de507e1e"
-          //   src="http://localhost:3002/"
+          id={`iframe-bot-${botId}`}
           // src="https://widget.enquirybot.com/#/bots/5f96ac4a-de23-44c0-9ead-8599de507e1e/7d24de732549490fa5cdab40b7c91580"
+          // src={`http://localhost:3000/preview/6464f9b0eda475458d97a9c4`}
           // src={`http://localhost:3000/preview/${botId}`}
-          src={`http://13.50.98.6/preview/${botId}`}
-          // src="https://app-denbot-co.onrender.com/preview"
+          // src={`http://13.50.98.6/preview/${botId}`}
+          src={`http://13.50.98.6/preview/64652c3e84810818c38b95bb`}
           style={{ height: '100%', width: '100%', }}
         />
       </div>}
