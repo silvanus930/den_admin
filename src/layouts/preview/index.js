@@ -18,9 +18,21 @@ import { getConnectedEdges } from 'reactflow';
 export default function Preview() {
 
   const { id } = useParams();
+  const location = useLocation();
+
+  const getColorFromURL = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const color = '#' + queryParams.get('color');
+    return color;
+  };
+
+  const color = getColorFromURL();
+
+  console.log('color', color);
 
   const [isRedTheme, setIsRedTheme] = useState(true);
-  const botThemeColor = isRedTheme ? '#F06750' : '#376FFF';
+  // const botThemeColor = isRedTheme ? '#F06750' : '#376FFF';
+  const botThemeColor = color;
 
   const [botData, setBotData] = useState(null);
 
@@ -38,6 +50,7 @@ export default function Preview() {
     if (index === 'toggle') setIsRedTheme(!isRedTheme);
     else if (index === 'repeat') {
       chatCtl.clearMessages();
+      chatCtl.cancelActionRequest();
       fetchData(id).catch(console.error);
     }
   }

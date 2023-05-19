@@ -7,6 +7,6 @@ export const updateSessionApi = (id, data) => apiPatch(`${API_URL}session/${id}`
 
 export const getSessionsApi = () => apiGet(`${API_URL}session/`);
 
-export const getSessionApi = id => apiGet(`${API_URL}session/details/${id}`);
+export const getSessionApi = id => apiGet(`${API_URL}noSession/details/${id}`);
 
 export const deleteSessionApi = id => apiDelete(`${API_URL}session/${id}`);
