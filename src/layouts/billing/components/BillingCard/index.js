@@ -12,7 +12,7 @@ function BillingCard({ isActive = false, type = 'free' }) {
     navigate('/billing/stripe');
   }
 
-  const FreeCard = () => <Card>
+  const FreeCard = () => <Card sx={{ backgroundColor: '#CC3463', minHeight: '400px' }}>
     <MDBox p={2}>
       <MDTypography variant="h3" fontWeight="medium" textTransform="capitalize">
         Free ( 0$ )
@@ -44,44 +44,10 @@ function BillingCard({ isActive = false, type = 'free' }) {
           </MDTypography>
         </MDBox>
       </MDBox>
-      <MDBox mt={3}>
-        <MDTypography variant="caption" fontWeight="bold" color="text" textTransform="uppercase">
-          application
-        </MDTypography>
-      </MDBox>
-      <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
-        <MDBox width="80%" ml={0.5}>
-          <MDTypography variant="button" fontWeight="regular" color="text">
-            New launches and projects
-          </MDTypography>
-        </MDBox>
-      </MDBox>
-      <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
-        <MDBox width="80%" ml={0.5}>
-          <MDTypography variant="button" fontWeight="regular" color="text">
-            Monthly product updates
-          </MDTypography>
-        </MDBox>
-      </MDBox>
-      <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
-        <MDBox width="80%" ml={0.5}>
-          <MDTypography variant="button" fontWeight="regular" color="text">
-            Subscribe to newsletter
-          </MDTypography>
-        </MDBox>
-      </MDBox>
-    </MDBox>
-    <MDBox p={2} display="flex" justifyContent="center" alignItems="center">
-      {!isActive && <MDButton variant="gradient" color="dark" display="flex" width="100%" onClick={handleSubscribe}>
-        Subscribe
-      </MDButton>}
-      {isActive && (
-        <MDTypography variant="h5" fontWeight="medium">Active</MDTypography>
-      )}
     </MDBox>
   </Card>
 
-  const MonthlyCard = () => <Card>
+  const MonthlyCard = () => <Card sx={{ backgroundColor: '#33CD5F', minHeight: '400px' }}>
     <MDBox p={2}>
       <MDTypography variant="h3" fontWeight="medium" textTransform="capitalize">
         Monthly ( 20$ )
@@ -115,13 +81,13 @@ function BillingCard({ isActive = false, type = 'free' }) {
       </MDBox>
       <MDBox mt={3}>
         <MDTypography variant="caption" fontWeight="bold" color="text" textTransform="uppercase">
-          application
+          Subcrtiption
         </MDTypography>
       </MDBox>
       <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
         <MDBox width="80%" ml={0.5}>
           <MDTypography variant="button" fontWeight="regular" color="text">
-            New launches and projects
+            Deploy projects
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -132,16 +98,9 @@ function BillingCard({ isActive = false, type = 'free' }) {
           </MDTypography>
         </MDBox>
       </MDBox>
-      <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
-        <MDBox width="80%" ml={0.5}>
-          <MDTypography variant="button" fontWeight="regular" color="text">
-            Subscribe to newsletter
-          </MDTypography>
-        </MDBox>
-      </MDBox>
     </MDBox>
-    <MDBox p={2} display="flex" justifyContent="center" alignItems="center">
-      {!isActive && <MDButton variant="gradient" color="dark" display="flex" width="100%" onClick={handleSubscribe}>
+    <MDBox p={2} display="flex" justifyContent="center" alignItems="flex-end" sx={{ flex: 1 }}>
+      {!isActive && <MDButton variant="gradient" color="info" display="flex" width="100%" onClick={handleSubscribe}>
         Subscribe
       </MDButton>}
       {isActive && (
@@ -150,7 +109,7 @@ function BillingCard({ isActive = false, type = 'free' }) {
     </MDBox>
   </Card>
 
-  const AnnuallyCard = () => <Card>
+  const AnnuallyCard = () => <Card sx={{ backgroundColor: '#cccc33', minHeight: '400px' }}>
     <MDBox p={2}>
       <MDTypography variant="h3" fontWeight="medium" textTransform="capitalize">
         Annually ( 200$ )
@@ -184,13 +143,13 @@ function BillingCard({ isActive = false, type = 'free' }) {
       </MDBox>
       <MDBox mt={3}>
         <MDTypography variant="caption" fontWeight="bold" color="text" textTransform="uppercase">
-          application
+          Subcrtiption
         </MDTypography>
       </MDBox>
       <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
         <MDBox width="80%" ml={0.5}>
           <MDTypography variant="button" fontWeight="regular" color="text">
-            New launches and projects
+            Deploy projects
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -201,16 +160,9 @@ function BillingCard({ isActive = false, type = 'free' }) {
           </MDTypography>
         </MDBox>
       </MDBox>
-      <MDBox display="flex" alignItems="center" mb={0.5} ml={0.5}>
-        <MDBox width="80%" ml={0.5}>
-          <MDTypography variant="button" fontWeight="regular" color="text">
-            Subscribe to newsletter
-          </MDTypography>
-        </MDBox>
-      </MDBox>
     </MDBox>
-    <MDBox p={2} display="flex" justifyContent="center" alignItems="center">
-      {!isActive && <MDButton variant="gradient" color="dark" display="flex" width="100%" onClick={handleSubscribe}>
+    <MDBox p={2} display="flex" justifyContent="center" alignItems="flex-end" sx={{ flex: 1 }}>
+      {!isActive && <MDButton variant="gradient" color="info" display="flex" width="100%" onClick={handleSubscribe}>
         Subscribe
       </MDButton>}
       {isActive && (
@@ -221,9 +173,9 @@ function BillingCard({ isActive = false, type = 'free' }) {
 
   return (
     <>
-    {type === 'free' && <FreeCard />}
-    {type === 'monthly' && <MonthlyCard />}
-    {type === 'annually' && <AnnuallyCard />}
+      {type === 'free' && <FreeCard />}
+      {type === 'monthly' && <MonthlyCard />}
+      {type === 'annually' && <AnnuallyCard />}
     </>
   );
 }
