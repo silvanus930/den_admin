@@ -60,47 +60,30 @@ const CheckoutForm = () => {
     };
 
     return (
-        <MDBox flexDirection="row" display="flex">
+        <MDBox flexDirection="row" display="flex" justifyContent="center" alignItems="center">
             <MDBox
-                width="50%"
-                display="flex"
-                flexDirection="column"
-                justifyContent="space-between"
-                px={1.5}
-            >
-            </MDBox>
-            <MDBox
-                width="50%"
+                width="70%"
                 height="80vh"
                 display="flex"
                 flexDirection="column"
+                pt={10}
             >
                 <Card>
                     <MDBox
                         display="flex"
-                        height="50vh"
                         m={4}
                         flexDirection="column"
-                        justifyContent="space-between"
                         px={1.5}
                         gap={4} >
-                        <MDInput
-                            label="Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)} />
-                        <MDInput
-                            label="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)} />
-                        <Card sx={{ padding: 3 }}>
+                        <Card sx={{ padding: 3, backgroundColor: '#33CD5F' }}>
                             <CardElement
                                 options={{
                                     style: {
                                         base: {
-                                            fontSize: '18px',
-                                            color: '#eab7c4',
+                                            fontSize: '24px',
+                                            color: '#ffffff',
                                             '::placeholder': {
-                                                color: '#aab7c4',
+                                                color: '#ffffff',
                                             },
                                         },
                                         invalid: {
@@ -110,8 +93,8 @@ const CheckoutForm = () => {
                                 }}
                             />
                         </Card>
-                        <MDButton onClick={createSubscription} color="dark" variant="gradient">
-                            Subscribe
+                        <MDButton onClick={createSubscription} color="success" sx={{ height: '60px', fontSize: '20px' }}>
+                            Pay Now
                         </MDButton>
                     </MDBox>
                 </Card>
