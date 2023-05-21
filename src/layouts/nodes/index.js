@@ -45,7 +45,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
 
   const actionTest = () => {
     const color = item.color ? item.color : '#FF6900';
-    navigate(`/preview/${item._id}?color=${color.substring(1)}`);
+    navigate(`/test/${item._id}?color=${color.substring(1)}`);
   }
 
   const actionDuplicate = async () => {
@@ -73,24 +73,8 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
     else if (id === 'delete') actionDelete()
   }
 
-  const getText  = () => {
+  const getText = () => {
     return `<script src="http://13.50.98.6/denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
-  }
-
-  const handleCopyID = (event) => {
-    event.stopPropagation();
-    const text_sctipt = `<script src="http://13.50.98.6/denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
-    console.log('Navigator: ', navigator);
-    console.log('Navigator ClipBoard: ', navigator.clipboard);
-
-    // navigator.clipboard.writeText(text_sctipt).then(
-    //   () => {
-    //     handleNotification();
-    //   },
-    //   () => {
-    //     console.log('Error: ')
-    //   }
-    // );
   }
 
   return (
@@ -134,10 +118,8 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
             </MDTypography>
             <MDTypography noWrap variant="button" color="text" display="inline-block" sx={{ flex: 1 }} />
 
-            <IconButton onClick={handleCopyID}>
-              <CopyToClipboard text={getText()} onCopy={(text, result) => {
-                console.log('Text: ', text, '\nResult: ', result);
-              }}>
+            <IconButton onClick={(e) => e.stopPropagation()}>
+              <CopyToClipboard text={getText()}>
                 <Tooltip title="Copy this script code for the deploy.">
                   <Icon fontSize="small" sx={{ color: '#ffffff88' }}>copy</Icon>
                 </Tooltip>
@@ -153,12 +135,9 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
 
 function Nodes() {
 
+  const navigate = useNavigate();
   const [openCreateModal, setOpenCreateModal] = useState(false);
-
-  function TransitionRight(props) {
-    return <Slide {...props} direction="left" />;
-  }
-
+  const [item, setItem] = useState([]);
   const [alert, setAlert] = useState(false);
   const openAlert = () => setAlert(true);
   const closeAlert = () => setAlert(false);
@@ -166,6 +145,10 @@ function Nodes() {
   useEffect(() => {
     fetchData().catch(console.error);
   }, []);
+
+  function TransitionRight(props) {
+    return <Slide {...props} direction="left" />;
+  }
 
   const fetchData = async () => {
     try {
@@ -176,9 +159,6 @@ function Nodes() {
       console.log('Error');
     }
   }
-
-  const [item, setItem] = useState([]);
-  const navigate = useNavigate();
 
   const handleAdd = () => {
     navigate('/builder');

@@ -8,6 +8,7 @@ import Billing from "layouts/billing";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import Builder from "layouts/builder";
+import Test from "layouts/test";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
@@ -113,6 +114,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/billing/stripe",
     component: <Stripe />,
+  },
+  {
+    type: "collapse",
+    name: "Test",
+    key: "test",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/test/:id",
+    component: <Test />,
   },
 ];
 
