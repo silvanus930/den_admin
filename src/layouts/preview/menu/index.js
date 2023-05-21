@@ -72,10 +72,10 @@ const CustomizedMenus = ({ handleMenuAction, color }) => {
         onClose={handleClose}
         color={color}
       >
-        <MenuItem onClick={(e) => handleClose(e, "toggle")} disableRipple>
+        {/* <MenuItem onClick={(e) => handleClose(e, "toggle")} disableRipple>
           <EditIcon />
           Toggle Theme
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={(e) => handleClose(e, "repeat")} disableRipple>
           <ReplayIcon />
           Repeat

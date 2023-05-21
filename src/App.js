@@ -105,7 +105,7 @@ export default function App() {
   const isPreview = pathname.includes('/preview');
 
   const routesForNav = (routes) => {
-    const includeKeys = ['Nodes', 'builder', 'billing', 'profile', 'sign-in'];
+    const includeKeys = ['Nodes', 'builder', 'billing', 'sign-in'];
     let updateRoutes = routes.filter(route => includeKeys.includes(route.key));
     updateRoutes = updateRoutes.map((route) => {
       if (route.key === 'sign-in') {
@@ -117,9 +117,7 @@ export default function App() {
       }
       return route;
     });
-
     return updateRoutes;
-    // return routes.filter(route => route.key !== 'sign-in' || route.key !== 'sign-up');
   }
 
   return (

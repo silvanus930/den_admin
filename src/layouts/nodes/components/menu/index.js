@@ -98,7 +98,7 @@ const CustomizedMenus = ({ handleMenuAction }) => {
         </MenuItem>
         <MenuItem onClick={(e) => handleClose(e, "test")} disableRipple>
           <DoubleArrowIcon />
-          Test
+          Preview
         </MenuItem>
         <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
           <FileCopyIcon />

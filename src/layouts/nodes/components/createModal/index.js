@@ -1,5 +1,6 @@
 import { useState, forwardRef, useRef } from 'react';
 import { DotLoader } from 'react-spinners';
+import { TwitterPicker } from 'react-color';
 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -15,7 +16,6 @@ import Slide from '@mui/material/Slide';
 
 import MDBox from 'components/MDBox';
 import { uploadFile } from 'library/apis/s3Upload';
-import defaultAvatar from 'assets/images/team-1.jpg';
 import { updateSessionApi } from 'library/apis/session';
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -24,9 +24,12 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export default function CreateModal({ item, open, setOpen, fetchData }) {
 
-    const [name, setName] = useState(item?.name || '');
     const ref = useRef(null);
+
+    const [name, setName] = useState(item?.name || '');
     const [avatar, setAvatar] = useState(item?.avatar || '');
+    const [color, setColor] = useState(item?.color || '#FF6900');
+
     const [isUploading, setIsUploading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +43,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
         setIsLoading(true);
         try {
             console.log('Data: ', item);
-            await updateSessionApi(item?._id, { name: name, avatar: avatar });
+            await updateSessionApi(item?._id, { name: name, avatar: avatar, color: color });
             setIsLoading(false);
         } catch (error) {
             console.log('Update Session Error:', error);
@@ -81,16 +84,17 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        width="5rem"
-                        height="5rem"
+                        width="6rem"
+                        height="6rem"
                         m={2}
+                        mb={10}
                     >
                         {!avatar.length ?
                             <Icon fontSize="medium" color="inherit">message</Icon> :
-                            <MDBox width="5rem" height="5rem" component="img" src={avatar} sx={{ borderRadius: 3 }} />
+                            <MDBox width="6rem" height="6rem" component="img" src={avatar} sx={{ borderRadius: 3, borderWidth: 4, borderColor: color }} />
                         }
                     </MDBox>
-                    <Box sx={{ marginLeft: -2.5, marginBottom: -0.5 }}>
+                    <Box sx={{ marginLeft: -2.5, marginBottom: -0.5, marginBottom: '74px' }}>
                         {!isUploading && <IconButton onClick={() => { ref.current.click() }} sx={{ color: '#cccccc', marginLeft: -2 }}><CameraAltIcon /></IconButton>}
                         {isUploading && <DotLoader color={'#ffffff'} size={10} />}
                     </Box>
@@ -102,6 +106,10 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                             variant="standard"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                        />
+                        <TwitterPicker
+                            triangle='hide'
+                            onChange={(e) => { setColor(e.hex) }}
                         />
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button sx={{ marginTop: 1, borderColor: 'white' }} onClick={handleSave}>Save</Button>
