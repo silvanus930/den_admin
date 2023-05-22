@@ -1,10 +1,8 @@
 import { Avatar, Box, Grow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { TypeAnimation } from 'react-type-animation';
 import { BeatLoader } from 'react-spinners';
 
 import { Message, MessageContent } from '../chat-types';
-import avatar from "assets/images/team-1.jpg";
 
 export function MuiMessage({
   id,
@@ -50,7 +48,7 @@ export function MuiMessage({
           id={id}
           maxWidth="100%"
           my={1}
-          pl={message.self ? '14%' : 0}
+          pl={message.self ? '17%' : 0}
           pr={message.self ? 0 : '10%'}
           display="flex"
           justifyContent={message.self ? 'flex-end' : 'flex-start'}

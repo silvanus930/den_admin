@@ -17,17 +17,18 @@ function EmbedChatBot({ id, color }) {
   return (
     <>
       {initial && <div
-        style={{ height: '100%', maxWidth: '400px', width: '100%', padding: 10 }}
+        style={{ height: '100%', maxWidth: '339px', width: '100%', maxHeight: '639px', padding: 10, marginRight: 30, marginBottom: 5 }}
         className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
           id={`iframe-bot-${id}`}
+          // src={`http://localhost:3000/preview/${id}?color=${color.substring(1)}`}
           src={`${process.env.REACT_APP_BOT_URL}/preview/${id}?color=${color.substring(1)}`}
           style={{ height: '100%', width: '100%', }}
         />
       </div>}
 
       <div
-        className={`bot-right bot-eb-trigger bot-popup bot-active`}
+        className={`bot-right bot-eb-trigger bot-active`}
         id="eb-bot-trigger"
         onClick={toggleIframe}
       >

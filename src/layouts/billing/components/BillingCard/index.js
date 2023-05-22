@@ -8,8 +8,8 @@ function BillingCard({ isActive = false, type = 'free' }) {
 
   const navigate = useNavigate();
 
-  const handleSubscribe = () => {
-    navigate('/billing/stripe');
+  const handleSubscribe = (index) => {
+    navigate('/billing/stripe', { state: { method: index } });
   }
 
   const FreeCard = () => <Card sx={{ backgroundColor: '#CC3463', minHeight: '400px' }}>
@@ -100,7 +100,7 @@ function BillingCard({ isActive = false, type = 'free' }) {
       </MDBox>
     </MDBox>
     <MDBox p={2} display="flex" justifyContent="center" alignItems="flex-end" sx={{ flex: 1 }}>
-      {!isActive && <MDButton variant="gradient" color="info" display="flex" width="100%" onClick={handleSubscribe}>
+      {!isActive && <MDButton variant="gradient" color="info" display="flex" width="100%" onClick={() => handleSubscribe('montly')}>
         Subscribe
       </MDButton>}
       {isActive && (
@@ -162,7 +162,7 @@ function BillingCard({ isActive = false, type = 'free' }) {
       </MDBox>
     </MDBox>
     <MDBox p={2} display="flex" justifyContent="center" alignItems="flex-end" sx={{ flex: 1 }}>
-      {!isActive && <MDButton variant="gradient" color="info" display="flex" width="100%" onClick={handleSubscribe}>
+      {!isActive && <MDButton variant="gradient" color="info" display="flex" width="100%" onClick={() => handleSubscribe('annually')}>
         Subscribe
       </MDButton>}
       {isActive && (

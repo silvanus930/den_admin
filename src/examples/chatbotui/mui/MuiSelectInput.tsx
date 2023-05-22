@@ -78,7 +78,15 @@ export function MuiSelectInput({
               setResponse(e.currentTarget.value);
             }}
             sx={{
-              margin: 1, background: '#ffffff', textTransform: 'none !important', color: color, textAlign: 'left !important', borderColor: color, '&:hover': {
+              margin: 1, 
+              background: '#ffffff', 
+              fontFamily: 'Inter',
+              fontSize: '13px',
+              fontWeight: 500,
+              textTransform: 'none !important', 
+              color: color, 
+              textAlign: 'left !important', 
+              borderColor: color, '&:hover': {
                 borderColor: color + 'A9',
               }
             }}
