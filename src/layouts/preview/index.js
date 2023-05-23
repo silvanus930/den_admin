@@ -11,6 +11,8 @@ export default function Preview() {
   const { id } = useParams();
   const location = useLocation();
 
+  let resultData = {};
+
   const getColorFromURL = () => {
     const queryParams = new URLSearchParams(location.search);
     const color = '#' + queryParams.get('color');
@@ -63,6 +65,7 @@ export default function Preview() {
       count++;
       if (currentNode.type === 'endNode' || count > 200) return;
       const result = await setActionByNode(currentNode);
+      console.log('Result from this: ', currentNode, result);
       currentNode = getNextNode(nodes, edges, result, currentNode);
     }
   }, [botData]);
@@ -78,16 +81,35 @@ export default function Preview() {
       node.type === 'imageNode' ||
       node.type === 'messageNode') {
       const linkedEdge = linkedEdges.find(edge => edge.source === node.id)
+      resultData[node.id] = result?.result?.value;
+      console.log('ResultData in this node', node.id, resultData);
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       return nextNode;
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
-      const index = node.data.texts.findIndex(text => text === result.result.value);
+      const index = node.data.texts.findIndex(text => text === result?.result?.value);
       const linkedEdge = linkedEdges.find(edge => (edge.source === node.id && (edge.sourceHandle === `handle-${index}` || index === 0)));
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
+      resultData[node.id] = result?.result?.value;
+      console.log('ResultData in this node', node.id, resultData);
       return nextNode;
     }
     return { type: 'endNode' };
   }
+
+  function getNodeValue(node) {
+    const regex = /node[-]?([\d]+)(\.text|\.value)*/;
+    const match = node.match(regex);
+    return 'node-' + match[1];
+  }
+
+  function replaceNodePlaceholders(string) {
+    const pattern = /{([^}.]+(\.[^}.]+)?)}/g;
+    return string.replace(pattern, (match, node) => {
+      const nodeValue = resultData[getNodeValue(node)] || '--';
+      return `${nodeValue}`;
+    });
+  }
+
 
   const setActionByNode = async node => {
     if (node.type === 'nameNode') {
@@ -103,11 +125,11 @@ export default function Preview() {
       return { type: node.type, result };
 
     } else if (node.type === 'imageNode') {
-      const result = await chatCtl.addMessage({ type: 'jsx', avatar: botData?.avatar, content: `<span style="font-size: 16px; font-weight: 400; font-family: Inter;">${node.data.text}</span><img src=${node.data.uri} alt="File" style="width: 250px; height: auto; border-radius: 16px; margin-top: 3px;" data-nsfw-filter-status="sfw">` });
+      const result = await chatCtl.addMessage({ type: 'jsx', avatar: botData?.avatar, content: `<span style="font-size: 16px; font-weight: 400; font-family: Inter;">${replaceNodePlaceholders(node.data.text)}</span><img src=${node.data.uri} alt="File" style="width: 250px; height: auto; border-radius: 16px; margin-top: 3px;" data-nsfw-filter-status="sfw">` });
       return { type: node.type, result };
 
     } else if (node.type === 'messageNode') {
-      const result = await chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: node.data.text });
+      const result = await chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: replaceNodePlaceholders(node.data.text) });
       return { type: node.type, result };
 
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
@@ -133,7 +155,6 @@ export default function Preview() {
       lineHeight: '19.36px',
       borderColor: '#00000010',
       flexDirection: "column",
-      letterSpacing: ''
     }}>
       <Box flexDirection='row' display="flex" m={1.5} justifyContent='center' alignItems='center'>
         <Typography

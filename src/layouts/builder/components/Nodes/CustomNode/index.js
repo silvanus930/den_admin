@@ -1,9 +1,11 @@
 import { memo } from "react";
 import { Handle, Position } from "reactflow";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
+import Tooltip from '@mui/material/Tooltip';
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -27,10 +29,16 @@ function CustomNode({ title, icon, placeHodler, id, data }) {
             alignItems="center"
             width="3rem"
             height="3rem"
+            flexDirection="column"
             mt={-2}
             ml={-2}
           >
             <Icon fontSize="medium" color="inherit">{icon}</Icon>
+            <CopyToClipboard text={`{${id}}`}>
+              <Tooltip enterDelay={300} title={'You can use this {id} to use this value on the other nodes.\n Format: {node-i} || {node-i.value} || {nodei} || {nodei.value}.'}>
+                <MDTypography sx={{ fontSize: '10px', height: '10px' }} color="text">{id}</MDTypography>
+              </Tooltip>
+            </CopyToClipboard>
           </MDBox>
           <MDBox textAlign="right">
             <MDTypography ml={1} color="text">{title}</MDTypography>

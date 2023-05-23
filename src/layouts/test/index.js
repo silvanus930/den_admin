@@ -40,7 +40,7 @@ function Test() {
                     <Button onMouseEnter={() => setCopystate(false)} onClick={() => { setCopystate(true) }}>
                         <CopyToClipboard text={getText()}>
                             <MDBox sx={{ borderWidth: 1, borderColor: '#ffffff', borderRadius: '10px', maxWidth: '50vw', padding: '10px' }}>
-                                <MDTypography variant="h6">{getText()}</MDTypography>
+                                <MDTypography variant="h6" sx={{wordWrap: 'break-word'}}>{getText()}</MDTypography>
                             </MDBox>
                         </CopyToClipboard>
                     </Button>

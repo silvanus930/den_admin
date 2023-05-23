@@ -17,7 +17,7 @@ function EmbedChatBot({ id, color }) {
   return (
     <>
       {initial && <div
-        style={{ height: '100%', maxWidth: '339px', width: '100%', maxHeight: '639px', padding: 10, marginRight: 30, marginBottom: 5 }}
+        style={{ height: '100%', maxWidth: '339px', width: '100%', maxHeight: '639px', padding: 10, marginRight: 30, marginLeft: 30, marginBottom: 5 }}
         className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
           id={`iframe-bot-${id}`}

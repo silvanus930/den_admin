@@ -88,12 +88,14 @@ function MultiSelectorNode({ id, data }) {
           display="flex"
           justifyContent="center"
           alignItems="center"
+          flexDirection="column"
           width="3rem"
           height="3rem"
           mt={-2}
           ml={-2}
         >
           <Icon fontSize="medium" color="inherit">{'toc'}</Icon>
+          <MDTypography sx={{fontSize: '10px', height: '10px'}} color="text">{id}</MDTypography>
         </MDBox>
         <MDBox
           variant="gradient"

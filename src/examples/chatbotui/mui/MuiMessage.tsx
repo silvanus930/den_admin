@@ -65,7 +65,7 @@ export function MuiMessage({
               {showIndicator && <BeatLoader color={color} size={10} />}
               {!showIndicator && (
                 message.type === 'text' ? (
-                  <Typography style={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Inter' }}>{message.content}</Typography>
+                  <Typography style={{ fontSize: '15px', fontWeight: 400, fontFamily: 'Inter' }}>{message.content}</Typography>
                   // <TypeAnimation
                   //   sequence={[message.content as string]}
                   //   speed={50}

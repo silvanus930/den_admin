@@ -19,6 +19,7 @@ function StartNode() {
   return (
     <Card>
       <MDBox mt={2} mb={2} display="flex" sx={{ width: 200, justifyContent: 'center' }}>
+      <MDTypography opacity={0.4} sx={{ fontSize: '10px', height: '10px', position: 'absolute', bottom: '7px', right: '7px'}} color="success" >node-1</MDTypography>
         <MDTypography variant="body1" component="p" color="text" mx={3}>
           Action Start
         </MDTypography>

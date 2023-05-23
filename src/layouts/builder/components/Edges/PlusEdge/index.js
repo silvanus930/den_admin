@@ -1,5 +1,5 @@
 import React from 'react';
-import { getBezierPath } from 'reactflow';
+import { getBezierPath, EdgeLabelRenderer } from 'reactflow';
 import { Box, Button, IconButton, Icon, TextField, Input, Card, Divider, colorManipulator } from '@mui/material';
 
 import './index.css';
@@ -27,7 +27,7 @@ export default function PlusEdge({
     markerEnd,
     data,
 }) {
-    const [edgePath, labelX, labelY] = getBezierPath({
+    const [edgePath, labelX, labelY,] = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -45,15 +45,14 @@ export default function PlusEdge({
                 d={edgePath}
                 markerEnd={markerEnd}
             />
-            <foreignObject
-                width={foreignObjectSize}
-                height={foreignObjectSize}
-                x={labelX - foreignObjectSize / 2}
-                y={labelY - foreignObjectSize / 2}
-                className="edgebutton-foreignobject"
-                requiredExtensions="http://www.w3.org/1999/xhtml"
-            >
-                <div>
+            <EdgeLabelRenderer>
+                <div style={{
+                    position: 'absolute',
+                    transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+                    pointerEvents: 'all',
+                    display: 'flex',
+                    flexDirection: 'row'
+                }}>
                     <button className="edgebutton" onClick={() => {
                         data?.handle({
                             id,
@@ -72,8 +71,16 @@ export default function PlusEdge({
                             {'add'}
                         </Icon>
                     </button>
+                    <button className="removebutton" onClick={() => {
+                        data?.handle({ id, });
+                    }
+                    }>
+                        <Icon fontSize="small" sx={{ color: 'yellow' }}>
+                            {'remove'}
+                        </Icon>
+                    </button>
                 </div>
-            </foreignObject>
+            </EdgeLabelRenderer>
         </>
     );
 }

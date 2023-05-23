@@ -81,7 +81,7 @@ export function MuiSelectInput({
               margin: 1, 
               background: '#ffffff', 
               fontFamily: 'Inter',
-              fontSize: '13px',
+              fontSize: '14px',
               fontWeight: 500,
               textTransform: 'none !important', 
               color: color, 

@@ -125,20 +125,26 @@ const OverviewFlow = ({ item }) => {
     return `edge-${start}-${end}`;
   }
 
-
   const onNodesDelete = (
     (deleted) => {
       updateNodeForDelete(deleted);
     });
 
   const updateNodeForDelete = (node) => {
+    console.log('Node: ', node);
     setEdges(
       node.reduce((acc, node) => {
         const incomers = getIncomers(node, nodes, edges);
         const outgoers = getOutgoers(node, nodes, edges);
         const connectedEdges = getConnectedEdges([node], edges);
-
         const remainingEdges = acc.filter((edge) => !connectedEdges.includes(edge));
+
+        console.log('Node_: ', node);
+        console.log('Acc_: ', acc);
+        console.log('Incomers: ', incomers);
+        console.log('Outgoers: ', outgoers);
+        console.log('ConnectedEdges: ', connectedEdges);
+        console.log('RemainingEdges: ', remainingEdges);
 
         const createdEdges = incomers.flatMap(({ id: source }) =>
           outgoers.map(({ id: target }) => ({ id: getEdgeId(source, target), source, target, type: 'plusEdge', animated: true, data: { handle: handleClickOpen } }))
@@ -150,9 +156,36 @@ const OverviewFlow = ({ item }) => {
   };
 
   const handleDeleteNode = (id) => {
-    const node = nodes.filter(node => id === node.id);
-    updateNodeForDelete(node);
-    setNodes((prev) => prev.filter(n => n.id !== id));
+
+    setNodes((prev) => {
+      const deletedNode = prev.filter(node => id === node.id);
+      console.log('Nodes: ', prev);
+      console.log('Id: ', id);
+      console.log('Deleted Node: ', deletedNode);
+
+      setEdges((prevEdges) => {
+
+        const incomers = getIncomers(deletedNode[0], prev, prevEdges);
+        const outgoers = getOutgoers(deletedNode[0], prev, prevEdges);
+        const connectedEdges = getConnectedEdges(deletedNode, prevEdges);
+        const remainingEdges = prevEdges.filter((edge) => !connectedEdges.includes(edge));
+
+        console.log('Nodes: ', prev);
+        console.log('Edges: ', prevEdges);
+        console.log('Incomers: ', incomers);
+        console.log('Outgoers: ', outgoers);
+        console.log('ConnectedEdges: ', connectedEdges);
+        console.log('RemainingEdges: ', remainingEdges);
+
+        const createdEdges = incomers.flatMap(({ id: source }) =>
+          outgoers.map(({ id: target }) => ({ id: getEdgeId(source, target), source, target, type: 'plusEdge', animated: true, data: { handle: handleClickOpen } }))
+        );
+
+        return remainingEdges.concat(createdEdges.filter(edge => !remainingEdges.some(e => e.id === edge.id)));
+      })
+      return prev.filter(n => n.id !== id)
+    }
+    );
 
   }
 
@@ -222,9 +255,16 @@ const OverviewFlow = ({ item }) => {
       return rest;
     });
 
+    const filteredEdges = updatedEdges.filter((edge) => {
+      return nodes.some(node => node.id === edge.source) && nodes.some(node => node.id === edge.target)
+    })
+
+    console.log('Updated Edges: ', updatedEdges);
+    console.log('Filtered Edges: ', filteredEdges);
+
     const data = {
       nodes: nodes,
-      edges: updatedEdges,
+      edges: filteredEdges,
     }
 
     if (isCreate) {
@@ -253,14 +293,28 @@ const OverviewFlow = ({ item }) => {
   };
 
   const handleClickOpen = (edge) => {
-    setSelectedValue('');
-    console.log('Selected Edge on Open: ', edge);
-    setSelectedEdge((prevEdge) => {
-      const updateEdge = { ...prevEdge, sourceX: edge.sourceX, sourceY: edge.sourceY, targetX: edge.targetX, targetY: edge.targetY };
-      console.log('Selected Edge on Open Updated: ', updateEdge);
-      return updateEdge;
-    });
-    setOpenDialog(true);
+
+    if (!edge.target) {
+      console.log('Delete Clicked!');
+      setEdges(prev => {
+        return prev.filter((e) => e.id !== edge.id);
+      });
+    } else {
+      setSelectedValue('');
+      console.log('Selected Edge on Open: ', edge);
+      setSelectedEdge((prevEdge) => {
+        const updateEdge = {
+          ...prevEdge,
+          sourceX: edge.sourceX,
+          sourceY: edge.sourceY,
+          targetX: edge.targetX,
+          targetY: edge.targetY
+        };
+        console.log('Selected Edge on Open Updated: ', updateEdge);
+        return updateEdge;
+      });
+      setOpenDialog(true);
+    }
   };
 
   const handleClose = (value) => {
@@ -331,6 +385,7 @@ const OverviewFlow = ({ item }) => {
   );
 
   const handleKeyDown = useCallback((event) => {
+    console.log('Key Pressed', event);
     // Handle key down event
     if (event.ctrlKey && (event.key === 'z' || event.key === 'Z')) {
       handleUndo();
@@ -386,6 +441,7 @@ const OverviewFlow = ({ item }) => {
   }
 
   const handlePushHistory = (value) => {
+    console.log('Added History: ', value);
     const temp = history.slice(0, historyHandler + 1);
     temp.push(value)
     setHistory(temp);
