@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./bot.css";
 import "reactflow/dist/style.css";
+import { BOT_URL } from 'library/constant';
 
 function EmbedChatBot({ id, color }) {
 
@@ -21,17 +22,22 @@ function EmbedChatBot({ id, color }) {
         className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
           id={`iframe-bot-${id}`}
-          // src={`http://localhost:3000/preview/${id}?color=${color.substring(1)}`}
-          src={`${process.env.REACT_APP_BOT_URL}/preview/${id}?color=${color.substring(1)}`}
+          src={`${BOT_URL}preview/${id}?color=${color.substring(1)}`}
           style={{ height: '100%', width: '100%', }}
         />
       </div>}
 
       <div
-        className={`bot-right bot-eb-trigger bot-active`}
+        className={`bot-right bot-eb-trigger bot-active tooltip`}
         id="eb-bot-trigger"
         onClick={toggleIframe}
       >
+
+        <div class={`${!showIframe ? `tooltiptext` : `tooltiphide`}`}>
+          <p>How can I help?</p>
+          <span class="triangle"></span>
+        </div>
+
         <span
           className="round-container"
           style={{ background: color ? color : '#F0675A' }}>

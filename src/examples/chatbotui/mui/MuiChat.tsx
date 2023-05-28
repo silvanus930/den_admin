@@ -19,6 +19,7 @@ import { MuiMessage } from './MuiMessage';
 import { MuiMultiSelectInput } from './MuiMultiSelectInput';
 import { MuiSelectInput } from './MuiSelectInput';
 import { MuiTextInput } from './MuiTextInput';
+import { MuiMessageButton } from './MuiMessageButton';
 
 export function MuiChat({
   chatController,
@@ -115,14 +116,14 @@ export function MuiChat({
             );
           }
           return (
-            <MuiMessage
-              key={messages.indexOf(msg)}
-              id={`cu-msg-${messages.indexOf(msg) + 1}`}
+            <MuiMessageButton
+              texts={msg?.buttons as String[]}
+              value={msg?.value as String}
               color={color}
-              message={unknownMsg}
             />
           );
-        })}
+        }
+        )}
       </Box>
       <Box
         sx={{

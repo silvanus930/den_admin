@@ -138,6 +138,7 @@ export default function Preview() {
         type: 'select',
         options: options,
       });
+      await chatCtl.addMessage({ type: 'button', avatar: botData?.avatar, buttons: node.data.texts, value: result.value });
       return { type: node.type, result };
     }
   }
@@ -185,7 +186,7 @@ export default function Preview() {
       <Box>
         <Typography
           sx={{
-            color: '#00000010',
+            color: '#00000050',
             textAlign: 'center',
             fontSize: '11px',
             fontWeight: 400,

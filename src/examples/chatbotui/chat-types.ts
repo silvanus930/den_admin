@@ -12,6 +12,8 @@ export interface Message<C extends MessageContent> {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
+  buttons?: String[];
+  value?: String;
 }
 
 export type MessageContent = string | JSX.Element;
