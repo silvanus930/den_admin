@@ -118,6 +118,19 @@ const OverviewFlow = ({ item }) => {
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
+  const isValidConnection = (connection) => {
+    console.log("isValid Connection: ", connection);
+    
+    const connectedEdges = edges.filter((edge)=> {
+      if (edge.sourceHandle) return edge.source === connection.source && edge.sourceHandle === connection.sourceHandle;
+      return edge.source === connection.source && connection.sourceHandle === 'a';
+    });
+
+    connectedEdges.length && console.log('ConnectedEdge: ', connectedEdges);
+    return connection.source !== connection.target && !connectedEdges.length;
+
+  };
+
   const getId = () => `node-${nodes.length + 1}`;
   const getEdgeId = (startNode, endNode) => {
     const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
@@ -177,11 +190,27 @@ const OverviewFlow = ({ item }) => {
         console.log('ConnectedEdges: ', connectedEdges);
         console.log('RemainingEdges: ', remainingEdges);
 
-        const createdEdges = incomers.flatMap(({ id: source }) =>
-          outgoers.map(({ id: target }) => ({ id: getEdgeId(source, target), source, target, type: 'plusEdge', animated: true, data: { handle: handleClickOpen } }))
-        );
+        const firstSourceEdge = connectedEdges.find(edge => edge.source === deletedNode[0]?.id);
+        const firstTargetEdge = connectedEdges.find(edge => edge.target === deletedNode[0]?.id);
 
-        return remainingEdges.concat(createdEdges.filter(edge => !remainingEdges.some(e => e.id === edge.id)));
+        console.log('firstSourceEdge: ', firstSourceEdge);
+        console.log('firstTargetEdge: ', firstTargetEdge);
+
+        const newEdge = {
+          id: getEdgeId(firstSourceEdge.target, firstTargetEdge.source),
+          target: firstSourceEdge.target,
+          source: firstTargetEdge.source,
+          sourceHandle: firstTargetEdge.sourceHandle,
+          type: 'plusEdge',
+          animated: true,
+          data: { handle: handleClickOpen }
+        }
+
+        console.log('newEdge: ', newEdge);
+
+        if (firstSourceEdge && firstTargetEdge) return remainingEdges.concat(newEdge);
+        else return remainingEdges;
+
       })
       return prev.filter(n => n.id !== id)
     }
@@ -493,6 +522,7 @@ const OverviewFlow = ({ item }) => {
       // onPaneMouseMove={onPaneMouseMove}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
+      isValidConnection={isValidConnection}
     >
       {/* <Controls /> */}
       <Background color="#aaa" gap={25} />
