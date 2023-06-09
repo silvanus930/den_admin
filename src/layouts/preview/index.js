@@ -74,14 +74,13 @@ export default function Preview() {
     const linkedEdges = getConnectedEdges([node], edges);
     if (!linkedEdges) return { type: 'endNode' };
 
-    if (node.type === 'startNode' ||
-      node.type === 'nameNode' ||
-      node.type === 'emailNode' ||
-      node.type === 'phoneNode' ||
-      node.type === 'imageNode' ||
-      node.type === 'messageNode') {
+    if (node.type === 'startNode' || node.type === 'nameNode' || node.type === 'emailNode' || node.type === 'phoneNode' || node.type === 'imageNode' || node.type === 'messageNode') {
       const linkedEdge = linkedEdges.find(edge => edge.source === node.id)
-      resultData[node.id] = result?.result?.value;
+      let data = result?.result?.value;
+      if (node.type === 'nameNode') {
+        data = data.split(' ')[0];
+      }
+      resultData[node.id] = data;
       console.log('ResultData in this node', node.id, resultData);
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       return nextNode;
@@ -114,6 +113,7 @@ export default function Preview() {
   const setActionByNode = async node => {
     if (node.type === 'nameNode') {
       const result = await chatCtl.setActionRequest({ type: 'text', placeholder: 'Please enter your name.', });
+      console.log('Result: ', result);
       return { type: node.type, result };
 
     } else if (node.type === 'emailNode') {
@@ -194,7 +194,7 @@ export default function Preview() {
             fontFamily: 'Inter',
             margin: '6px',
           }}>
-          powered by <a href="http://13.56.98.6" style={{color: getColorFromURL()}}>Denbot</a>
+          powered by <a href="http://13.56.98.6" style={{ color: getColorFromURL() }}>Denbot</a>
         </Typography>
       </Box>
     </Box>
