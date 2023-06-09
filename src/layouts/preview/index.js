@@ -194,7 +194,7 @@ export default function Preview() {
             fontFamily: 'Inter',
             margin: '6px',
           }}>
-          {`powered by Denbot`}
+          powered by <a href="http://13.56.98.6" style={{color: getColorFromURL()}}>Denbot</a>
         </Typography>
       </Box>
     </Box>
