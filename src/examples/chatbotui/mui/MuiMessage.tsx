@@ -35,7 +35,8 @@ export function MuiMessage({
       ml={message.self ? 1 : 0}
       mr={message.self ? 0 : 1}
     >
-      <Avatar alt={message.username} src={message.avatar} />
+      <Avatar alt={message.username} src={message.avatar}
+        sx={{ '& img': { height: "100% !important" } }} />
     </Box>
   );
 
@@ -53,7 +54,7 @@ export function MuiMessage({
           display="flex"
           justifyContent={message.self ? 'flex-end' : 'flex-start'}
         >
-          {message.avatar && !message.self && ChatAvator}
+          {!message.self && ChatAvator}
           <Box minWidth={0} display="flex" flexDirection="column">
             <Box
               maxWidth="100%"

@@ -97,8 +97,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
               ml={-1}
             >
               {!item?.avatar && <Icon fontSize="medium" color="inherit">message</Icon>}
-              {item?.avatar && <MDBox component="img" src={item?.avatar} sx={{ borderRadius: 3, borderWidth: 2, borderColor: item?.color || '#FF6900' }} />}
-
+              {item?.avatar && <MDBox width="4rem" height="4rem" component="img" src={item?.avatar} sx={{ borderRadius: 3, borderWidth: 2, borderColor: item?.color || '#FF6900' }} />}
             </MDBox>
             <CustomizedMenus handleMenuAction={handleMenuAction} />
           </MDBox>

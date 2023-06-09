@@ -78,7 +78,26 @@ export default function Preview() {
       const linkedEdge = linkedEdges.find(edge => edge.source === node.id)
       let data = result?.result?.value;
       if (node.type === 'nameNode') {
+        const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+        if (!regex.test(data)) {
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid name.' });
+          return node;
+        }
         data = data.split(' ')[0];
+      }
+      else if (node.type === 'phoneNode') {
+        const regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+        if (!regex.test(data)) {
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid phone number.' });
+          return node;
+        }
+      }
+      else if (node.type === 'emailNode') {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!regex.test(data)) {
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid email.' });
+          return node;
+        }
       }
       resultData[node.id] = data;
       console.log('ResultData in this node', node.id, resultData);
