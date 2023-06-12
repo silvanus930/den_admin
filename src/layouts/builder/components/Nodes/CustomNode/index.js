@@ -93,7 +93,7 @@ function CustomNode({ title, icon, placeHodler, id, data }) {
 
 export const NameInputNode = ({ id, data }) =>
   <CustomNode
-    title="Input Name"
+    title="Name Input Node"
     placeHodler="Please Input your name."
     icon="message"
     id={id}
@@ -102,7 +102,7 @@ export const NameInputNode = ({ id, data }) =>
 
 export const EmailInputNode = ({ id, data }) =>
   <CustomNode
-    title="Input Email"
+    title="Email Input Node"
     placeHodler="Please Input your email address."
     icon="email"
     id={id}
@@ -111,7 +111,7 @@ export const EmailInputNode = ({ id, data }) =>
 
 export const PhoneInputNode = ({ id, data }) =>
   <CustomNode
-    title="Input Phone"
+    title="Phone Input Node"
     placeHodler="Please Input your phone number."
     icon="phone"
     id={id}

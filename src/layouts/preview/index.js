@@ -5,6 +5,7 @@ import CustomizedMenus from './menu';
 import { useLocation, useParams } from 'react-router-dom';
 import { getSessionApi } from 'library/apis/session';
 import { getConnectedEdges } from 'reactflow';
+import { sendEmailToZapier } from 'library/apis/email';
 
 export default function Preview() {
 
@@ -74,7 +75,13 @@ export default function Preview() {
     const linkedEdges = getConnectedEdges([node], edges);
     if (!linkedEdges) return { type: 'endNode' };
 
-    if (node.type === 'startNode' || node.type === 'nameNode' || node.type === 'emailNode' || node.type === 'phoneNode' || node.type === 'imageNode' || node.type === 'messageNode') {
+    if (node.type === 'startNode'
+      || node.type === 'nameNode'
+      || node.type === 'emailNode'
+      || node.type === 'phoneNode'
+      || node.type === 'imageNode'
+      || node.type === 'sendEmailNode'
+      || node.type === 'messageNode') {
       const linkedEdge = linkedEdges.find(edge => edge.source === node.id)
       let data = result?.result?.value;
       if (node.type === 'nameNode') {
@@ -99,8 +106,11 @@ export default function Preview() {
           return node;
         }
       }
+      else if (node.type === 'sendEmailNode') {
+        sendEmailToZapier(node?.data, chatCtl.getMessages());
+      }
       resultData[node.id] = data;
-      console.log('ResultData in this node', node.id, resultData);
+      console.log('ResultData in this node', node.id, data, resultData);
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       return nextNode;
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
@@ -128,7 +138,6 @@ export default function Preview() {
     });
   }
 
-
   const setActionByNode = async node => {
     if (node.type === 'nameNode') {
       const result = await chatCtl.setActionRequest({ type: 'text', placeholder: 'Please enter your name.', });
@@ -150,6 +159,9 @@ export default function Preview() {
     } else if (node.type === 'messageNode') {
       const result = await chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: replaceNodePlaceholders(node.data.text) });
       return { type: node.type, result };
+
+    } else if (node.type === 'sendEmailNode') {
+      return { type: node.type, result: { value: node?.data?.text } };
 
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
       const options = node.data.texts.map((text) => ({ value: text, text: text }))

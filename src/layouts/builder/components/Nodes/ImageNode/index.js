@@ -14,7 +14,7 @@ const onConnect = (params) => console.log("handle onConnect", params);
 const TextInput = ({ text, setText }) => {
   return (
     <Input
-      placeholder={'Please input image descriptiop and upload the image'}
+      placeholder={'Please input description and upload the image'}
       value={text}
       onChange={(e) => setText(e.target.value)}
       style={{

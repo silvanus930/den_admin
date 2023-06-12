@@ -31,6 +31,7 @@ import ConditionalNode from "../Nodes/ConditionalNode";
 import StartNode from "../Nodes/StartNode";
 import EndNode from "../Nodes/EndNode";
 import MessageNode from "../Nodes/MessageNode";
+import SendEmailNode from "../Nodes/EmailNode";
 import { NameInputNode, EmailInputNode, PhoneInputNode } from "../Nodes/CustomNode";
 import PlusNode from "../Nodes/PlusNode";
 
@@ -76,6 +77,7 @@ const SIZE = {
   imageNode: { width: 342, height: 159 },
   nameNode: { width: 342, height: 159 },
   emailNode: { width: 342, height: 159 },
+  sendEmailNode: { width: 342, height: 159 },
   phoneNode: { width: 342, height: 159 },
   imageNode: { width: 342, height: 159 },
   multiSelectorNode: { width: 342, height: 159 },
@@ -90,6 +92,7 @@ const nodeTypes = {
   nameNode: NameInputNode,
   emailNode: EmailInputNode,
   phoneNode: PhoneInputNode,
+  sendEmailNode: SendEmailNode,
   imageNode: ImageNode,
   multiSelectorNode: MultiSelectorNode,
   conditionalNode: ConditionalNode,
