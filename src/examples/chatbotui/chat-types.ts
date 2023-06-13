@@ -7,6 +7,7 @@ export interface Message<C extends MessageContent> {
   type: string;
   content: C;
   self: boolean;
+  nodeID: string;
   username?: string;
   avatar?: string;
   createdAt?: Date;

@@ -1,6 +1,7 @@
 import { Avatar, Box, Grow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 import { Message, MessageContent } from '../chat-types';
 
@@ -8,10 +9,12 @@ export function MuiMessage({
   id,
   message,
   color,
+  setCurrentNode,
 }: {
   id: string;
   message: Message<MessageContent>;
   color: string;
+  setCurrentNode: (index: string) => {};
 }): React.ReactElement {
 
   const [showIndicator, setShowIndicator] = useState(true);
@@ -34,9 +37,32 @@ export function MuiMessage({
       flexShrink={0}
       ml={message.self ? 1 : 0}
       mr={message.self ? 0 : 1}
+      onClick={() => {
+        console.log('Onclicked: ', message.nodeID);
+        setCurrentNode(message.nodeID);
+      }}
     >
       <Avatar alt={message.username} src={message.avatar}
         sx={{ '& img': { height: "100% !important" } }} />
+    </Box>
+  );
+
+  const RepeatButton = (
+    <Box
+      sx={{
+        opacity: 0.1,
+        transition: 'opacity 0.3s',
+        '&:hover': {
+          opacity: 1,
+        }
+      }}
+    >
+      <ReplayIcon
+        sx={{ color: color }}
+        onClick={() => {
+          console.log('Onclicked: ', message.nodeID);
+          setCurrentNode(message.nodeID);
+        }} />
     </Box>
   );
 
@@ -50,7 +76,7 @@ export function MuiMessage({
           maxWidth="100%"
           my={1}
           pl={message.self ? '17%' : 0}
-          pr={message.self ? 0 : '10%'}
+          pr={message.self ? 0 : '5%'}
           display="flex"
           justifyContent={message.self ? 'flex-end' : 'flex-start'}
         >
@@ -67,17 +93,12 @@ export function MuiMessage({
               {!showIndicator && (
                 message.type === 'text' ? (
                   <Typography style={{ fontSize: '15px', fontWeight: 400, fontFamily: 'Inter' }}>{message.content}</Typography>
-                  // <TypeAnimation
-                  //   sequence={[message.content as string]}
-                  //   speed={50}
-                  //   cursor={false}
-                  //   style={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Inter' }}
-                  // />
                 ) :
                   message.type === 'jsx' ? <div dangerouslySetInnerHTML={{ __html: message.content as string }}></div> : <div />)}
             </Box>
           </Box>
           {message.avatar && message.self && ChatAvator}
+          {!message.self && message.nodeID && RepeatButton}
         </Box>
       </Box >
     </Grow >

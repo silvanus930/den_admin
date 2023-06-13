@@ -18,7 +18,7 @@ function EmbedChatBot({ id, color }) {
   return (
     <>
       {initial && <div
-        style={{ height: '100%', maxWidth: '339px', width: '100%', maxHeight: '639px', padding: 10, marginRight: 30, marginLeft: 30, marginBottom: 5 }}
+        style={{ height: '100%', minWidth: '339px', maxWidth: '20vw', width: '100%', maxHeight: '80vh', minHeight: '600px', padding: 10, marginRight: 30, marginLeft: 30, marginBottom: 5 }}
         className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
           id={`iframe-bot-${id}`}
@@ -34,7 +34,7 @@ function EmbedChatBot({ id, color }) {
       >
 
         <div class={`${!showIframe ? `tooltiptext` : `tooltiphide`}`}>
-          <p>How can I help?</p>
+          <p style={{color: color, fontSize: '15px', fontWeight: 600}}>How can I help?</p>
           <span class="triangle"></span>
         </div>
 

@@ -56,7 +56,7 @@ export class ChatController {
   addMessage(message: Message<MessageContent>): Promise<number> {
     const len = this.state.messages.push(message);
     const idx = len - 1;
-    const typingDelay = (this.state.messages.length > 0 && this.state.messages[idx]?.self) ? 100 : 1000;
+    const typingDelay = (this.state.messages.length > 0 && this.state.messages[idx]?.self) ? 100 : 1500;
     const delay = typingDelay;
     // const delay = message.content.toString().length * 50 + typingDelay;
     this.state.messages[idx].createdAt = new Date();
@@ -181,6 +181,7 @@ export class ChatController {
     if (request.addMessage) {
       await this.addMessage({
         type: 'text',
+        nodeID: '',
         content: response.value,
         self: true,
       });

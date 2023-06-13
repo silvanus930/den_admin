@@ -24,9 +24,11 @@ import { MuiMessageButton } from './MuiMessageButton';
 export function MuiChat({
   chatController,
   color,
+  setCurrentNode,
 }: React.PropsWithChildren<{
   chatController: ChatController;
   color: string;
+  setCurrentNode: () => {};
 }>): React.ReactElement {
   const chatCtl = chatController;
   const [messages, setMessages] = React.useState(chatCtl.getMessages());
@@ -112,6 +114,7 @@ export function MuiChat({
                 id={`cu-msg-${messages.indexOf(msg) + 1}`}
                 color={color}
                 message={msg}
+                setCurrentNode={setCurrentNode}
               />
             );
           }

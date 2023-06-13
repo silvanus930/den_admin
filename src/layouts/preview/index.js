@@ -13,6 +13,14 @@ export default function Preview() {
   const location = useLocation();
 
   let resultData = {};
+  let count = 0;
+  let nodes = [];
+  let edges = [];
+
+  const [isRedTheme, setIsRedTheme] = useState(true);
+
+  const [botData, setBotData] = useState(null);
+  const [currentNode, setCurrentNode] = useState(null);
 
   const getColorFromURL = () => {
     const queryParams = new URLSearchParams(location.search);
@@ -21,10 +29,7 @@ export default function Preview() {
   };
 
   const color = getColorFromURL();
-  const [isRedTheme, setIsRedTheme] = useState(true);
   const botThemeColor = color;
-
-  const [botData, setBotData] = useState(null);
 
   const [chatCtl] = React.useState(
     new ChatController({
@@ -56,20 +61,26 @@ export default function Preview() {
 
   useEffect(async () => {
     if (!botData?.nodes) return;
-
-    const nodes = botData.nodes;
-    const edges = botData.edges;
-
-    let currentNode = nodes[0];
-    let count = 0;
-    while (true) {
-      count++;
-      if (currentNode.type === 'endNode' || count > 200) return;
-      const result = await setActionByNode(currentNode);
-      console.log('Result from this: ', currentNode, result);
-      currentNode = getNextNode(nodes, edges, result, currentNode);
-    }
+    nodes = botData.nodes;
+    edges = botData.edges;
+    setCurrentNode(botData.nodes[0]);
   }, [botData]);
+
+  useEffect(async () => {
+    if (!currentNode) return;
+    console.log('CurrentNode: ', currentNode);
+    await doAction();
+  }, [currentNode]);
+
+  const doAction = async () => {
+    count++;
+    nodes = botData.nodes;
+    edges = botData.edges;
+    if (currentNode.type === 'endNode' || count > 200) return;
+    const result = await setActionByNode(currentNode);
+    console.log('Result from this: ', currentNode, result);
+    setCurrentNode({ ...getNextNode(nodes, edges, result, currentNode), number: count });
+  }
 
   function getNextNode(nodes, edges, result, node) {
     const linkedEdges = getConnectedEdges([node], edges);
@@ -157,7 +168,7 @@ export default function Preview() {
       return { type: node.type, result };
 
     } else if (node.type === 'messageNode') {
-      const result = await chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: replaceNodePlaceholders(node.data.text) });
+      const result = await chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: replaceNodePlaceholders(node.data.text), nodeID: node.id });
       return { type: node.type, result };
 
     } else if (node.type === 'sendEmailNode') {
@@ -212,7 +223,14 @@ export default function Preview() {
           borderBottomWidth: 1,
           borderColor: '#00000010'
         }}>
-        <MuiChat chatController={chatCtl} color={botThemeColor} />
+        <MuiChat
+          chatController={chatCtl}
+          color={botThemeColor}
+          setCurrentNode={(nodeId) => { 
+            console.log('Clicked on preview: ', nodeId);
+            setCurrentNode(nodes.find(node => node.id == nodeId)); 
+          }}
+        />
       </Box>
       <Box>
         <Typography
