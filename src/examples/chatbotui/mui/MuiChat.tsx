@@ -54,6 +54,10 @@ export function MuiChat({
     chatCtl.addOnActionChanged(handleActionChanged);
   }, [chatCtl, scroll]);
 
+  React.useEffect(() => {
+    setTimeout(() => { scroll(); }, 2000);
+  }, [msgRef.current?.scrollHeight]);
+
   type CustomComponentType = React.FC<{
     chatController: ChatController;
     actionRequest: ActionRequest;
@@ -95,7 +99,7 @@ export function MuiChat({
     >
       <Box
         sx={{
-          flex: '1 1 0%',
+          flex: 1,
           overflowY: 'auto',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
