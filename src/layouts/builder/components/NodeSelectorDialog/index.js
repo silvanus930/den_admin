@@ -22,7 +22,8 @@ export default function NodeSelectorDialog(props) {
         { title: 'Input Name', value: 'nameNode', icon: 'message' },
         { title: 'Input Phone Number', value: 'phoneNode', icon: 'phone' },
         { title: 'Input Email', value: 'emailNode', icon: 'email' },
-        { title: 'Send Email', value: 'sendEmailNode', icon: 'email' },
+        { title: 'Send Email', value: 'sendEmailNode', icon: 'poll' },
+        { title: 'Send GA Event', value: 'googleAnalyticsNode', icon: 'email' },
         { title: 'ConditionalNode', value: 'conditionalNode', icon: 'dns' },
         { title: 'MultiSelector', value: 'multiSelectorNode', icon: 'toc' }];
 

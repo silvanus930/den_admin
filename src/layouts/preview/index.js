@@ -6,6 +6,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { getSessionApi } from 'library/apis/session';
 import { getConnectedEdges } from 'reactflow';
 import { sendEmailToZapier } from 'library/apis/email';
+import { TrackGoogleAnalyticsEvent } from 'utils/googleAnalytics';
 
 export default function Preview() {
 
@@ -93,6 +94,7 @@ export default function Preview() {
       || node.type === 'phoneNode'
       || node.type === 'imageNode'
       || node.type === 'sendEmailNode'
+      || node.type === 'googleAnalyticsNode'
       || node.type === 'messageNode') {
       const linkedEdge = linkedEdges.find(edge => edge.source === node.id)
       let data = result?.result?.value;
@@ -120,6 +122,16 @@ export default function Preview() {
       }
       else if (node.type === 'sendEmailNode') {
         sendEmailToZapier(node?.data, chatCtl.getMessages());
+      }
+      else if (node.type === 'googleAnalyticsNode') {
+        try {
+          const data = JSON.parse(node?.data?.text);
+          console.log('GA data: ', node?.data?.text);
+          console.log('GA data===: ', data);
+          TrackGoogleAnalyticsEvent(data?.category || 'b', data?.action || 'b', data?.event || 'b');
+        } catch (error) {
+          TrackGoogleAnalyticsEvent('a', 'a', 'a');
+        }
       }
       resultData[node.id] = data;
       console.log('ResultData in this node', node.id, data, resultData);
@@ -175,13 +187,16 @@ export default function Preview() {
     } else if (node.type === 'sendEmailNode') {
       return { type: node.type, result: { value: node?.data?.text } };
 
+    } else if (node.type === 'googleAnalyticsNode') {
+      return { type: node.type, result: { value: node?.data?.text } };
+
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
       const options = node.data.texts.map((text) => ({ value: text, text: text }))
       const result = await chatCtl.setActionRequest({
         type: 'select',
         options: options,
       });
-      await chatCtl.addMessage({ type: 'button', avatar: botData?.avatar, buttons: node.data.texts, value: result.value });
+      // await chatCtl.addMessage({ type: 'button', avatar: botData?.avatar, buttons: node.data.texts, value: result.value });
       return { type: node.type, result };
     }
   }
@@ -216,6 +231,7 @@ export default function Preview() {
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
       <Box
+        id="scrollContainer"
         px={1}
         style={{
           overflowY: 'scroll',
@@ -227,9 +243,15 @@ export default function Preview() {
         <MuiChat
           chatController={chatCtl}
           color={botThemeColor}
-          setCurrentNode={(nodeId) => { 
+          setCurrentNode={(nodeId) => {
             console.log('Clicked on preview: ', nodeId);
-            setCurrentNode(nodes.find(node => node.id == nodeId)); 
+            setCurrentNode(nodes.find(node => node.id == nodeId));
+
+            const scrollContainer = document.getElementById('scrollContainer');
+            if (scrollContainer) {
+              scrollContainer.scrollTop = scrollContainer.scrollHeight;
+            }
+
           }}
         />
       </Box>

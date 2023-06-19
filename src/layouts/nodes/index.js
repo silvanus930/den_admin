@@ -21,6 +21,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { getSessionsApi, deleteSessionApi, createSessionApi } from 'library/apis/session';
 import CustomizedMenus from './components/menu';
 import CreateModal from './components/createModal';
+import ZapierTextInput from './components/ZapierTextInput';
 
 const ClickableCard = styled(Card)`
   cursor: pointer;
@@ -170,6 +171,7 @@ function Nodes() {
   return (
     <DashboardLayout >
       <DashboardNavbar isMini />
+      <ZapierTextInput />
       <MDButton
         variant="gradient"
         color="dark"

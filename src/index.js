@@ -4,9 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import './index.css'
 import { MaterialUIControllerProvider } from "./context";
-import ReactGA from "react-ga4";
+import InitializeGoogleAnalytics from "utils/googleAnalytics";
 
-ReactGA.initialize("G-1F127CLEGN");
+InitializeGoogleAnalytics();
 
 ReactDOM.render(
   <BrowserRouter>
