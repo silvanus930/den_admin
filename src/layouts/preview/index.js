@@ -54,6 +54,7 @@ export default function Preview() {
     try {
       const data = await getSessionApi(id);
       setBotData(data.data);
+      console.log('Bot Data: ', data);
     } catch (error) {
       console.log('PreviewData Error');
     }
@@ -210,7 +211,7 @@ export default function Preview() {
             fontFamily: 'Inter',
             fontWeight: 500
           }}>
-          {`Welcome to Denbot!`}
+          {`Welcome to ${botData?.name ? botData?.name : `Denbot`}!`}
         </Typography>
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
