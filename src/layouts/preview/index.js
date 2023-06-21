@@ -204,7 +204,7 @@ export default function Preview() {
       return { type: node.type, result };
     }
   }
-  
+
   const handleLink = () => {
     parent.location.href = 'https://www.denbot.co.uk';
   }
@@ -238,31 +238,60 @@ export default function Preview() {
         </Typography>
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
-      <Box
-        id="scrollContainer"
-        px={1}
-        style={{
-          overflowY: 'scroll',
-          flex: 1,
-          borderTopWidth: 1,
-          borderBottomWidth: 1,
-          borderColor: '#00000010'
-        }}>
-        <MuiChat
-          chatController={chatCtl}
-          color={botThemeColor}
-          setCurrentNode={(nodeId) => {
-            console.log('Clicked on preview: ', nodeId);
-            setCurrentNode(nodes.find(node => node.id == nodeId));
+      {
+        !botData?.isDisable && <>
+          <Box
+            id="scrollContainer"
+            px={1}
+            style={{
+              overflowY: 'scroll',
+              flex: 1,
+              borderTopWidth: 1,
+              borderBottomWidth: 1,
+              borderColor: '#00000010'
+            }}>
+            <MuiChat
+              chatController={chatCtl}
+              color={botThemeColor}
+              setCurrentNode={(nodeId) => {
+                console.log('Clicked on preview: ', nodeId);
+                setCurrentNode(nodes.find(node => node.id == nodeId));
 
-            const scrollContainer = document.getElementById('scrollContainer');
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollContainer.scrollHeight;
-            }
+                const scrollContainer = document.getElementById('scrollContainer');
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                }
 
-          }}
-        />
-      </Box>
+              }}
+            />
+          </Box>
+        </> ||
+        <>
+          <Box
+            id="scrollContainer"
+            px={1}
+            style={{
+              overflowY: 'scroll',
+              flex: 1,
+              borderTopWidth: 1,
+              borderBottomWidth: 1,
+              borderColor: '#00000010'
+            }}>
+            <Typography
+              sx={{
+                color: '#00000050',
+                textAlign: 'center',
+                fontSize: '20px',
+                fontWeight: 400,
+                lineHeight: '28px',
+                fontFamily: 'Inter',
+                margin: '6px',
+              }}>
+              Your bot is disabled by admin, you should contact denbot support team.
+            </Typography>
+          </Box>
+        </>
+      }
       <Box>
         <Typography
           sx={{
@@ -274,7 +303,7 @@ export default function Preview() {
             fontFamily: 'Inter',
             margin: '6px',
           }}>
-          powered by <button  onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
+          powered by <button onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
         </Typography>
       </Box>
     </Box>
