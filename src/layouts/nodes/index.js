@@ -24,6 +24,7 @@ import CreateModal from './components/createModal';
 // import ZapierTextInput from './components/ZapierTextInput';
 
 import { BOT_URL } from 'library/constant';
+import { updateSessionApi } from 'library/apis/session';
 
 const ClickableCard = styled(Card)`
   cursor: pointer;
@@ -69,11 +70,21 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
     }
   }
 
+  const actionDisable = async () => {
+    try {
+      await updateSessionApi(item._id, { ...item, isDisable: !(item?.isDisable) })
+      fetchData().catch(console.error);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleMenuAction = (id) => {
     if (id == 'edit') actionEdit()
     else if (id === 'test') actionTest()
     else if (id === 'filecopy') actionDuplicate()
     else if (id === 'delete') actionDelete()
+    else if (id === 'disable') actionDisable()
   }
 
   const getText = () => {
@@ -82,7 +93,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
 
   return (
     <div>
-      <ClickableCard onClick={handleNav}>
+      <ClickableCard onClick={handleNav} sx={{ backgroundColor: item?.isDisable ? '#ffffff22' : '' }}>
         <MDBox display="flex" justifyContent="space-between" pt={1} px={2} flexDirection="column">
           <MDBox display="flex" justifyContent="space-between">
             <MDBox
@@ -102,7 +113,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
               {!item?.avatar && <Icon fontSize="medium" color="inherit">message</Icon>}
               {item?.avatar && <MDBox width="4rem" height="4rem" component="img" src={item?.avatar} sx={{ borderRadius: 3, borderWidth: 2, borderColor: item?.color || '#FF6900' }} />}
             </MDBox>
-            <CustomizedMenus handleMenuAction={handleMenuAction} />
+            <CustomizedMenus handleMenuAction={handleMenuAction} isDisable={item?.isDisable || false} />
           </MDBox>
           <MDBox mt={1}>
             <MDTypography variant="h5" noWrap={true}>{item?.name || 'No title'}</MDTypography>
@@ -131,7 +142,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
         </MDBox>
       </ClickableCard>
       <CreateModal item={item} open={openModal} setOpen={setOpenModal} fetchData={fetchData} />
-    </div>
+    </div >
   );
 }
 

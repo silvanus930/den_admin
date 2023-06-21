@@ -10,6 +10,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SubtitlesIcon from '@mui/icons-material/Subtitles';
+import SubtitlesOffIcon from '@mui/icons-material/SubtitlesOff';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -57,7 +59,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-const CustomizedMenus = ({ handleMenuAction }) => {
+const CustomizedMenus = ({ handleMenuAction, isDisable = false }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -103,6 +105,10 @@ const CustomizedMenus = ({ handleMenuAction }) => {
         <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
           <FileCopyIcon />
           Duplicate
+        </MenuItem>
+        <MenuItem onClick={(e) => handleClose(e, "disable")} disableRipple>
+          {isDisable ? <SubtitlesIcon /> : <SubtitlesOffIcon />}
+          {isDisable ? 'Enable' : 'Disable'}
         </MenuItem>
         <MenuItem onClick={(e) => handleClose(e, "delete")} disableRipple>
           <DeleteIcon />
