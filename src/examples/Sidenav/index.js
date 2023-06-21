@@ -198,19 +198,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         }
       />
       <List>{renderRoutes}</List>
-      <MDBox p={2} mt="auto">
-        <MDButton
-          component="a"
-          target="_blank"
-          rel="noreferrer"
-          variant="gradient"
-          color={sidenavColor}
-          fullWidth
-          onClick={handleUpdateMemberShip}
-        >
-          upgrade to pro
-        </MDButton>
-      </MDBox>
     </SidenavRoot>
   );
 }

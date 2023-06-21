@@ -266,7 +266,7 @@ export default function Preview() {
             fontFamily: 'Inter',
             margin: '6px',
           }}>
-          powered by <a href="http://13.56.98.6" style={{ color: getColorFromURL() }}>Denbot</a>
+          powered by <a href="https://www.denbot.co.uk" style={{ color: getColorFromURL() }}>Denbot</a>
         </Typography>
       </Box>
     </Box>

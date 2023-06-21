@@ -78,7 +78,7 @@ const CustomizedMenus = ({ handleMenuAction, color }) => {
         </MenuItem> */}
         <MenuItem onClick={(e) => handleClose(e, "repeat")} disableRipple>
           <ReplayIcon />
-          Repeat
+          Start Again
         </MenuItem>
       </StyledMenu>
     </Box >
