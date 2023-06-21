@@ -1,11 +1,15 @@
-import { Box, Typography, } from '@mui/material';
-import { ChatController, MuiChat, } from '../../examples/chatbotui';
 import React, { useEffect, useState } from 'react';
-import CustomizedMenus from './menu';
-import { useLocation, useParams } from 'react-router-dom';
-import { getSessionApi } from 'library/apis/session';
 import { getConnectedEdges } from 'reactflow';
+import { isValidPhoneNumber } from 'react-phone-number-input'
+import { useLocation, useParams } from 'react-router-dom';
+import { Box, Typography, } from '@mui/material';
+
+import { ChatController, MuiChat, } from '../../examples/chatbotui';
+
+import { getSessionApi } from 'library/apis/session';
+import CustomizedMenus from './menu';
 import { sendEmailToZapier } from 'library/apis/email';
+
 import { TrackGoogleAnalyticsEvent } from 'utils/googleAnalytics';
 
 export default function Preview() {
@@ -107,8 +111,8 @@ export default function Preview() {
         data = data.split(' ')[0];
       }
       else if (node.type === 'phoneNode') {
-        const regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-        if (!regex.test(data)) {
+
+        if (!(isValidPhoneNumber(data) || isValidPhoneNumber(`+44${data}`))) {
           chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid phone number.' });
           return node;
         }
@@ -200,6 +204,10 @@ export default function Preview() {
       return { type: node.type, result };
     }
   }
+  
+  const handleLink = () => {
+    parent.location.href = 'https://www.denbot.co.uk';
+  }
 
   return (
     <Box sx={{
@@ -266,7 +274,7 @@ export default function Preview() {
             fontFamily: 'Inter',
             margin: '6px',
           }}>
-          powered by <a href="https://www.denbot.co.uk" style={{ color: getColorFromURL() }}>Denbot</a>
+          powered by <button  onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
         </Typography>
       </Box>
     </Box>
