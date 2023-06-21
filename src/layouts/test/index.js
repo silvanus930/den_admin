@@ -29,7 +29,7 @@ function Test() {
 
     const color = getColorFromURL();
     const getText = () => {
-        return `<script src="${BOT_URL}_denbot.js" botId="${id}" button-color="${color}"></script>`;
+        return `<script src="${BOT_URL}denbot.js" botId="${id}" button-color="${color}"></script>`;
     }
 
     return (

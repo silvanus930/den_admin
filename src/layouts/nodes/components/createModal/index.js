@@ -27,6 +27,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
     const ref = useRef(null);
 
     const [name, setName] = useState(item?.name || '');
+    const [zapierUrl, setZapierUrl] = useState(item?.zapierUrl || '');
     const [avatar, setAvatar] = useState(item?.avatar || '');
     const [color, setColor] = useState(item?.color || '#FF6900');
 
@@ -43,7 +44,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
         setIsLoading(true);
         try {
             console.log('Data: ', item);
-            await updateSessionApi(item?._id, { name: name, avatar: avatar, color: color });
+            await updateSessionApi(item?._id, { name: name, avatar: avatar, color: color, zapierUrl: zapierUrl });
             setIsLoading(false);
         } catch (error) {
             console.log('Update Session Error:', error);
@@ -101,11 +102,19 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                     <Box ml={3} sx={{ flex: 1 }}>
                         <TextField
                             margin="dense"
-                            label="Input bot name"
+                            label="Input Your Bot Name"
                             fullWidth
                             variant="standard"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                        />
+                        <TextField
+                            margin="dense"
+                            label="Input Zapier Url to send Email"
+                            fullWidth
+                            variant="standard"
+                            value={zapierUrl}
+                            onChange={(e) => setZapierUrl(e.target.value)}
                         />
                         <TwitterPicker
                             triangle='hide'

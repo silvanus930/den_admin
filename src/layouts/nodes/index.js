@@ -21,14 +21,16 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { getSessionsApi, deleteSessionApi, createSessionApi } from 'library/apis/session';
 import CustomizedMenus from './components/menu';
 import CreateModal from './components/createModal';
-import ZapierTextInput from './components/ZapierTextInput';
+// import ZapierTextInput from './components/ZapierTextInput';
+
+import { BOT_URL } from 'library/constant';
 
 const ClickableCard = styled(Card)`
   cursor: pointer;
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5); /* Add your desired hover effect styles */
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
   }
 `;
 
@@ -75,7 +77,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
   }
 
   const getText = () => {
-    return `<script src="http://13.50.98.6/denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
+    return `<script src="${BOT_URL}denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
   }
 
   return (
@@ -171,7 +173,7 @@ function Nodes() {
   return (
     <DashboardLayout >
       <DashboardNavbar isMini />
-      <ZapierTextInput />
+      {/* <ZapierTextInput /> */}
       <MDButton
         variant="gradient"
         color="dark"
