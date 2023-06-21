@@ -1,5 +1,5 @@
-import { Box, Icon, Input, Card } from '@mui/material';
-import  { memo, useEffect, useState } from "react";
+import { Box, Icon, Input, Card, IconButton } from '@mui/material';
+import { memo, useEffect, useState } from "react";
 
 import MDInput from "components/MDInput";
 import MDBox from "components/MDBox";
@@ -9,14 +9,30 @@ import { Handle, Position } from "reactflow";
 
 const onConnect = (params) => console.log("handle onConnect", params);
 
-const TextInput = ({ title, text, setText }) => {
+const TextInput = ({ title, text, setText, setFields, id, onDelete }) => {
   return (
     <Box
       display="flex"
       flexDirection="row"
       alignItems="center"
     >
-      <MDTypography sx={{ fontSize: '12px', minWidth: '80px', textAlign: 'right' }} color="text">{title || '--'}</MDTypography>
+      <Input
+        value={title}
+        onChange={(e) => setFields(e.target.value)}
+        style={{
+          background: 'white',
+          borderRadius: 8,
+          borderColor: 'red',
+          margin: 5,
+          padding: 5,
+          overflow: 'hidden',
+          textAlign: 'right',
+          width: '150px'
+        }}
+        disableUnderline
+        multiline
+        rows={1}
+      />
       <Input
         placeholder={'Input text'}
         value={text}
@@ -30,30 +46,74 @@ const TextInput = ({ title, text, setText }) => {
           overflow: 'hidden',
           width: '200px'
         }}
-        autoFocus
         disableUnderline
         multiline
         rows={1}
       />
+      <MDBox
+        variant="gradient"
+        bgColor={'warning'}
+        color={"dark"}
+        coloredShadow={'warning'}
+        borderRadius='30px'
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width={'30px'}
+        height={'30px'}
+        mx={1}
+      >
+        <IconButton fontSize="small" color="inherit" onClick={() => onDelete(id)}>
+          <Icon fontSize="small" color="inherit">
+            {'remove'}
+          </Icon>
+        </IconButton>
+      </MDBox>
     </Box>
   );
-}
+};
 
 function EmailNode({ id, data }) {
-
   const [value, setValue] = useState(() => {
+    let initialData = {
+      name: '',
+      email: '',
+      phone: '',
+      interestedIn: '',
+      requestType: '',
+      practiceName: '',
+      practiceEmail: ''
+    }
     try {
-      return JSON.parse(data?.text || "{}");
+      if (data?.text.length) initialData = JSON.parse(data?.text);
     } catch (error) {
       console.error("Error parsing JSON:", error);
-      return {};
     }
+    return Object.keys(initialData).map(data => {
+      return { id: data, text: initialData[data] };
+    });
   });
 
   useEffect(() => {
-    console.log('Value: ', value, JSON.stringify(value));
-    data.handle && data.handle(id, { ...data, text: JSON.stringify(value) })
+    const json = {};
+    value.forEach(element => {
+      json[element.id] = element.text;
+    });
+    console.log('Value: ', json, JSON.stringify(json));
+    data.handle && data.handle(id, { ...data, text: JSON.stringify(json) });
   }, [value]);
+
+  const handleAddField = () => {
+    const newField = {
+      id: `Field${Object.keys(value).length + 1}`,
+      deleted: false,
+    };
+    setValue((prevValue) => [...prevValue, { id: newField.id, text: '' }]);
+  };
+
+  const handleDeleteField = (fieldId) => {
+    setValue((prevValue) => prevValue.filter(value => value.id != fieldId));
+  };
 
   return (
     <Card>
@@ -97,13 +157,57 @@ function EmailNode({ id, data }) {
         </MDBox>
         <MDBox display="flex" sx={{ flexDirection: 'column' }}>
           <MDTypography ml={1} color="text">EmailNode</MDTypography>
-          <TextInput title="Name" text={value?.name} setText={(text) => { setValue({ ...value, name: text }) }} />
-          <TextInput title="Email" text={value?.email} setText={(text) => { setValue({ ...value, email: text }) }} />
-          <TextInput title="Phone" text={value?.phone} setText={(text) => { setValue({ ...value, phone: text }) }} />
-          <TextInput title="InterestedIn" text={value?.interestedIn} setText={(text) => { setValue({ ...value, interestedIn: text }) }} />
-          <TextInput title="RequestType" text={value?.requestType} setText={(text) => { setValue({ ...value, requestType: text }) }} />
-          <TextInput title="PracticeName" text={value?.practiceName} setText={(text) => { setValue({ ...value, practiceName: text }) }} />
-          <TextInput title="PracticeEmail" text={value?.practiceEmail} setText={(text) => { setValue({ ...value, practiceEmail: text }) }} />
+
+          {value.map((item) =>
+            <TextInput
+              key={item.id}
+              id={item.id}
+              title={item.id}
+              text={item.text}
+              setFields={(text) => {
+                setValue((prevValue) => {
+                  console.log('PrevValue: ', prevValue);
+                  return prevValue.map((value) => {
+                    if (item.id == value.id) value.id = text
+                    return value;
+                  })
+                });
+              }}
+              setText={(text) => {
+                setValue((prevValue) => {
+                  console.log('PrevValue: ', prevValue);
+                  return prevValue.map((value) => {
+                    if (item.id == value.id) value.text = text
+                    return value;
+                  })
+                });
+              }}
+              onDelete={handleDeleteField}
+            />
+          )}
+
+          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+            <MDBox
+              variant="gradient"
+              bgColor={'success'}
+              color={"dark"}
+              coloredShadow={'success'}
+              borderRadius='30px'
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width={'30px'}
+              height={'30px'}
+              mx={0.5}
+            >
+              <IconButton fontSize="small" color="inherit" onClick={handleAddField}>
+                <Icon fontSize="small" color="inherit">
+                  {'add'}
+                </Icon>
+              </IconButton>
+            </MDBox>
+          </MDBox>
+
         </MDBox>
       </MDBox>
       <Handle
@@ -119,8 +223,7 @@ function EmailNode({ id, data }) {
         id={'handle-0'}
       />
     </Card>
-
   );
 }
 
-export default memo(EmailNode);
+export default EmailNode;
