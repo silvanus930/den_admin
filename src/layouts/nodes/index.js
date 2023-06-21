@@ -23,7 +23,7 @@ import CustomizedMenus from './components/menu';
 import CreateModal from './components/createModal';
 // import ZapierTextInput from './components/ZapierTextInput';
 
-import { BOT_URL } from 'library/constant';
+import { API_URL } from 'library/constant';
 import { updateSessionApi } from 'library/apis/session';
 
 const ClickableCard = styled(Card)`
@@ -88,7 +88,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
   }
 
   const getText = () => {
-    return `<script src="${BOT_URL}denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
+    return `<script src="${API_URL}denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
   }
 
   return (

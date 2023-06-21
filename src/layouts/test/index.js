@@ -12,7 +12,7 @@ import { Button } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 
 import EmbedChatBot from 'examples/EmbedChatBot'
-import { BOT_URL } from 'library/constant';
+import { API_URL } from 'library/constant';
 
 function Test() {
 
@@ -29,7 +29,7 @@ function Test() {
 
     const color = getColorFromURL();
     const getText = () => {
-        return `<script src="${BOT_URL}denbot.js" botId="${id}" button-color="${color}"></script>`;
+        return `<script src="${API_URL}denbot.js" botId="${id}" button-color="${color}"></script>`;
     }
 
     return (
