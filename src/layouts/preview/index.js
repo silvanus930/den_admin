@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { getConnectedEdges } from 'reactflow';
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useLocation, useParams } from 'react-router-dom';
@@ -12,18 +12,17 @@ import { sendEmailToZapier } from 'library/apis/email';
 
 import { TrackGoogleAnalyticsEvent } from 'utils/googleAnalytics';
 
-export default function Preview() {
+function Preview() {
 
   const { id } = useParams();
   const location = useLocation();
 
-  let resultData = {};
   let count = 0;
   let nodes = [];
   let edges = [];
 
+  const [resultData, setResultData] = useState({});
   const [isRedTheme, setIsRedTheme] = useState(true);
-
   const [botData, setBotData] = useState(null);
   const [currentNode, setCurrentNode] = useState(null);
 
@@ -105,28 +104,33 @@ export default function Preview() {
       if (node.type === 'nameNode') {
         const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
         if (!regex.test(data)) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid name.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Please input valid name.' });
           return node;
         }
         data = data.split(' ')[0];
+        console.log('Name Data ==========> ', data);
       }
+
       else if (node.type === 'phoneNode') {
 
         if (!(isValidPhoneNumber(data) || isValidPhoneNumber(`+44${data}`))) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid phone number.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Please input valid phone number.' });
           return node;
         }
       }
+
       else if (node.type === 'emailNode') {
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!regex.test(data)) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Pleae input valid email.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Please input valid email.' });
           return node;
         }
       }
+
       else if (node.type === 'sendEmailNode') {
         sendEmailToZapier(node?.data, chatCtl.getMessages());
       }
+
       else if (node.type === 'googleAnalyticsNode') {
         try {
           const data = JSON.parse(node?.data?.text);
@@ -137,16 +141,17 @@ export default function Preview() {
           TrackGoogleAnalyticsEvent('a', 'a', 'a');
         }
       }
-      resultData[node.id] = data;
-      console.log('ResultData in this node', node.id, data, resultData);
+
+      // in other cases
+      setResultData({ ...resultData, [node.id]: data })
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       return nextNode;
+
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
       const index = node.data.texts.findIndex(text => text === result?.result?.value);
       const linkedEdge = linkedEdges.find(edge => (edge.source === node.id && (edge.sourceHandle === `handle-${index}` || index === 0)));
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
-      resultData[node.id] = result?.result?.value;
-      console.log('ResultData in this node', node.id, resultData);
+      setResultData({ ...resultData, [node.id]: result?.result?.value })
       return nextNode;
     }
     return { type: 'endNode' };
@@ -206,7 +211,7 @@ export default function Preview() {
   }
 
   const handleLink = () => {
-    parent.location.href = 'https://www.denbot.co.uk';
+    parent.window.open('https://www.denbot.co.uk', '_blank');
   }
 
   return (
@@ -309,3 +314,5 @@ export default function Preview() {
     </Box>
   );
 }
+
+export default memo(Preview);

@@ -2,6 +2,7 @@ import { Avatar, Box, Grow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { Link } from 'react-router-dom';
 
 import { Message, MessageContent } from '../chat-types';
 
@@ -66,7 +67,36 @@ export function MuiMessage({
     </Box>
   );
 
+  const handleLink = (link: string) => {
+    parent.window.open(link, '_blank');
+  }
+
   console.log('Message', message);
+
+  const parseText = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.split(urlRegex).map((word: string, index: number) => {
+      if (word.match(urlRegex)) {
+        return (
+          <button
+            style={{
+              fontSize: '15px',
+              fontWeight: 400,
+              fontFamily: 'Inter',
+              wordWrap: 'break-word',
+              color: 'blue',
+              width: '100%',
+              textAlign: 'left'
+            }}
+            onClick={() => handleLink(word)}
+          >
+            {word}
+          </button>
+        );
+      }
+      return word;
+    });
+  };
 
   return (
     <Grow in>
@@ -92,7 +122,7 @@ export function MuiMessage({
               {showIndicator && <BeatLoader color={color} size={10} />}
               {!showIndicator && (
                 message.type === 'text' ? (
-                  <Typography style={{ fontSize: '15px', fontWeight: 400, fontFamily: 'Inter' }}>{message.content}</Typography>
+                  <Typography style={{ fontSize: '15px', fontWeight: 400, fontFamily: 'Inter', wordWrap: 'break-word' }}>{parseText(message.content as string)}</Typography>
                 ) :
                   message.type === 'jsx' ? <div dangerouslySetInnerHTML={{ __html: message.content as string }}></div> : <div />)}
             </Box>
