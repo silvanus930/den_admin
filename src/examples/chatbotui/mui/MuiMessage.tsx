@@ -74,29 +74,42 @@ export function MuiMessage({
   console.log('Message', message);
 
   const parseText = (text: string) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.split(urlRegex).map((word: string, index: number) => {
-      if (word.match(urlRegex)) {
+    const urlRegex = /([^\s]+\[https?:\/\/[^\s]+\])/g;
+    const urlRegex1 = /([^\s]+)\[(https?:\/\/[^\s]+)\]/g;
+    const parts = text.split(urlRegex);
+    return parts.map((part: string, index: number) => {
+      const subParts = part.split(urlRegex1);
+      if (subParts.length > 1) {
+        const word = subParts[1];
+        const url = subParts[2];
+
         return (
-          <button
-            style={{
-              fontSize: '15px',
-              fontWeight: 400,
-              fontFamily: 'Inter',
-              wordWrap: 'break-word',
-              color: 'blue',
-              width: '100%',
-              textAlign: 'left'
-            }}
-            onClick={() => handleLink(word)}
-          >
-            {word}
-          </button>
+          <span key={index}>
+            <a
+              style={{
+                fontSize: '15px',
+                fontWeight: 400,
+                fontFamily: 'Inter',
+                wordWrap: 'break-word',
+                color: 'blue',
+                width: '100%',
+                textAlign: 'left',
+                textDecoration: 'underline',
+                cursor: 'pointer'
+              }}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {word}
+            </a>
+          </span>
         );
       }
-      return word;
+      return <span key={index}>{part}</span>;
     });
   };
+
 
   return (
     <Grow in>
