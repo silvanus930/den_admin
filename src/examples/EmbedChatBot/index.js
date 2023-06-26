@@ -3,7 +3,7 @@ import "./bot.css";
 import "reactflow/dist/style.css";
 import { BOT_URL } from 'library/constant';
 
-function EmbedChatBot({ id, color }) {
+function EmbedChatBot({ id, color, bubbleText = '' }) {
 
   const [showIframe, setShowIframe] = useState(false);
   const [initial, setInitial] = useState(false);
@@ -33,8 +33,8 @@ function EmbedChatBot({ id, color }) {
         onClick={toggleIframe}
       >
 
-        <div class={`${!showIframe ? `tooltiptext` : `tooltiphide`}`}>
-          <p style={{color: color, fontSize: '15px', fontWeight: 600}}>How can I help?</p>
+        <div class={`${!showIframe ? `tooltiptext` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
+          <p style={{ color: color, fontSize: '15px', fontWeight: 600 }}>{bubbleText}</p>
           <span class="triangle"></span>
         </div>
 

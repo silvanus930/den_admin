@@ -20,16 +20,19 @@ function Test() {
     const location = useLocation();
 
     const [copyState, setCopystate] = useState(false);
+    const queryParams = new URLSearchParams(location.search);
 
     const getColorFromURL = () => {
-        const queryParams = new URLSearchParams(location.search);
-        const color = '#' + queryParams.get('color');
-        return color;
+        return '#' + queryParams.get('color');
     };
+
+    const bubbleText = queryParams.get('bubbleText') || '';
+
+    const bubbleTextTag = bubbleText.length ? `bubble-text="${bubbleText}"` : '';
 
     const color = getColorFromURL();
     const getText = () => {
-        return `<script src="${API_URL}denbot.js" botId="${id}" button-color="${color}"></script>`;
+        return `<script src="${API_URL}denbot.js" botId="${id}" button-color="${color}" ${bubbleTextTag}></script>`;
     }
 
     return (
@@ -40,12 +43,12 @@ function Test() {
                     <Button onMouseEnter={() => setCopystate(false)} onClick={() => { setCopystate(true) }}>
                         <CopyToClipboard text={getText()}>
                             <MDBox sx={{ borderWidth: 1, borderColor: '#ffffff', borderRadius: '10px', maxWidth: '50vw', padding: '10px' }}>
-                                <MDTypography variant="h6" sx={{wordWrap: 'break-word'}}>{getText()}</MDTypography>
+                                <MDTypography variant="h6" sx={{ wordWrap: 'break-word' }}>{getText()}</MDTypography>
                             </MDBox>
                         </CopyToClipboard>
                     </Button>
                 </Tooltip>
-                <EmbedChatBot id={id} color={color} />
+                <EmbedChatBot id={id} color={color} bubbleText={bubbleText} />
             </MDBox>
         </DashboardLayout>
     );

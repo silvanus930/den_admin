@@ -49,7 +49,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
 
   const actionTest = () => {
     const color = item.color ? item.color : '#FF6900';
-    navigate(`/test/${item._id}?color=${color.substring(1)}`);
+    navigate(`/test/${item._id}?color=${color.substring(1)}${item?.isBubbleEnabled ? '&bubbleText=' + item?.bubbleText : ''}`);
   }
 
   const actionDuplicate = async () => {
@@ -88,7 +88,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
   }
 
   const getText = () => {
-    return `<script src="${API_URL}denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'}"></script>`;
+    return `<script src="${API_URL}denbot.js" botId="${item._id}" button-color="${item.color ? item.color : '#FF6900'} bubble-text="${item?.bubbleText || ''}"></script>`;
   }
 
   return (
