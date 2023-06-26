@@ -93,6 +93,7 @@ function Preview() {
 
     if (node.type === 'startNode'
       || node.type === 'nameNode'
+      || node.type === 'textNode'
       || node.type === 'emailNode'
       || node.type === 'phoneNode'
       || node.type === 'imageNode'
@@ -183,6 +184,10 @@ function Preview() {
 
     } else if (node.type === 'phoneNode') {
       const result = await chatCtl.setActionRequest({ type: 'text', placeholder: 'Please enter your phone number.', });
+      return { type: node.type, result };
+
+    } else if (node.type === 'textNode') {
+      const result = await chatCtl.setActionRequest({ type: 'text', placeholder: 'Please enter your question.', });
       return { type: node.type, result };
 
     } else if (node.type === 'imageNode') {

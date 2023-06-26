@@ -118,5 +118,14 @@ export const PhoneInputNode = ({ id, data }) =>
     data={data}
   />
 
+export const TextInputNode = ({ id, data }) =>
+  <CustomNode
+    title="Text Input Node"
+    placeHodler="Please Input your question."
+    icon="message"
+    id={id}
+    data={data}
+  />
+
 
 export default memo(CustomNode);

@@ -20,6 +20,7 @@ export default function NodeSelectorDialog(props) {
         { title: 'Send Message', value: 'messageNode', icon: 'message' },
         { title: 'Send Image', value: 'imageNode', icon: 'image' },
         { title: 'Input Name', value: 'nameNode', icon: 'message' },
+        { title: 'Input Text', value: 'textNode', icon: 'message' },
         { title: 'Input Phone Number', value: 'phoneNode', icon: 'phone' },
         { title: 'Input Email', value: 'emailNode', icon: 'email' },
         { title: 'Send Email', value: 'sendEmailNode', icon: 'poll' },

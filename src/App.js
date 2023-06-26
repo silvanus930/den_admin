@@ -87,15 +87,12 @@ export default function App() {
 
       if (route.route) {
         if (route.key === 'sign-up' || route.key === 'Preview') {
-          console.log('Public Router', route.key);
           return <Route exact path={route.route} element={route.component} key={route.key} />;
         }
         else if (route.key === 'sign-in') {
-          console.log('LogIn Router', route.key);
           return <Route exact path={route.route} element={ !checkUserAuth() ? route.component : <Navigate to="/nodes" />} key={route.key} />;
         }
         else {
-          console.log('Private Router', route.key);
           return <Route exact path={route.route} element={ checkUserAuth() ? route.component : <Navigate to="/authentication/sign-in" />} key={route.key} />;
         }
       }
@@ -106,7 +103,6 @@ export default function App() {
 
   const routesForNav = (routes) => {
     const includeKeys = ['Nodes', 'builder', 'sign-in'];
-    // const includeKeys = ['Nodes', 'builder', 'billing', 'sign-in'];
     let updateRoutes = routes.filter(route => includeKeys.includes(route.key));
     updateRoutes = updateRoutes.map((route) => {
       if (route.key === 'sign-in') {

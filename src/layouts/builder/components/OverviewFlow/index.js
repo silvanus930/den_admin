@@ -33,7 +33,7 @@ import EndNode from "../Nodes/EndNode";
 import MessageNode from "../Nodes/MessageNode";
 import SendEmailNode from "../Nodes/EmailNode";
 import GoogleAnalyticsNode from "../Nodes/GoogleAnalyticsNode";
-import { NameInputNode, EmailInputNode, PhoneInputNode } from "../Nodes/CustomNode";
+import { NameInputNode, EmailInputNode, PhoneInputNode, TextInputNode } from "../Nodes/CustomNode";
 import PlusNode from "../Nodes/PlusNode";
 
 import PlusEdge from "../Edges/PlusEdge";
@@ -77,6 +77,7 @@ const onPaneMouseMove = (e) => console.log("pane move", e.clientX, e.clientY);
 const SIZE = {
   imageNode: { width: 342, height: 159 },
   nameNode: { width: 342, height: 159 },
+  textNode: { width: 342, height: 159 },
   emailNode: { width: 342, height: 159 },
   sendEmailNode: { width: 342, height: 159 },
   googleAnalyticsNode: { width: 342, height: 159 },
@@ -92,6 +93,7 @@ const SIZE = {
 
 const nodeTypes = {
   nameNode: NameInputNode,
+  textNode: TextInputNode,
   emailNode: EmailInputNode,
   phoneNode: PhoneInputNode,
   sendEmailNode: SendEmailNode,
@@ -124,6 +126,13 @@ const OverviewFlow = ({ item }) => {
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   const isValidConnection = (connection) => {
     console.log("isValid Connection: ", connection);
     
@@ -138,6 +147,7 @@ const OverviewFlow = ({ item }) => {
   };
 
   const getId = () => `node-${nodes.length + 1}`;
+
   const getEdgeId = (startNode, endNode) => {
     const start = parseInt(startNode.match(/-(\d+)/)[1], 10);
     const end = parseInt(endNode.match(/-(\d+)/)[1], 10);
@@ -430,13 +440,6 @@ const OverviewFlow = ({ item }) => {
       console.log(`Redo Pressed!`);
     }
   }, []);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
 
   const handleUndo = () => {
     if (historyHandler <= 0) return;
