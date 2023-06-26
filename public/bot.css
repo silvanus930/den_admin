@@ -1,12 +1,68 @@
 @import url("https://use.typekit.net/uul8cph.css");
 
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltiptext {
+  left: -97px;
+  top: -55px;
+  visibility: visible;
+  opacity: 1;
+  transition: top 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  position: relative;
+  background-color: #fff;
+  width: 137px;
+  height: 45px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: black;
+  border-radius: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 11px 24px rgba(0, 0, 0, 0.07);
+  padding: 10px;
+}
+
+.triangle {
+  display: block;
+  height: 15px;
+  width: 15px;
+  background-color: #fff;
+  border: inherit;
+  border-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  bottom: -7.4px;
+  left: calc(70% - 0px);
+  clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+  transform: rotate(-45deg);
+  border-radius: 0 0 0 0.25em;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltiphide {
+  visibility: hidden;
+  opacity: 0;
+  top: 0px;
+}
+
 .app-active {
   right: 450 !important;
   transition: right 0.5s ease;
 }
 
 .app-inActive {
-  right: -450px !important;
+  right: -100% !important;
   transition: right 0.5s ease;
 }
 
