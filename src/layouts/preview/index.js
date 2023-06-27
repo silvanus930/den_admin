@@ -129,7 +129,13 @@ function Preview() {
       }
 
       else if (node.type === 'sendEmailNode') {
-        sendEmailToZapier(node?.data, chatCtl.getMessages());
+        (async () => {
+          const result = await sendEmailToZapier(node?.data, chatCtl.getMessages());
+          console.log('Email Result: ', result?.code ? result.code.toString() : '' );
+          setResultData({ ...resultData, [node.id]: result?.code ? result.code.toString() : '' })
+        })();
+        const nextNode = nodes.find(node => node.id === linkedEdge.target);
+        return nextNode;
       }
 
       else if (node.type === 'googleAnalyticsNode') {
@@ -143,7 +149,6 @@ function Preview() {
         }
       }
 
-      // in other cases
       setResultData({ ...resultData, [node.id]: data })
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       return nextNode;

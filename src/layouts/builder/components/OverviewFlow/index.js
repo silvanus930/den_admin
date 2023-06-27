@@ -126,13 +126,6 @@ const OverviewFlow = ({ item }) => {
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
-
   const isValidConnection = (connection) => {
     console.log("isValid Connection: ", connection);
     
@@ -440,6 +433,13 @@ const OverviewFlow = ({ item }) => {
       console.log(`Redo Pressed!`);
     }
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   const handleUndo = () => {
     if (historyHandler <= 0) return;

@@ -76,6 +76,7 @@ const TextInput = ({ title, text, setText, setFields, id, onDelete }) => {
 function EmailNode({ id, data }) {
   const [value, setValue] = useState(() => {
     let initialData = {
+      zapierUrl: '',
       name: '',
       email: '',
       phone: '',

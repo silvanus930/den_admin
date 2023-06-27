@@ -1,21 +1,25 @@
-import { getZapierUrlApi } from 'library/apis/admin';
 
 export const sendEmailToZapier = async (data, messages) => {
 
+  const body = JSON.parse(data?.text);
+  const zapierUrl = body?.zapierUrl;
+
   console.log('Messages for email:', messages);
+  console.log('Email Data: ', body);
 
-  const zapierUrl = await getZapierUrlApi();
-  const response = await fetch(
-    zapierUrl,
-    {
-      method: 'POST',
-      body: data,
-    },
-  );
-  // Generate the chat history email template
-  const chatHistoryEmailTemplate = generateChatHistoryEmailTemplate(messages);
+  if (zapierUrl) {
+    const chatHistoryEmailTemplate = generateChatHistoryEmailTemplate(messages);
+    try {
+      await fetch(zapierUrl, { method: 'POST', body: { ...body, messages: messages } });
+    } catch (error) {
+      return { message: 'Message sending error.', code: 500}
+    }
+    console.log(chatHistoryEmailTemplate); // Use the generated template to send the email  
+  } else {
+    return { message: 'Your ZapierUrl is missing.', code: 400 }
+  }
+  return { message: 'Successfully sent the email.', code: 200 }
 
-  console.log(chatHistoryEmailTemplate); // Use the generated template to send the email
 }
 
 function generateChatHistoryEmailTemplate(history) {

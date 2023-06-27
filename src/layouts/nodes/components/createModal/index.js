@@ -124,14 +124,14 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <TextField
+                        {/* <TextField
                             margin="dense"
                             label="Input Zapier Url to send Email"
                             fullWidth
                             variant="standard"
                             value={zapierUrl}
                             onChange={(e) => setZapierUrl(e.target.value)}
-                        />
+                        /> */}
                         <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'flex-end' }}>
                             <Checkbox
                                 checked={isBubbleEnabled}
@@ -139,7 +139,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                             />
                             <TextField
                                 margin="dense"
-                                label="Input your bot bubble text"
+                                label="Input Your Bot Bubble Text"
                                 fullWidth
                                 variant="standard"
                                 value={bubbleText}
