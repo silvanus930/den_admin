@@ -2,8 +2,9 @@ import ReactGA4 from "react-ga4";
 
 const InitializeGoogleAnalytics = (id) => {
     // Initialize GA4 - Add your measurement ID
-    ReactGA4.initialize(id);
-    console.log("GA INITIALIZED WITH: ", id);
+    const gTagID = id || 'G-1F127CLEGN';
+    ReactGA4.initialize(gTagID);
+    console.log("GA INITIALIZED WITH: ", gTagID);
 };
 
 const TrackGoogleAnalyticsEvent = (id, category, action, label) => {
