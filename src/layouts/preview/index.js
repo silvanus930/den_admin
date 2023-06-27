@@ -143,9 +143,9 @@ function Preview() {
           const data = JSON.parse(node?.data?.text);
           console.log('GA data: ', node?.data?.text);
           console.log('GA data===: ', data);
-          TrackGoogleAnalyticsEvent(data?.category || 'b', data?.action || 'b', data?.event || 'b');
+          TrackGoogleAnalyticsEvent(data?.id || 'b', data?.category || 'b', data?.action || 'b', data?.event || 'b');
         } catch (error) {
-          TrackGoogleAnalyticsEvent('a', 'a', 'a');
+          TrackGoogleAnalyticsEvent('a', 'a', 'a', 'a');
         }
       }
 

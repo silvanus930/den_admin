@@ -97,6 +97,7 @@ function GoogleAnalyticsNode({ id, data }) {
         </MDBox>
         <MDBox display="flex" sx={{ flexDirection: 'column' }}>
           <MDTypography ml={1} color="text">Google Analytics Node</MDTypography>
+          <TextInput title="GTagID" text={value?.id} setText={(text) => { setValue({ ...value, id: text }) }} />
           <TextInput title="Category" text={value?.category} setText={(text) => { setValue({ ...value, category: text }) }} />
           <TextInput title="Action" text={value?.action} setText={(text) => { setValue({ ...value, action: text }) }} />
           <TextInput title="Label" text={value?.label} setText={(text) => { setValue({ ...value, label: text }) }} />
