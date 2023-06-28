@@ -59,7 +59,7 @@ export function MuiMultiSelectInput({
           maxWidth: '100%',
         },
         '& > * + *': {
-          mt: 1,
+          mt: 0.5,
         },
       }}
     >
@@ -70,7 +70,7 @@ export function MuiMultiSelectInput({
           value={o.value}
           onClick={(e): void => handleSelect(e.currentTarget.value)}
           variant={values.includes(o.value) ? 'outlined' : 'contained'}
-          sx={{textTransform: 'none !important'}}
+          sx={{ textTransform: 'none !important', margin: '3px !important' }}
           color="primary"
         >
           {o.text}

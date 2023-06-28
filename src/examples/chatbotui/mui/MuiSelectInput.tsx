@@ -41,10 +41,13 @@ export function MuiSelectInput({
     <Box
       sx={{
         margin: 1,
+        maxHeight: '32vh',
         borderRadius: 2,
         flex: '1 1 auto',
         display: 'flex',
         flexDirection: 'column',
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
         '& > *': {
           flex: '0 0 auto',
           maxWidth: '100%',
@@ -78,14 +81,13 @@ export function MuiSelectInput({
               setResponse(e.currentTarget.value);
             }}
             sx={{
-              margin: 1, 
-              background: '#ffffff', 
+              margin: '3px',
+              background: '#ffffff',
               fontFamily: 'Inter',
               fontSize: '14px',
               fontWeight: 500,
-              textTransform: 'none !important', 
-              color: color, 
-              textAlign: 'left !important', 
+              textTransform: 'none !important',
+              color: color,
               borderColor: color, '&:hover': {
                 borderColor: color + 'A9',
               }

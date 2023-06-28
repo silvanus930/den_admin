@@ -105,7 +105,7 @@ function Preview() {
       if (node.type === 'nameNode') {
         const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
         if (!regex.test(data)) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Please input valid name.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That name appeares to be incorrect, Please enter a valid name.' });
           return node;
         }
         data = data.split(' ')[0];
@@ -115,7 +115,7 @@ function Preview() {
       else if (node.type === 'phoneNode') {
 
         if (!(isValidPhoneNumber(data) || isValidPhoneNumber(`+44${data}`))) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Please input valid phone number.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That number appeares to be incorrect, Please enter a valid phone number.' });
           return node;
         }
       }
@@ -123,7 +123,7 @@ function Preview() {
       else if (node.type === 'emailNode') {
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!regex.test(data)) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'Please input valid email.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That email appeares to be incorrect, Please enter a valid email.' });
           return node;
         }
       }
@@ -220,8 +220,21 @@ function Preview() {
     }
   }
 
-  const handleLink = () => {
-    parent.window.open('https://www.denbot.co.uk', '_blank');
+  // const handleLink = () => {
+  //   console.log('Parent window info: ', parent);
+  //   parent.window.top.open('http://localhost:3000', '_blank');
+  //   // parent.window.top.open('https://www.denbot.co.uk', '_blank');
+  //   // parent.window.open('https://www.denbot.co.uk', '_blank');
+  // }
+
+  function handleLink() {
+    const link = 'https://www.denbot.co.uk';
+    try {
+      parent.window.postMessage({action: 'openDenBotSite', link: link}, '*');
+      console.log('---Post Successed!!!');
+    } catch (error) {
+      console.log('---Error: ', error);  
+    }
   }
 
   return (

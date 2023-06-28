@@ -74,7 +74,7 @@ export function MuiTextInput({
           </IconButton>
         }
         style={{
-          background: 'white', borderRadius: 10, borderColor: 'red', borderWidth: '0', marginRight: 10, paddingLeft: 10,
+          background: 'white', borderRadius: 10, borderColor: 'red', borderWidth: '0', marginRight: 10, paddingLeft: 10, color: 'black'
         }}
         autoFocus
         disableUnderline
