@@ -15,6 +15,11 @@ function EmbedChatBot({ id, color, bubbleText = '' }) {
 
   useEffect(() => toggleIframe(), []);
 
+  window.addEventListener('message', function (event) {
+    console.log('Received message:', event.data);
+    if (event.data.action === 'closeBotModal') toggleIframe();
+  });
+
   return (
     <>
       {initial && <div
