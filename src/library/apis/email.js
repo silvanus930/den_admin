@@ -10,9 +10,15 @@ export const sendEmailToZapier = async (data, messages) => {
   if (zapierUrl) {
     const chatHistoryEmailTemplate = generateChatHistoryEmailTemplate(messages);
     try {
-      await fetch(zapierUrl, { method: 'POST', body: { ...body, messages: messages } });
+      await fetch(zapierUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...body, messages: messages })
+      });
     } catch (error) {
-      return { message: 'Message sending error.', code: 500}
+      return { message: 'Message sending error.', code: 500 }
     }
     console.log(chatHistoryEmailTemplate); // Use the generated template to send the email  
   } else {
