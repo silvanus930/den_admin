@@ -130,7 +130,7 @@ export function MuiMessage({
               py={1}
               px={2}
               bgcolor={!message.self ? color + '1A' : '#0000000A'}
-              borderRadius={'6px'}
+              borderRadius={!message.self ? '0 6px 6px 6px' : '6px 6px 0px 6px'}
             >
               {showIndicator && <BeatLoader color={color} size={10} />}
               {!showIndicator && (

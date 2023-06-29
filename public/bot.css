@@ -16,11 +16,6 @@
   background-color: #fff;
   width: 'fit-content';
   height: 45px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
   color: black;
   border-radius: 0.5em;
   display: flex;
@@ -29,6 +24,14 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0px 11px 24px rgba(0, 0, 0, 0.07);
   padding: 10px;
+}
+
+.dt-tooltiptext p {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
 }
 
 .dt-triangle {
@@ -63,7 +66,7 @@
 
 .dt-app-inActive {
   right: -100% !important;
-  transition: right 0.5s ease;
+  transition: right 1.5s ease;
 }
 
 .dt-button-active {

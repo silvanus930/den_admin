@@ -81,7 +81,11 @@ function Preview() {
     count++;
     nodes = botData.nodes;
     edges = botData.edges;
-    if (currentNode.type === 'endNode' || count > 200) return;
+    if (currentNode.type === 'endNode' || count > 200) {
+      handleCloseBot();
+      return;
+    }
+
     const result = await setActionByNode(currentNode);
     console.log('Result from this: ', currentNode, result);
     setCurrentNode({ ...getNextNode(nodes, edges, result, currentNode), number: count });
@@ -131,7 +135,7 @@ function Preview() {
       else if (node.type === 'sendEmailNode') {
         (async () => {
           const result = await sendEmailToZapier(node?.data, chatCtl.getMessages());
-          console.log('Email Result: ', result?.code ? result.code.toString() : '' );
+          console.log('Email Result: ', result?.code ? result.code.toString() : '');
           setResultData({ ...resultData, [node.id]: result?.code ? result.code.toString() : '' })
         })();
         const nextNode = nodes.find(node => node.id === linkedEdge.target);
@@ -220,20 +224,25 @@ function Preview() {
     }
   }
 
-  // const handleLink = () => {
-  //   console.log('Parent window info: ', parent);
-  //   parent.window.top.open('http://localhost:3000', '_blank');
-  //   // parent.window.top.open('https://www.denbot.co.uk', '_blank');
-  //   // parent.window.open('https://www.denbot.co.uk', '_blank');
-  // }
+  function handleCloseBot() {
+    setTimeout(() => {
+      try {
+        parent.window.postMessage({ action: 'closeBotModal' }, '*');
+        console.log('---Post Successed!!! closeBotModal');
+      } catch (error) {
+        console.log('---Error: ', error);
+      }
+    }, 2000); // Delay in milliseconds (2 seconds)
+  }
+
 
   function handleLink() {
     const link = 'https://www.denbot.co.uk';
     try {
-      parent.window.postMessage({action: 'openDenBotSite', link: link}, '*');
+      parent.window.postMessage({ action: 'openDenBotSite', link: link }, '*');
       console.log('---Post Successed!!!');
     } catch (error) {
-      console.log('---Error: ', error);  
+      console.log('---Error: ', error);
     }
   }
 
@@ -241,6 +250,9 @@ function Preview() {
     <Box sx={{
       height: '80vh',
       width: '100%',
+      maxWidth: '80vw',
+      marginLeft: '50px',
+      boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.04)',
       backgroundColor: '#ffffff',
       borderRadius: '12px',
       position: 'absolute',
@@ -276,7 +288,7 @@ function Preview() {
               flex: 1,
               borderTopWidth: 1,
               borderBottomWidth: 1,
-              borderColor: '#00000010'
+              borderColor: '#00000010',
             }}>
             <MuiChat
               chatController={chatCtl}
