@@ -4,6 +4,8 @@ export const sendEmailToZapier = async (data, messages) => {
   const body = JSON.parse(data?.text);
   const zapierUrl = body?.zapierUrl;
 
+  body?.zapierUrl && delete body.zapierUrl;
+
   console.log('Messages for email:', messages);
   console.log('Email Data: ', body);
 
@@ -12,10 +14,7 @@ export const sendEmailToZapier = async (data, messages) => {
     try {
       await fetch(zapierUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...body, messages: messages })
+        body: JSON.stringify({ ...body, messages: chatHistoryEmailTemplate })
       });
     } catch (error) {
       return { message: 'Message sending error.', code: 500 }
