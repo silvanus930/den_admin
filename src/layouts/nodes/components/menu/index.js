@@ -7,6 +7,7 @@ import Icon from '@mui/material/Icon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
+import BackupIcon from '@mui/icons-material/Backup';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -105,6 +106,10 @@ const CustomizedMenus = ({ handleMenuAction, isDisable = false }) => {
         <MenuItem onClick={(e) => handleClose(e, "filecopy")} disableRipple>
           <FileCopyIcon />
           Duplicate
+        </MenuItem>
+        <MenuItem onClick={(e) => handleClose(e, "backup")} disableRipple>
+          <BackupIcon />
+          Backup
         </MenuItem>
         <MenuItem onClick={(e) => handleClose(e, "disable")} disableRipple>
           {isDisable ? <SubtitlesIcon /> : <SubtitlesOffIcon />}

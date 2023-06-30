@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { toast } from 'react-toastify';
 
 import Grid from "@mui/material/Grid";
 import { Icon, Card, Divider, IconButton } from "@mui/material";
@@ -61,6 +62,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
       console.log(error);
     }
   }
+
   const actionDelete = async () => {
     try {
       await deleteSessionApi(item._id);
@@ -79,12 +81,49 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
     }
   }
 
+  const actionBackup = async () => {
+    try {
+      const options = {
+        suggestedName: `denbot-backup-${item.name ? item.name : 'No Title'}.json`, // Set the initial file name
+        types: [
+          {
+            description: 'JSON Files',
+            accept: { 'application/json': ['.json'] }, // Specify the file extension
+          },
+        ],
+      };
+      let handle = null;
+      try {
+        handle = await window.showSaveFilePicker(options);
+      } catch (error) {
+        return;
+      }
+      const writableStream = await handle.createWritable();
+      await writableStream.write(JSON.stringify(item));
+      await writableStream.close();
+      toast.success('Your bot saved successfully', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } catch (error) {
+      toast('Error saving text to file:');
+      console.error('Error saving text to file:', error);
+    }
+  };
+
   const handleMenuAction = (id) => {
     if (id == 'edit') actionEdit()
     else if (id === 'test') actionTest()
     else if (id === 'filecopy') actionDuplicate()
     else if (id === 'delete') actionDelete()
     else if (id === 'disable') actionDisable()
+    else if (id === 'backup') actionBackup()
   }
 
   const getText = () => {
@@ -166,7 +205,7 @@ function Nodes() {
   const fetchData = async () => {
     try {
       const data = await getSessionsApi();
-      console.log(data.data);
+      console.log(JSON.stringify(data.data));
       setItem(data.data);
     } catch (error) {
       console.log('Error');
@@ -177,6 +216,40 @@ function Nodes() {
     navigate('/builder');
   }
 
+  const handleRestore = async () => {
+    try {
+      let fileHandle;
+
+      const options = {
+        types: [{
+          description: 'JSON Files',
+          accept: { 'application/json': ['.json'] }, // Specify the file extension
+        },],
+      };
+
+      try { [fileHandle] = await window.showOpenFilePicker(options); } catch (error) { return; }
+      
+      const file = await fileHandle.getFile();
+      const text = await file.text();
+      const item = JSON.parse(text);
+      const data = { nodes: item.nodes, edges: item.edges, color: item.color, avatar: item.avatar, name: item.name }
+      await createSessionApi(data);
+      fetchData().catch(console.error);
+    } catch (error) {
+      console.error('Error loading file:', error);
+      toast.error('🦄 The bot loading error!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
+
   const handleNotification = state => {
     openAlert();
   }
@@ -185,6 +258,12 @@ function Nodes() {
     <DashboardLayout >
       <DashboardNavbar isMini />
       {/* <ZapierTextInput /> */}
+      <MDButton
+        variant="gradient"
+        color="dark"
+        sx={{ marginRight: 1 }}
+        startIcon={<Icon>restore</Icon>}
+        onClick={handleRestore}>Restore Bot</MDButton>
       <MDButton
         variant="gradient"
         color="dark"
