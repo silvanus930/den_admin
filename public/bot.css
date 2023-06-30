@@ -27,7 +27,8 @@
 }
 
 .dt-tooltiptext p {
-  font-family: 'Inter';
+  font-family: 'Jost';
+  /* font-family: 'Inter'; */
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
