@@ -43,6 +43,7 @@ export default function NodeSelectorDialog(props) {
             <MDBox sx={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '12px' }}>
                 {nodeData.map((node) => (
                     <MDBox
+                        key={`selector-${node.value}`}
                         variant="gradient"
                         bgColor="info"
                         borderRadius="lg"
