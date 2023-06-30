@@ -66,6 +66,7 @@ export function MuiTextInput({
         onChange={(e): void => setValue(e.target.value)}
         endAdornment={
           <IconButton sx={{
+            borderRadius: '8px',
             background: color + '19' ,'&:hover': {
               background: color + '29',
             },
