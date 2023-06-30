@@ -274,7 +274,7 @@ function Preview() {
             fontFamily: 'Inter',
             fontWeight: 500
           }}>
-          {`Welcome to ${botData?.name ? botData?.name : `Denbot`}!`}
+          {`Welcome to ${botData?.name ? botData?.name : `Denbot`}`}
         </Typography>
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
