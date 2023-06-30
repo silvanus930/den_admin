@@ -109,7 +109,7 @@ function Preview() {
       if (node.type === 'nameNode') {
         const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
         if (!regex.test(data)) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That name appeares to be incorrect, Please enter a valid name.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That name appeares to be incorrect, please enter a valid name.' });
           return node;
         }
         data = data.split(' ')[0];
@@ -119,7 +119,7 @@ function Preview() {
       else if (node.type === 'phoneNode') {
 
         if (!(isValidPhoneNumber(data) || isValidPhoneNumber(`+44${data}`))) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That number appeares to be incorrect, Please enter a valid phone number.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That number appeares to be incorrect, please enter a valid phone number.' });
           return node;
         }
       }
@@ -127,7 +127,7 @@ function Preview() {
       else if (node.type === 'emailNode') {
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!regex.test(data)) {
-          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That email appeares to be incorrect, Please enter a valid email.' });
+          chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That email appeares to be incorrect, please enter a valid email.' });
           return node;
         }
       }
