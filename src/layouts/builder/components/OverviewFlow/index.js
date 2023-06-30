@@ -128,8 +128,8 @@ const OverviewFlow = ({ item }) => {
 
   const isValidConnection = (connection) => {
     console.log("isValid Connection: ", connection);
-    
-    const connectedEdges = edges.filter((edge)=> {
+
+    const connectedEdges = edges.filter((edge) => {
       if (edge.sourceHandle) return edge.source === connection.source && edge.sourceHandle === connection.sourceHandle;
       return edge.source === connection.source && connection.sourceHandle === 'a';
     });
@@ -139,7 +139,24 @@ const OverviewFlow = ({ item }) => {
 
   };
 
-  const getId = () => `node-${nodes.length + 1}`;
+  // Function to extract index number from node ID
+  function getIndexFromNodeId(nodeId) {
+    const index = nodeId.split('-')[1];
+    return parseInt(index);
+  }
+
+  // const getId = () => `node-${nodes.length + 1}`;
+  const getId = () => {
+    let maxIndex = -1;
+    for (const node of nodes) {
+      const index = getIndexFromNodeId(node.id);
+      if (index > maxIndex) {
+        maxIndex = index;
+      }
+    }
+    console.log('MaxIndex: ', maxIndex);
+    return `node-${maxIndex + 1}`;
+  };
 
   const getEdgeId = (startNode, endNode) => {
     const start = parseInt(startNode.match(/-(\d+)/)[1], 10);

@@ -90,10 +90,10 @@ export default function App() {
           return <Route exact path={route.route} element={route.component} key={route.key} />;
         }
         else if (route.key === 'sign-in') {
-          return <Route exact path={route.route} element={ !checkUserAuth() ? route.component : <Navigate to="/nodes" />} key={route.key} />;
+          return <Route exact path={route.route} element={!checkUserAuth() ? route.component : <Navigate to="/nodes" />} key={route.key} />;
         }
         else {
-          return <Route exact path={route.route} element={ checkUserAuth() ? route.component : <Navigate to="/authentication/sign-in" />} key={route.key} />;
+          return <Route exact path={route.route} element={checkUserAuth() ? route.component : <Navigate to="/authentication/sign-in" />} key={route.key} />;
         }
       }
       return null;

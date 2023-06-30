@@ -9,16 +9,46 @@ function EmbedChatBot({ id, color, bubbleText = '' }) {
   const [initial, setInitial] = useState(false);
 
   const toggleIframe = () => {
+    console.log('Close Called!');
     !initial && setInitial(true);
     setShowIframe(!showIframe);
   };
 
   useEffect(() => toggleIframe(), []);
 
-  window.addEventListener('message', function (event) {
+  useEffect(() => checkAndRegisterEventListener(), []);
+
+  // Define the event handler function
+  function messageHandler(event) {
     console.log('Received message:', event.data);
     if (event.data.action === 'closeBotModal') toggleIframe();
-  });
+    if (event.data.action === 'openDenBotSite') parent.window.open(event.data.link, '_blank');
+  }
+
+  // Check if the event listener is already registered
+  var isEventListenerRegistered = false; // Flag to track registration status
+
+  function checkAndRegisterEventListener() {
+    if (!isEventListenerRegistered) {
+      // Add event listener
+      window.addEventListener('message', messageHandler);
+      isEventListenerRegistered = true;
+      console.log('Event listener registered.');
+    } else {
+      console.log('Event listener already registered.');
+    }
+  }
+
+  // Remove the existing event listener and register again
+  function removeAndRegisterEventListener() {
+    if (isEventListenerRegistered) {
+      // Remove the event listener
+      window.removeEventListener('message', messageHandler);
+      isEventListenerRegistered = false;
+      console.log('Event listener removed.');
+    }
+    checkAndRegisterEventListener();
+  }
 
   return (
     <>
@@ -39,7 +69,7 @@ function EmbedChatBot({ id, color, bubbleText = '' }) {
       >
 
         <div class={`${!showIframe ? `tooltiptext` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
-          <p style={{ color: color, fontSize: '15px', fontWeight: 600 }}>{bubbleText}</p>
+          <p style={{ color: color, fontSize: '15px', fontWeight: 600, whiteSpace: 'pre' }}>{bubbleText}</p>
           <span class="triangle"></span>
         </div>
 
