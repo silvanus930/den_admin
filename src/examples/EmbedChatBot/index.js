@@ -53,7 +53,7 @@ function EmbedChatBot({ id, color, bubbleText = '' }) {
   return (
     <>
       {initial && <div
-        style={{ height: '100%', minWidth: '339px', maxWidth: '30vw', width: '100%', maxHeight: '80vh', minHeight: '600px', padding: 10, right: '-2%', marginBottom: 5 }}
+        style={{ height: '100%', minWidth: '400px', maxWidth: '30vw', width: '100%', maxHeight: '80vh', minHeight: '600px', padding: 10, right: '-2%', marginBottom: 5 }}
         className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
         <iframe
           id={`iframe-bot-${id}`}
