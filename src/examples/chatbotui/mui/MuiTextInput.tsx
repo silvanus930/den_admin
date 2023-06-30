@@ -67,6 +67,7 @@ export function MuiTextInput({
         endAdornment={
           <IconButton sx={{
             borderRadius: '8px',
+            margin: '3px',
             background: color + '19' ,'&:hover': {
               background: color + '29',
             },
@@ -75,7 +76,12 @@ export function MuiTextInput({
           </IconButton>
         }
         style={{
-          background: 'white', borderRadius: 10, borderColor: 'red', borderWidth: '0', marginRight: 10, paddingLeft: 10, color: 'black'
+          background: 'white', 
+          borderRadius: 10, 
+          borderColor: 'red', 
+          borderWidth: '0', 
+          marginRight: 6, 
+          paddingLeft: 10, color: 'black'
         }}
         autoFocus
         disableUnderline
