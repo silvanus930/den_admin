@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { getConnectedEdges } from 'reactflow';
+import { getConnectedEdges, updateEdge } from 'reactflow';
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useLocation, useParams } from 'react-router-dom';
 import { Box, Typography, } from '@mui/material';
@@ -134,7 +134,15 @@ function Preview() {
 
       else if (node.type === 'sendEmailNode') {
         (async () => {
-          const result = await sendEmailToZapier(node?.data, chatCtl.getMessages());
+          const data = JSON.parse(node?.data?.text);
+          console.log('====Original Data => ', data);
+          Object.keys(data).forEach(key => {
+            data[key] = replaceNodePlaceholders(data[key]);
+          });
+
+          console.log('====Updated Data => ', data);
+
+          const result = await sendEmailToZapier(data, chatCtl.getMessages());
           console.log('Email Result: ', result?.code ? result.code.toString() : '');
           setResultData({ ...resultData, [node.id]: result?.code ? result.code.toString() : '' })
         })();

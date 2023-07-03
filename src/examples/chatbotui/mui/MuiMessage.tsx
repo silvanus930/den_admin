@@ -71,8 +71,6 @@ export function MuiMessage({
     parent.window.open(link, '_blank');
   }
 
-  console.log('Message', message);
-
   const parseText = (text: string) => {
     const urlRegex = /([^\s]+\[https?:\/\/[^\s]+\])/g;
     const urlRegex1 = /([^\s]+)\[(https?:\/\/[^\s]+)\]/g;

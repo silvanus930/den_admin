@@ -1,7 +1,7 @@
 
 export const sendEmailToZapier = async (data, messages) => {
 
-  const body = JSON.parse(data?.text);
+  const body = data;
   const zapierUrl = body?.zapierUrl;
 
   body?.zapierUrl && delete body.zapierUrl;
