@@ -86,7 +86,7 @@ export function MuiMessage({
             <a
               style={{
                 fontSize: '14px',
-                lineHeight: '20px',
+                lineHeight: '21px',
                 fontWeight: 400,
                 fontFamily: 'Helvetica',
                 wordWrap: 'break-word',
@@ -126,8 +126,8 @@ export function MuiMessage({
           <Box minWidth={0} display="flex" flexDirection="column">
             <Box
               maxWidth="100%"
-              py={1}
-              px={2}
+              py="16px"
+              px="18px"
               bgcolor={!message.self ? color + '1A' : '#0000000A'}
               borderRadius={!message.self ? '0 6px 6px 6px' : '6px 6px 0px 6px'}
             >
@@ -137,7 +137,7 @@ export function MuiMessage({
                   <Typography
                     style={{
                       fontSize: '14px',
-                      lineHeight: '20px',
+                      lineHeight: '21px',
                       fontWeight: 400,
                       fontFamily: 'Helvetica',
                       color: '#212b35',

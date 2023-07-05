@@ -42,7 +42,7 @@ export function MuiMessageButton({
               margin: 0.3,
               marginX: 2,
               background: !isSelected ? '#ffffff' : color, 
-              fontFamily: 'Inter',
+              fontFamily: 'Helvetica',
               fontSize: '14px',
               fontWeight: 500,
               textTransform: 'none !important', 

@@ -10,6 +10,7 @@
 }
 
 .tooltiptext {
+  min-width: 80px;
   right: 0px;
   top: -55px;
   visibility: visible;
@@ -30,6 +31,7 @@
 }
 
 .tooltiptext-left {
+  min-width: 80px;
   left: 0px;
   top: -55px;
   visibility: visible;
@@ -556,14 +558,14 @@
 }
 
 .bot-eb-trigger.bot-left {
-  left: 10px;
-  bottom: 20px;
+  left: 20px;
+  bottom: 40px;
   padding-right: 10px;
 }
 
 .bot-eb-trigger.bot-right {
-  right: 30px;
-  bottom: 20px;
+  right: 20px;
+  bottom: 40px;
   padding-left: 10px;
 }
 
@@ -611,9 +613,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  width: 50px;
-  border-radius: 25px !important;
+  height: 66px;
+  width: 66px;
+  border-radius: 100px !important;
   background: rgba(0, 0, 0, 0.0);
   box-sizing: border-box;
   padding: 14px;
@@ -671,11 +673,11 @@
 }
 
 .bot-eb-trigger.bot-left .round-container {
-  left: 5px;
+  left: 0px;
 }
 
 .bot-eb-trigger.bot-right .round-container {
-  right: 5px;
+  right: 0px;
 }
 
 .bot-eb-trigger.bot-active {

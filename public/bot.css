@@ -10,6 +10,7 @@
 }
 
 .dt-tooltiptext {
+  min-width: 80px;
   right: 0px;
   top: -55px;
   visibility: visible;
@@ -30,6 +31,7 @@
 }
 
 .dt-tooltiptext-left {
+  min-width: 80px;
   left: 0px;
   top: -55px;
   visibility: visible;
@@ -473,7 +475,7 @@
   cursor: pointer;
   background: var(--pop-over-bg);
   position: fixed;
-  bottom: 20px;
+  bottom: 40px;
   outline: none;
   height: 60px;
   width: 60px;
@@ -538,11 +540,11 @@
 }
 
 .dt-bot-eb-trigger.dt-bot-left {
-  left: 10px;
+  left: 20px;
   padding-right: 10px;
 }
 .dt-bot-eb-trigger.dt-bot-right {
-  right: 10px;
+  right: 20px;
   padding-left: 10px;
 }
 
@@ -588,9 +590,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  width: 50px;
-  border-radius: 25px !important;
+  height: 66px;
+  width: 66px;
+  border-radius: 100px !important;
   background: rgba(0, 0, 0, 0.4);
   box-sizing: border-box;
   padding: 14px;
@@ -645,11 +647,11 @@
   opacity: 1;
 }
 .dt-bot-eb-trigger.dt-bot-left .dt-round-container {
-  left: 5px;
+  left: 0px;
 }
 
 .dt-bot-eb-trigger.dt-bot-right .dt-round-container {
-  right: 5px;
+  right: 0px;
 }
 
 .dt-bot-eb-trigger.dt-bot-active {

@@ -40,7 +40,7 @@ export function MuiSelectInput({
   return (
     <Box
       sx={{
-        margin: 1,
+        margin: '0px 24px 0px 24px',
         maxHeight: '32vh',
         borderRadius: 2,
         flex: '1 1 auto',
@@ -81,15 +81,19 @@ export function MuiSelectInput({
               setResponse(e.currentTarget.value);
             }}
             sx={{
-              margin: '3px',
+              margin: 1,
+              height: '44px',
               background: '#ffffff',
               fontFamily: 'Inter',
               fontSize: '14px',
               fontWeight: 500,
               textTransform: 'none !important',
               color: color,
-              borderColor: color, '&:hover': {
-                borderColor: color + 'A9',
+              borderColor: color, 
+              '&:hover': {
+                borderColor: '#ffffff',
+                color: '#ffffff',
+                background: color,
               }
             }}
           >

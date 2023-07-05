@@ -267,18 +267,17 @@ function Preview() {
       lineHeight: '19.36px',
       flexDirection: "column",
     }}>
-      <Box flexDirection='row' display="flex" m={1.5} justifyContent='center' alignItems='center'>
+      <Box flexDirection='row' display="flex" m={2} justifyContent='center' alignItems='center'>
         <Typography
           sx={{
             color: botThemeColor,
             textAlign: 'left',
             flex: 1,
             marginLeft: 1,
-            fontSize: '16px',
-            fontFamily: 'Inter',
+            fontSize: '18px',
             fontWeight: 500
           }}>
-          {`Welcome to ${botData?.name ? botData?.name : `Denbot`}`}
+          {`${botData?.name ? botData?.name : `Denbot`}`}
         </Typography>
         <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
       </Box>
@@ -328,7 +327,7 @@ function Preview() {
                 fontSize: '20px',
                 fontWeight: 400,
                 lineHeight: '28px',
-                fontFamily: 'Inter',
+                fontFamily: 'Helvetica',
                 margin: '6px',
               }}>
               Your bot is disabled by admin, you should contact denbot support team.
@@ -344,7 +343,7 @@ function Preview() {
             fontSize: '11px',
             fontWeight: 400,
             lineHeight: '13.31px',
-            fontFamily: 'Inter',
+            fontFamily: 'Helvetica',
             margin: '6px',
           }}>
           powered by <button onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
