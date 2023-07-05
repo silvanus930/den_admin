@@ -3,9 +3,9 @@ import "./bot.css";
 import "reactflow/dist/style.css";
 import { BOT_URL } from 'library/constant';
 
-function EmbedChatBot({ id, color, bubbleText = '' }) {
+function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false }) {
 
-  const [showIframe, setShowIframe] = useState(false);
+  const [showIframe, setShowIframe] = useState(!isAuto);
   const [initial, setInitial] = useState(false);
 
   const toggleIframe = () => {
@@ -50,11 +50,23 @@ function EmbedChatBot({ id, color, bubbleText = '' }) {
     checkAndRegisterEventListener();
   }
 
+  const buttonActionClass = isLeft ? showIframe ? 'app-active-left' : 'app-inActive-left' : showIframe ? 'app-active' : 'app-inActive'
+
   return (
     <>
       {initial && <div
-        style={{ height: '100%', minWidth: '400px', maxWidth: '30vw', width: '100%', maxHeight: '80vh', minHeight: '600px', padding: 10, right: '-2%', marginBottom: 5 }}
-        className={`zIndexInfinite fixed right-0 bottom-0 h-full ${showIframe ? 'app-active' : 'app-inActive'}`}>
+        style={{
+          minWidth: '340px',
+          maxWidth: '50vh',
+          width: '90%',
+          minHeight: '600px',
+          maxHeight: '70vh',
+          margin: '20px 20px 90px 20px',
+          boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.05)',
+          borderColor: '#00000010',
+          borderRadius: '12px',
+        }}
+        className={`zIndexInfinite fixed bottom-0 h-full ${buttonActionClass}`}>
         <iframe
           id={`iframe-bot-${id}`}
           src={`${BOT_URL}preview/${id}?color=${color.substring(1)}`}
@@ -63,14 +75,14 @@ function EmbedChatBot({ id, color, bubbleText = '' }) {
       </div>}
 
       <div
-        className={`bot-right bot-eb-trigger bot-active tooltip`}
+        className={`${isLeft ? 'bot-left' : 'bot-right'} bot-eb-trigger bot-active tooltip`}
         id="eb-bot-trigger"
         onClick={toggleIframe}
       >
 
-        <div class={`${!showIframe ? `tooltiptext` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
+        <div class={`${!showIframe ? `tooltiptext${isLeft ? '-left' : ''}` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
           <p style={{ color: color, fontSize: '15px', fontWeight: 600, whiteSpace: 'pre' }}>{bubbleText}</p>
-          <span class="triangle"></span>
+          <span class={`triangle${isLeft ? '-left' : ''}`}></span>
         </div>
 
         <span

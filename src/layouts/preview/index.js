@@ -256,19 +256,15 @@ function Preview() {
 
   return (
     <Box sx={{
-      height: '80vh',
+      height: '100%',
       width: '100%',
-      maxWidth: '80vw',
-      marginLeft: '50px',
-      boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.04)',
-      backgroundColor: '#ffffff',
       borderRadius: '12px',
+      borderColor: '#00000010',
+      backgroundColor: '#ffffff',
       position: 'absolute',
-      bottom: 70,
       display: "flex",
       borderWidth: 1,
       lineHeight: '19.36px',
-      borderColor: '#00000010',
       flexDirection: "column",
     }}>
       <Box flexDirection='row' display="flex" m={1.5} justifyContent='center' alignItems='center'>

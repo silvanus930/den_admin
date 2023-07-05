@@ -18,3 +18,11 @@
 .zIndexInfinite {
     z-index: 9999;
 }
+
+/* .react-flow {
+    overflow: auto !important;
+} */
+
+.react-flow__renderer {
+    position: fixed !important;
+}

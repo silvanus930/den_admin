@@ -32,6 +32,8 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
     const [bubbleText, setBubbleText] = useState(item?.bubbleText || '');
     const [isBubbleEnabled, setIsBubbleEnabled] = useState(!!item?.isBubbleEnabled);
     const [avatar, setAvatar] = useState(item?.avatar || '');
+    const [isLeft, setIsLeft] = useState(item?.isLeft || false);
+    const [isAuto, setIsAuto] = useState(item?.isAuto || false);
     const [color, setColor] = useState(item?.color || '#FF6900');
 
     const [isUploading, setIsUploading] = useState(false);
@@ -47,13 +49,16 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
         setIsLoading(true);
         try {
             console.log('Data: ', item);
-            await updateSessionApi(item?._id, { 
-                name: name, 
-                avatar: avatar, 
-                color: color, 
-                zapierUrl: zapierUrl, 
+            await updateSessionApi(item?._id, {
+                name: name,
+                avatar: avatar,
+                color: color,
+                zapierUrl: zapierUrl,
                 bubbleText: bubbleText,
-                isBubbleEnabled: isBubbleEnabled });
+                isLeft: isLeft,
+                isAuto: isAuto,
+                isBubbleEnabled: isBubbleEnabled
+            });
             setIsLoading(false);
         } catch (error) {
             console.log('Update Session Error:', error);
@@ -145,6 +150,18 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                                 value={bubbleText}
                                 disabled={!isBubbleEnabled}
                                 onChange={(e) => setBubbleText(e.target.value)}
+                            />
+                        </Box>
+                        <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'flex-start' }}>
+                            <Typography variant='h5' p={2}>{"Bot Auto: "}</Typography>
+                            <Checkbox
+                                checked={isAuto}
+                                onChange={(e) => setIsAuto(e.target.checked)}
+                            />
+                            <Typography variant='h5' p={2}>{"Set Bot Left: "}</Typography>
+                            <Checkbox
+                                checked={isLeft}
+                                onChange={(e) => setIsLeft(e.target.checked)}
                             />
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

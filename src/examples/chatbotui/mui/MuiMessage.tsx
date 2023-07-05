@@ -85,9 +85,10 @@ export function MuiMessage({
           <span key={index}>
             <a
               style={{
-                fontSize: '15px',
+                fontSize: '14px',
+                lineHeight: '20px',
                 fontWeight: 400,
-                fontFamily: 'Inter',
+                fontFamily: 'Helvetica',
                 wordWrap: 'break-word',
                 color: 'blue',
                 width: '100%',
@@ -133,7 +134,15 @@ export function MuiMessage({
               {showIndicator && <BeatLoader color={color} size={10} />}
               {!showIndicator && (
                 message.type === 'text' ? (
-                  <Typography style={{ fontSize: '15px', fontWeight: 400, fontFamily: 'Inter', wordWrap: 'break-word' }}>{parseText(message.content as string)}</Typography>
+                  <Typography
+                    style={{
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      fontWeight: 400,
+                      fontFamily: 'Helvetica',
+                      color: '#212b35',
+                      wordWrap: 'break-word'
+                    }}>{parseText(message.content as string)}</Typography>
                 ) :
                   message.type === 'jsx' ? <div dangerouslySetInnerHTML={{ __html: message.content as string }}></div> : <div />)}
             </Box>

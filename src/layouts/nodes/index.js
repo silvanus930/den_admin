@@ -50,7 +50,7 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
 
   const actionTest = () => {
     const color = item.color ? item.color : '#FF6900';
-    navigate(`/test/${item._id}?color=${color.substring(1)}${item?.isBubbleEnabled ? '&bubbleText=' + item?.bubbleText : ''}`);
+    navigate(`/test/${item._id}?color=${color.substring(1)}${item?.isBubbleEnabled ? '&bubbleText=' + item?.bubbleText : ''}&isLeft=${item?.isLeft ? 'true' : 'false'}&isAuto=${item?.isAuto ? 'true' : 'false'}`);
   }
 
   const actionDuplicate = async () => {

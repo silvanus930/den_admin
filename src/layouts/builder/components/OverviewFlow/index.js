@@ -121,7 +121,7 @@ const OverviewFlow = ({ item }) => {
   const [selectedEdge, setSelectedEdge] = useState('');
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { project } = useReactFlow();
+  const { project, setCenter } = useReactFlow();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedValue, setSelectedValue] = useState(0);
   const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
@@ -298,7 +298,10 @@ const OverviewFlow = ({ item }) => {
       });
       setEdges(edges);
       setHistory([{ nodes: initialNodes, edges: edges }]);
+
+      console.log('-----------------------------------------');
     }
+
   }, []);
 
   const handleSave = async () => {
@@ -326,7 +329,7 @@ const OverviewFlow = ({ item }) => {
       try {
         const result = await createSessionApi(data);
         console.log(result);
-        handleNavBack();
+        // handleNavBack();
       } catch (error) {
         console.log(error);
       }
@@ -334,7 +337,7 @@ const OverviewFlow = ({ item }) => {
       try {
         const result = await updateSessionApi(item._id, data);
         console.log(result);
-        handleNavBack();
+        // handleNavBack();
       } catch (error) {
         console.log(error);
       }
@@ -558,7 +561,8 @@ const OverviewFlow = ({ item }) => {
         onClose={handleClose}
       />
       <MDBox mt={0} mr={0} position="fixed" right={10} bottom={5} zIndex={10}>
-        <MDButton variant="contained" color="success" onClick={handleSave}>{item ? "Update" : "Save"}</MDButton>
+        <MDButton variant="contained" color="secondary" onClick={handleNavBack} style={{ margin: 5 }}>{"Back"}</MDButton>
+        <MDButton variant="contained" color="success" onClick={handleSave} style={{ margin: 5 }}>{item ? "Update" : "Save"}</MDButton>
       </MDBox>
       <MDBox mt={0} mr={0} position="fixed" right={10} top={5} zIndex={10}>
         <MDButton variant="contained" disabled={historyHandler >= history.length - 1} color="secondary" onClick={handleRedo} style={{ margin: 5 }}>{"Redo"}</MDButton>
