@@ -52,6 +52,13 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
 
   const buttonActionClass = isLeft ? showIframe ? 'app-active-left' : 'app-inActive-left' : showIframe ? 'app-active' : 'app-inActive'
 
+  const isMobileDevice = () => {
+    const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
+    return mobileMediaQuery.matches;
+  };
+
+  const isMobile = isMobileDevice();
+
   return (
     <>
       {initial && <div
@@ -59,8 +66,8 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
           minWidth: '340px',
           maxWidth: '50vh',
           width: '90%',
-          minHeight: '600px',
-          maxHeight: '70vh',
+          minHeight: isMobile ? '0px': '600px',
+          maxHeight: isMobile ? '80vh' : '70vh',
           margin: '20px 20px 110px 20px',
           boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.05)',
           borderColor: '#00000010',
