@@ -82,7 +82,8 @@ export function MuiSelectInput({
             }}
             sx={{
               margin: 1,
-              height: '44px',
+              height: '48px',
+              lineHeight: '16px !important',
               background: '#ffffff',
               fontFamily: 'Inter',
               fontSize: '14px',
