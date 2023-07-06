@@ -21,7 +21,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
   // Define the event handler function
   function messageHandler(event) {
     console.log('Received message:', event.data);
-    if (event.data.action === 'closeBotModal') toggleIframe();
+    if (event.data.action === 'closeBotModal') { setShowIframe(false) }
     if (event.data.action === 'openDenBotSite') parent.window.open(event.data.link, '_blank');
   }
 
@@ -66,7 +66,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
           minWidth: '340px',
           maxWidth: '50vh',
           width: '90%',
-          minHeight: isMobile ? '0px': '600px',
+          minHeight: isMobile ? '0px' : '600px',
           maxHeight: isMobile ? '80vh' : '70vh',
           margin: '20px 20px 110px 20px',
           boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.05)',
