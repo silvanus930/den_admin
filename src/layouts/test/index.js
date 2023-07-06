@@ -28,12 +28,15 @@ function Test() {
 
     const bubbleText = queryParams.get('bubbleText') || '';
 
-    const bubbleTextTag = bubbleText.length ? `bubble-text="${bubbleText}"` : '';
-
     const isLeft = queryParams.get('isLeft') === 'true';
     const isAuto = queryParams.get('isAuto') === 'true';
 
     const color = getColorFromURL();
+
+    const bubbleColor = '#' + queryParams.get('bubbleColor') || queryParams.get('bubbleColor');
+
+    const bubbleTextTag = bubbleText.length ? `bubble-text="${bubbleText} bubble-color=${bubbleColor}"` : '';
+
     const getText = () => {
         return `<script src="${API_URL}denbot.js" botId="${id}" isLeft="${isLeft}" isAuto="${isAuto}" button-color="${color}" ${bubbleTextTag}></script>`;
     }
@@ -51,7 +54,7 @@ function Test() {
                         </CopyToClipboard>
                     </Button>
                 </Tooltip>
-                <EmbedChatBot id={id} color={color} bubbleText={bubbleText} isLeft={isLeft} isAuto={isAuto}/>
+                <EmbedChatBot id={id} color={color} bubbleText={bubbleText} isLeft={isLeft} isAuto={isAuto} bubbleColor={bubbleColor} />
             </MDBox>
         </DashboardLayout>
     );

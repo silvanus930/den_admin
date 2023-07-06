@@ -3,26 +3,52 @@ import "./bot.css";
 import "reactflow/dist/style.css";
 import { BOT_URL } from 'library/constant';
 
-function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false }) {
+function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false, bubbleColor }) {
 
-  const [showIframe, setShowIframe] = useState(!isAuto);
+  const bubbleTextColor = bubbleColor ? bubbleColor : color;
+
   const [initial, setInitial] = useState(false);
+  const [showIframe, setShowIframe] = useState(false);
+  const [buttonActionClass, setButtonActionClass] = useState(isLeft ? 'app-inActive-left' : 'app-inActive');
 
   const toggleIframe = () => {
-    console.log('Close Called!');
-    !initial && setInitial(true);
-    setShowIframe(!showIframe);
+    setShowIframe(() => {
+      setButtonActionClass(isLeft ? !showIframe ? 'app-active-left' : 'app-inActive-left' : !showIframe ? 'app-active' : 'app-inActive');
+      return !showIframe;
+    });
+
+    if (!initial) {
+      sendBotStartMessage();
+      setInitial(true);
+    }
   };
 
-  useEffect(() => toggleIframe(), []);
+  function sendBotStartMessage() {
+    const iframe = document.getElementById(`iframe-bot-${id}`);
+    iframe.contentWindow.postMessage({ action: 'startBotMessage' }, `${BOT_URL}preview/${id}?color=${color.substring(1)}`);
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setButtonActionClass(isLeft ? isAuto ? 'app-active-left' : 'app-inActive-left' : isAuto ? 'app-active' : 'app-inActive');
+      setShowIframe(isAuto);
+      if (isAuto) sendBotStartMessage();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => checkAndRegisterEventListener(), []);
 
   // Define the event handler function
   function messageHandler(event) {
-    console.log('Received message:', event.data);
-    if (event.data.action === 'closeBotModal') { setShowIframe(false) }
-    if (event.data.action === 'openDenBotSite') parent.window.open(event.data.link, '_blank');
+    if (event.data.action === 'closeBotModal') {
+      setShowIframe(false); console.log('----Received Close message:', event.data);
+    } else if (event.data.action === 'openDenBotSite') {
+      console.log('----Received Link message:', event.data);
+      parent.window.open(event.data.link, '_blank');
+    } else if (event.data.action === 'startBotMessage') {
+      console.log('----Received Start Bot message:', event.data);
+    }
   }
 
   // Check if the event listener is already registered
@@ -50,8 +76,6 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
     checkAndRegisterEventListener();
   }
 
-  const buttonActionClass = isLeft ? showIframe ? 'app-active-left' : 'app-inActive-left' : showIframe ? 'app-active' : 'app-inActive'
-
   const isMobileDevice = () => {
     const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
     return mobileMediaQuery.matches;
@@ -61,7 +85,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
 
   return (
     <>
-      {initial && <div
+      {true && <div
         style={{
           minWidth: '340px',
           maxWidth: '50vh',
@@ -69,7 +93,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
           minHeight: isMobile ? '0px' : '600px',
           maxHeight: isMobile ? '80vh' : '70vh',
           margin: '20px 20px 110px 20px',
-          boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.05)',
+          boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.3)',
           borderColor: '#00000010',
           borderRadius: '12px',
         }}
@@ -88,7 +112,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
       >
 
         <div class={`${!showIframe ? `tooltiptext${isLeft ? '-left' : ''}` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
-          <p style={{ color: color, fontSize: '15px', fontWeight: 600, whiteSpace: 'pre' }}>{bubbleText}</p>
+          <p style={{ color: bubbleTextColor, fontSize: '15px', fontWeight: 600, whiteSpace: 'pre' }}>{bubbleText}</p>
           <span class={`triangle${isLeft ? '-left' : ''}`}></span>
         </div>
 

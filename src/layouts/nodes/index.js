@@ -50,7 +50,8 @@ const SessionCard = ({ item, fetchData, handleNotification }) => {
 
   const actionTest = () => {
     const color = item.color ? item.color : '#FF6900';
-    navigate(`/test/${item._id}?color=${color.substring(1)}${item?.isBubbleEnabled ? '&bubbleText=' + item?.bubbleText : ''}&isLeft=${item?.isLeft ? 'true' : 'false'}&isAuto=${item?.isAuto ? 'true' : 'false'}`);
+    const bubbleColor = item.bubbleColor ? item.bubbleColor : color;
+    navigate(`/test/${item._id}?color=${color.substring(1)}${item?.isBubbleEnabled ? '&bubbleText=' + item?.bubbleText + '&bubbleColor=' + bubbleColor.substring(1) : ''}&isLeft=${item?.isLeft ? 'true' : 'false'}&isAuto=${item?.isAuto ? 'true' : 'false'}`);
   }
 
   const actionDuplicate = async () => {
@@ -228,7 +229,7 @@ function Nodes() {
       };
 
       try { [fileHandle] = await window.showOpenFilePicker(options); } catch (error) { return; }
-      
+
       const file = await fileHandle.getFile();
       const text = await file.text();
       const item = JSON.parse(text);

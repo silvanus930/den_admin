@@ -51,7 +51,7 @@ export function MuiMessage({
   const RepeatButton = (
     <Box
       sx={{
-        opacity: 0.1,
+        opacity: 0.2,
         transition: 'opacity 0.3s',
         '&:hover': {
           opacity: 1,

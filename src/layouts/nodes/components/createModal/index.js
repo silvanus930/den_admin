@@ -1,6 +1,6 @@
 import { useState, forwardRef, useRef } from 'react';
 import { DotLoader } from 'react-spinners';
-import { TwitterPicker } from 'react-color';
+import { TwitterPicker, SketchPicker } from 'react-color';
 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -27,6 +27,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
 
     const ref = useRef(null);
 
+    const [modalOpen, setModalOpen] = useState(false);
     const [name, setName] = useState(item?.name || '');
     const [zapierUrl, setZapierUrl] = useState(item?.zapierUrl || '');
     const [bubbleText, setBubbleText] = useState(item?.bubbleText || '');
@@ -35,6 +36,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
     const [isLeft, setIsLeft] = useState(item?.isLeft || false);
     const [isAuto, setIsAuto] = useState(item?.isAuto || false);
     const [color, setColor] = useState(item?.color || '#FF6900');
+    const [bubbleColor, setBubbleColor] = useState(item?.bubbleColor || (item?.color || '#FF6900'));
 
     const [isUploading, setIsUploading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +59,8 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                 bubbleText: bubbleText,
                 isLeft: isLeft,
                 isAuto: isAuto,
-                isBubbleEnabled: isBubbleEnabled
+                isBubbleEnabled: isBubbleEnabled,
+                bubbleColor: bubbleColor,
             });
             setIsLoading(false);
         } catch (error) {
@@ -79,6 +82,18 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
             console.log(error);
         }
     }
+
+    const handleBoxClick = () => {
+        setModalOpen(true);
+    };
+
+    const handleColorChange = (color) => {
+        setBubbleColor(color.hex);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
 
     return (
         <Dialog
@@ -129,14 +144,6 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        {/* <TextField
-                            margin="dense"
-                            label="Input Zapier Url to send Email"
-                            fullWidth
-                            variant="standard"
-                            value={zapierUrl}
-                            onChange={(e) => setZapierUrl(e.target.value)}
-                        /> */}
                         <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'flex-end' }}>
                             <Checkbox
                                 checked={isBubbleEnabled}
@@ -151,6 +158,54 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                                 disabled={!isBubbleEnabled}
                                 onChange={(e) => setBubbleText(e.target.value)}
                             />
+                            <Box
+                                sx={{
+                                    background: 'white',
+                                    width: '50px',
+                                    height: '40px',
+                                    borderRadius: '8px',
+                                    margin: '10px',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    '&:hover': {
+                                        background: 'lightgray',
+                                    },
+                                    '&:active': {
+                                        background: 'gray',
+                                    },
+                                }}
+                                onClick={handleBoxClick}
+                            >
+                                <Box sx={{
+                                    background: bubbleColor, width: '33px', height: '33px', borderRadius: '8px',
+                                }}>
+                                </Box>
+
+                            </Box>
+                            {modalOpen && (
+                                <div
+                                    style={{
+                                        position: 'fixed',
+                                        top: '0',
+                                        left: '0',
+                                        right: '0',
+                                        bottom: '0',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                        zIndex: 99,
+                                    }}
+                                >
+                                    <div style={{ background: 'white', padding: '20px' }}>
+                                        <SketchPicker color={bubbleColor} onChange={handleColorChange} />
+                                        <Button onClick={handleModalClose}>Close</Button>
+                                    </div>
+                                </div>
+                            )}
                         </Box>
                         <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'flex-start' }}>
                             <Typography variant='h5' p={2}>{"Bot Auto: "}</Typography>
@@ -177,6 +232,6 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                     </Box>
                 </Box>
             </Paper>
-        </Dialog>
+        </Dialog >
     );
 }

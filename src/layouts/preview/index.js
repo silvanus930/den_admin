@@ -41,6 +41,20 @@ function Preview() {
     }),
   );
 
+  let ignoreMessage = false;
+  window.addEventListener('message', function (event) {
+    if (event.data.action === 'startBotMessage') {
+      console.log('============ Received Start Bot message:', event.data);
+      if (!ignoreMessage) {
+        fetchData(id).catch(console.error);
+        ignoreMessage = true;
+        setTimeout(() => {
+          ignoreMessage = false;
+        }, 5000);
+      }
+    }
+  });
+
   const handleMenuAction = (index) => {
     if (index === 'toggle') setIsRedTheme(!isRedTheme);
     else if (index === 'repeat') {
@@ -49,10 +63,6 @@ function Preview() {
       fetchData(id).catch(console.error);
     }
   }
-
-  useEffect(() => {
-    fetchData(id).catch(console.error);
-  }, []);
 
   const fetchData = async (id) => {
     try {
@@ -181,6 +191,14 @@ function Preview() {
     return 'node-' + match[1];
   }
 
+  function getNodeById(nodeId) {
+    const foundNode = nodes.find(node => node.id === nodeId);
+    if (foundNode) {
+      return foundNode.type;
+    }
+    return null;
+  }
+
   function replaceNodePlaceholders(string) {
     const pattern = /{([^}.]+(\.[^}.]+)?)}/g;
     return string.replace(pattern, (match, node) => {
@@ -190,15 +208,6 @@ function Preview() {
       const nodeValue = data || '--';
       return `${nodeValue}`;
     });
-  }
-
-
-  function getNodeById(nodeId) {
-    const foundNode = nodes.find(node => node.id === nodeId);
-    if (foundNode) {
-      return foundNode.type;
-    }
-    return null;
   }
 
   const setActionByNode = async node => {
@@ -239,7 +248,6 @@ function Preview() {
         type: 'select',
         options: options,
       });
-      // await chatCtl.addMessage({ type: 'button', avatar: botData?.avatar, buttons: node.data.texts, value: result.value });
       return { type: node.type, result };
     }
   }
@@ -252,9 +260,8 @@ function Preview() {
       } catch (error) {
         console.log('---Error: ', error);
       }
-    }, 2000); // Delay in milliseconds (2 seconds)
+    }, 4000);
   }
-
 
   function handleLink() {
     const link = 'https://www.denbot.co.uk';
@@ -316,7 +323,6 @@ function Preview() {
                 if (scrollContainer) {
                   scrollContainer.scrollTop = scrollContainer.scrollHeight;
                 }
-
               }}
             />
           </Box>
