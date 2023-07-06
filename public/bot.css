@@ -120,12 +120,12 @@
 }
 
 .dt-button-active {
-  width: 100%;
+  width: 100% !important;
   transition: width 0.3s ease-in-out;
 }
 
 .dt-button-inactive {
-  width: 0;
+  width: 0 !important;
   transition: width 0.3s ease-in-out;
 }
 
