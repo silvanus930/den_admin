@@ -112,7 +112,6 @@ function Preview() {
           chatCtl.addMessage({ type: 'text', avatar: botData?.avatar, content: 'That name appeares to be incorrect, please enter a valid name.' });
           return node;
         }
-        data = data.split(' ')[0];
         console.log('Name Data ==========> ', data);
       }
 
@@ -161,7 +160,8 @@ function Preview() {
         }
       }
 
-      setResultData({ ...resultData, [node.id]: data })
+      setResultData({ ...resultData, [node.id]: data });
+      console.log('resultData', resultData);
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       return nextNode;
 
@@ -184,9 +184,21 @@ function Preview() {
   function replaceNodePlaceholders(string) {
     const pattern = /{([^}.]+(\.[^}.]+)?)}/g;
     return string.replace(pattern, (match, node) => {
-      const nodeValue = resultData[getNodeValue(node)] || '--';
+      let data = resultData[getNodeValue(node)];
+      const nodeType = getNodeById(getNodeValue(node));
+      if (nodeType == 'nameNode') data = data.split(' ')[0];
+      const nodeValue = data || '--';
       return `${nodeValue}`;
     });
+  }
+
+
+  function getNodeById(nodeId) {
+    const foundNode = nodes.find(node => node.id === nodeId);
+    if (foundNode) {
+      return foundNode.type;
+    }
+    return null;
   }
 
   const setActionByNode = async node => {
