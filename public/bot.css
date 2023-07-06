@@ -473,20 +473,12 @@
 
 .dt-bot-eb-trigger {
   cursor: pointer;
-  background: var(--pop-over-bg);
   position: fixed;
   bottom: 40px;
   outline: none;
   height: 60px;
   width: 60px;
-  opacity: 1;
-  border-radius: 40px !important;
   z-index: 9999999999 !important;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-  vertical-align: middle;
-  -webkit-tap-highlight-color: transparent;
-  box-shadow: 0px 0px 20px 0px rgb(0, 0, 0, 0.5);
 }
 
 .dt-error-container {
