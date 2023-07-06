@@ -164,9 +164,9 @@ function Preview() {
           const data = JSON.parse(node?.data?.text);
           console.log('GA data: ', node?.data?.text);
           console.log('GA data===: ', data);
-          TrackGoogleAnalyticsEvent(data?.id || 'b', data?.category || 'b', data?.action || 'b', data?.event || 'b');
+          TrackGoogleAnalyticsEvent(data?.id, data?.category || '', data?.action || '', data?.label || '');
         } catch (error) {
-          TrackGoogleAnalyticsEvent('a', 'a', 'a', 'a');
+          TrackGoogleAnalyticsEvent('G-1F127CLEGN', 'Error', 'Error', `Error: Sending GEvent on ${node.id}`);
         }
       }
 
