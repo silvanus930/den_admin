@@ -106,12 +106,13 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
       </div>}
 
       <div
-        className={`${isLeft ? 'bot-left' : 'bot-right'} bot-eb-trigger bot-active tooltip`}
+        className={`${isLeft ? 'bot-left' : 'bot-right'} bot-eb-trigger bot-active tooltip slide-up-animation`}
+        style={{bottom: '-100%'}}
         id="eb-bot-trigger"
         onClick={toggleIframe}
       >
 
-        <div class={`${!showIframe ? `tooltiptext${isLeft ? '-left' : ''}` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
+        <div className={`${!showIframe ? `tooltiptext${isLeft ? '-left' : ''}` : `tooltiphide`}`} style={{ display: bubbleText?.length == 0 ? 'none' : '' }}>
           <p style={{ color: bubbleTextColor, fontSize: '15px', fontWeight: 600, whiteSpace: 'pre' }}>{bubbleText}</p>
           <span class={`triangle${isLeft ? '-left' : ''}`}></span>
         </div>
