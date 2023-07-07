@@ -27,4 +27,5 @@ yarn.lock
 
 commit.sh
 
-src/library/constant.js
+/src/library/constant.js
+/public/src/library/constant.js
