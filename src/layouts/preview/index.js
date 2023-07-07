@@ -177,7 +177,7 @@ function Preview() {
 
     } else if (node.type === 'multiSelectorNode' || node.type === 'conditionalNode') {
       const index = node.data.texts.findIndex(text => text === result?.result?.value);
-      const linkedEdge = linkedEdges.find(edge => (edge.source === node.id && (edge.sourceHandle === `handle-${index}` || index === 0)));
+      const linkedEdge = linkedEdges.find(edge => (edge.source === node.id && (edge.sourceHandle === `handle-${index}` || (index === 0 && (edge.sourceHandle === `handle-0` || edge.sourceHandle === undefined || edge.sourceHandle === null)))));
       const nextNode = nodes.find(node => node.id === linkedEdge.target);
       setResultData({ ...resultData, [node.id]: result?.result?.value })
       return nextNode;
