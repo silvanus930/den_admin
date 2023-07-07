@@ -26,3 +26,5 @@ package-lock.json
 yarn.lock
 
 commit.sh
+
+src/library/constant.js

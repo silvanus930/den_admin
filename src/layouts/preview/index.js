@@ -41,19 +41,35 @@ function Preview() {
     }),
   );
 
-  let ignoreMessage = false;
-  window.addEventListener('message', function (event) {
-    if (event.data.action === 'startBotMessage') {
-      console.log('============ Received Start Bot message:', event.data);
-      if (!ignoreMessage) {
+  const [ignoreMessage, setIgnoreMessage] = useState(false);
+  useEffect(() => {
+    window.addEventListener('message', function (event) {
+      if (event.data.action === 'startBotMessage' && !ignoreMessage) {
+        console.log('============ Received Start Bot message on front end:', event.data);
         fetchData(id).catch(console.error);
-        ignoreMessage = true;
+        setIgnoreMessage(true);
         setTimeout(() => {
-          ignoreMessage = false;
+          setIgnoreMessage(false);
         }, 5000);
       }
-    }
-  });
+    });
+  }, []);
+
+
+  const initChatHistory = () => {
+    chatCtl.clearMessages();
+    chatCtl.cancelActionRequest();
+
+    setResultData({});
+    setIsRedTheme(true);
+    setBotData(null);
+    setCurrentNode(null);
+
+    count = 0;
+    nodes = [];
+    edges = [];
+
+  }
 
   const handleMenuAction = (index) => {
     if (index === 'toggle') setIsRedTheme(!isRedTheme);
@@ -263,6 +279,9 @@ function Preview() {
   function handleCloseBot() {
     setTimeout(() => {
       try {
+        setTimeout(() => {
+          initChatHistory();
+        }, 1000)
         parent.window.postMessage({ action: 'closeBotModal' }, '*');
         console.log('---Post Successed!!! closeBotModal');
       } catch (error) {

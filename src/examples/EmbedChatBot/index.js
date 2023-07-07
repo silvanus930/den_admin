@@ -42,6 +42,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
   // Define the event handler function
   function messageHandler(event) {
     if (event.data.action === 'closeBotModal') {
+      setButtonActionClass(isLeft ? 'app-inActive-left' : 'app-inActive');
       setShowIframe(false); console.log('----Received Close message:', event.data);
     } else if (event.data.action === 'openDenBotSite') {
       console.log('----Received Link message:', event.data);
