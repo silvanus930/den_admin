@@ -146,7 +146,7 @@ function Preview() {
           const data = JSON.parse(node?.data?.text);
           console.log('====Original Data => ', data);
           Object.keys(data).forEach(key => {
-            data[key] = replaceNodePlaceholders(data[key]);
+            data[key] = replaceNodePlaceholdersForEmail(data[key]);
           });
 
           console.log('====Updated Data => ', data);
@@ -206,6 +206,14 @@ function Preview() {
       const nodeType = getNodeById(getNodeValue(node));
       if (nodeType == 'nameNode') data = data.split(' ')[0];
       const nodeValue = data || '--';
+      return `${nodeValue}`;
+    });
+  }
+
+  function replaceNodePlaceholdersForEmail(string) {
+    const pattern = /{([^}.]+(\.[^}.]+)?)}/g;
+    return string.replace(pattern, (match, node) => {
+      const nodeValue = resultData[getNodeValue(node)] || '--';
       return `${nodeValue}`;
     });
   }
