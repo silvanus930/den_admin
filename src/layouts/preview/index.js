@@ -26,6 +26,7 @@ function Preview() {
   const [isRedTheme, setIsRedTheme] = useState(true);
   const [botData, setBotData] = useState(null);
   const [currentNode, setCurrentNode] = useState(null);
+  const [isLeft, setIsLeft] = useState(false);
 
   const getColorFromURL = () => {
     const queryParams = new URLSearchParams(location.search);
@@ -101,6 +102,7 @@ function Preview() {
     if (!botData?.nodes) return;
     nodes = botData.nodes;
     edges = botData.edges;
+    setIsLeft(botData?.isLeft || false);
     setCurrentNode(botData.nodes[0]);
   }, [botData]);
 
@@ -311,11 +313,12 @@ function Preview() {
     repeatButtonContainer: {
       position: 'fixed',
       top: '5px',
-      right: '10px',
       textAlign: 'center',
       zIndex: '12',
     },
   }
+
+  const direction = isLeft ? { right: '3px' } : { right: '10px' }
 
   return (
     <>
@@ -328,7 +331,7 @@ function Preview() {
           lineHeight: '19.36px',
           flexDirection: "column",
         }}>
-          <Box sx={styles.repeatButtonContainer}>
+          <Box sx={{ ...styles.repeatButtonContainer, ...direction }}>
             <IconButton size="small" onClick={handleMenuAction} style={{ marginRight: 10, backgroundColor: 'white', boxShadow: `0px 11px 24px rgba(0, 0, 0, 0.2)` }}>
               <Icon fontSize="medium" style={{ color: color }} >autorenew</Icon>
             </IconButton>
@@ -382,8 +385,9 @@ function Preview() {
               </Box>
             </>
           }
-        </Box>}
-      {!isTransparent &&
+        </Box >}
+      {
+        !isTransparent &&
         <Box sx={{
           height: '100%',
           width: '100%',
@@ -477,7 +481,8 @@ function Preview() {
               powered by <button onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
             </Typography>
           </Box>
-        </Box>}
+        </Box>
+      }
     </>
   );
 }
