@@ -44,6 +44,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
     if (event.data.action === 'closeBotModal') {
       setButtonActionClass(isLeft ? 'app-inActive-left' : 'app-inActive');
       setShowIframe(false); console.log('----Received Close message:', event.data);
+      setInitial(false);
     } else if (event.data.action === 'openDenBotSite') {
       console.log('----Received Link message:', event.data);
       parent.window.open(event.data.link, '_blank');

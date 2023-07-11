@@ -1,3 +1,5 @@
+import {useState, useEffect, useRef, useCallback} from 'react';
+
 import { Box } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -30,33 +32,54 @@ export function MuiChat({
   color: string;
   setCurrentNode: () => {};
 }>): React.ReactElement {
-  const chatCtl = chatController;
-  const [messages, setMessages] = React.useState(chatCtl.getMessages());
-  const [actReq, setActReq] = React.useState(chatCtl.getActionRequest());
 
-  const msgRef = React.useRef<HTMLDivElement>(null);
-  const scroll = React.useCallback((): void => {
-    if (msgRef.current) {
+  const chatCtl = chatController;
+
+  var isAutoScrolled = true;
+
+  const [messages, setMessages] = useState(chatCtl.getMessages());
+  const [actReq, setActReq] = useState(chatCtl.getActionRequest());
+
+  const msgRef = useRef<HTMLDivElement>(null);
+  
+  const scroll = useCallback((flag): void => {
+    if (msgRef.current && (isAutoScrolled || flag)) {
       msgRef.current.scrollTop = msgRef.current.scrollHeight;
-      // msgRef.current.scrollIntoView(true);
+      isAutoScrolled = true;
     }
-  }, [msgRef]);
-  React.useEffect(() => {
+  }, [msgRef, isAutoScrolled]);
+
+  useEffect(() => {
     function handleMassagesChanged(): void {
       setMessages([...chatCtl.getMessages()]);
-      scroll();
+      scroll(true);
     }
     function handleActionChanged(): void {
       setActReq(chatCtl.getActionRequest());
-      scroll();
+      scroll(true);
     }
     chatCtl.addOnMessagesChanged(handleMassagesChanged);
     chatCtl.addOnActionChanged(handleActionChanged);
+    isAutoScrolled = true;
   }, [chatCtl, scroll]);
 
-  React.useEffect(() => {
-    setTimeout(() => { scroll(); }, 2000);
-  }, [msgRef.current?.scrollHeight]);
+  useEffect(() => {
+    const intervalId = setInterval(scroll, 200);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [scroll]);
+
+  const handleUserScroll = useCallback(() => {
+    isAutoScrolled = false;
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('wheel', handleUserScroll);
+    return () => {
+      window.removeEventListener('wheel', handleUserScroll);
+    };
+  }, [handleUserScroll]);
 
   type CustomComponentType = React.FC<{
     chatController: ChatController;
@@ -70,15 +93,6 @@ export function MuiChat({
     return (actReq as CustomActionRequest)
       .Component as unknown as CustomComponentType;
   }, [actReq]);
-
-  const unknownMsg = {
-    type: 'text',
-    content: 'Unknown message.',
-    self: false,
-  };
-
-  let prevDate = dayjs(0);
-  let prevTime = dayjs(0);
 
   return (
     <Box

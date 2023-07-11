@@ -35,7 +35,7 @@ function Test() {
 
     const bubbleColor = '#' + queryParams.get('bubbleColor') || queryParams.get('bubbleColor');
 
-    const bubbleTextTag = bubbleText.length ? `bubble-text="${bubbleText} bubble-color=${bubbleColor}"` : '';
+    const bubbleTextTag = bubbleText.length ? `bubble-text="${bubbleText}" bubble-color="${bubbleColor}"` : '';
 
     const getText = () => {
         return `<script src="${API_URL}denbot.js" botId="${id}" isLeft="${isLeft}" isAuto="${isAuto}" button-color="${color}" ${bubbleTextTag}></script>`;
