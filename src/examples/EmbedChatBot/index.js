@@ -3,11 +3,11 @@ import "./bot.css";
 import "reactflow/dist/style.css";
 import { BOT_URL } from 'library/constant';
 
-function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false, bubbleColor }) {
+function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false, isTransparent = false, bubbleColor }) {
 
   const bubbleTextColor = bubbleColor ? bubbleColor : color;
 
-  const [initial, setInitial] = useState(false);
+  const [initial, setInitial] = useState(isAuto);
   const [showIframe, setShowIframe] = useState(false);
   const [buttonActionClass, setButtonActionClass] = useState(isLeft ? 'app-inActive-left' : 'app-inActive');
 
@@ -25,7 +25,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
 
   function sendBotStartMessage() {
     const iframe = document.getElementById(`iframe-bot-${id}`);
-    iframe.contentWindow.postMessage({ action: 'startBotMessage' }, `${BOT_URL}preview/${id}?color=${color.substring(1)}`);
+    iframe.contentWindow.postMessage({ action: 'startBotMessage' }, `${BOT_URL}preview/${id}?color=${color.substring(1)}&isTransparent=${isTransparent}`);
   }
 
   useEffect(() => {
@@ -85,25 +85,37 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
 
   const isMobile = isMobileDevice();
 
+  const style = {
+    container: {
+      minWidth: '340px',
+      maxWidth: '50vh',
+      width: '90%',
+      minHeight: isMobile ? '0px' : '600px',
+      maxHeight: isMobile ? '80vh' : '70vh',
+      margin: '20px 20px 110px 20px',
+      boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.3)',
+      borderColor: '#00000010',
+      borderRadius: '12px',
+    },
+    transContainer: {
+      minWidth: '340px',
+      maxWidth: '50vh',
+      width: '90%',
+      paddingBottom: '100px',
+      backgroundImage: 'linear-gradient(270deg, rgba(255, 255, 255, 0.4) 1%, rgba(254, 204, 2, 0) 100%)',
+    },
+    iframe : { height: '100%', width: '100%'},
+  }
+
   return (
     <>
       {true && <div
-        style={{
-          minWidth: '340px',
-          maxWidth: '50vh',
-          width: '90%',
-          minHeight: isMobile ? '0px' : '600px',
-          maxHeight: isMobile ? '80vh' : '70vh',
-          margin: '20px 20px 110px 20px',
-          boxShadow: '0px 0px 50px 0px rgba(19, 2, 0, 0.3)',
-          borderColor: '#00000010',
-          borderRadius: '12px',
-        }}
+        style={isTransparent ? style.transContainer : style.container}
         className={`zIndexInfinite fixed bottom-0 h-full ${buttonActionClass}`}>
         <iframe
           id={`iframe-bot-${id}`}
-          src={`${BOT_URL}preview/${id}?color=${color.substring(1)}`}
-          style={{ height: '100%', width: '100%', }}
+          src={`${BOT_URL}preview/${id}?color=${color.substring(1)}&isTransparent=${isTransparent}`}
+          style={style.iframe}
         />
       </div>}
 

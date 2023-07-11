@@ -35,6 +35,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
     const [avatar, setAvatar] = useState(item?.avatar || '');
     const [isLeft, setIsLeft] = useState(item?.isLeft || false);
     const [isAuto, setIsAuto] = useState(item?.isAuto || false);
+    const [isTransparent, setIsTransparent] = useState(item?.isTransparent || false);
     const [color, setColor] = useState(item?.color || '#FF6900');
     const [bubbleColor, setBubbleColor] = useState(item?.bubbleColor || (item?.color || '#FF6900'));
 
@@ -59,6 +60,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                 bubbleText: bubbleText,
                 isLeft: isLeft,
                 isAuto: isAuto,
+                isTransparent: isTransparent,
                 isBubbleEnabled: isBubbleEnabled,
                 bubbleColor: bubbleColor,
             });
@@ -217,6 +219,13 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                             <Checkbox
                                 checked={isLeft}
                                 onChange={(e) => setIsLeft(e.target.checked)}
+                            />
+                        </Box>
+                        <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'flex-start' }}>
+                            <Typography variant='h5' p={2}>{"Transparent Mode: "}</Typography>
+                            <Checkbox
+                                checked={isTransparent}
+                                onChange={(e) => setIsTransparent(e.target.checked)}
                             />
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

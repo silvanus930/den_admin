@@ -2,9 +2,10 @@ import React, { memo, useEffect, useState } from 'react';
 import { getConnectedEdges, updateEdge } from 'reactflow';
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useLocation, useParams } from 'react-router-dom';
-import { Box, Typography, } from '@mui/material';
+import { Box, Typography, IconButton, Icon } from '@mui/material';
 
 import { ChatController, MuiChat, } from '../../examples/chatbotui';
+import { ChatController as ChatControllerV2, MuiChat as MuiChatV2, } from '../../examples/chatbotuiV2';
 
 import { getSessionApi } from 'library/apis/session';
 import CustomizedMenus from './menu';
@@ -32,8 +33,17 @@ function Preview() {
     return color;
   };
 
+  const isTransparentMode = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const isTransparent = queryParams.get('isTransparent') == 'true';
+    console.log('IsTransparent: ', window.location, location, queryParams.get('isTransparent'), isTransparent);
+    return isTransparent;
+  };
+
   const color = getColorFromURL();
   const botThemeColor = color;
+
+  const isTransparent = isTransparentMode();
 
   const [chatCtl] = React.useState(
     new ChatController({
@@ -72,12 +82,9 @@ function Preview() {
   }
 
   const handleMenuAction = (index) => {
-    if (index === 'toggle') setIsRedTheme(!isRedTheme);
-    else if (index === 'repeat') {
-      chatCtl.clearMessages();
-      chatCtl.cancelActionRequest();
-      fetchData(id).catch(console.error);
-    }
+    chatCtl.clearMessages();
+    chatCtl.cancelActionRequest();
+    fetchData(id).catch(console.error);
   }
 
   const fetchData = async (id) => {
@@ -180,9 +187,9 @@ function Preview() {
           const data = JSON.parse(node?.data?.text);
           console.log('GA data: ', node?.data?.text);
           console.log('GA data===: ', data);
-          TrackGoogleAnalyticsEvent(data?.id, data?.category || '', data?.action || '', data?.label || '');
+          TrackGoogleAnalyticsEvent(data?.id || 'b', data?.category || 'b', data?.action || 'b23', data?.event || 'b432');
         } catch (error) {
-          TrackGoogleAnalyticsEvent('G-1F127CLEGN', 'Error', 'Error', `Error: Sending GEvent on ${node.id}`);
+          TrackGoogleAnalyticsEvent('a', 'a', 'a', 'a');
         }
       }
 
@@ -300,101 +307,178 @@ function Preview() {
     }
   }
 
-  return (
-    <Box sx={{
-      height: '100%',
-      width: '100%',
-      borderRadius: '12px',
-      borderColor: '#00000010',
-      backgroundColor: '#ffffff',
-      position: 'absolute',
-      display: "flex",
-      borderWidth: 1,
-      lineHeight: '19.36px',
-      flexDirection: "column",
-    }}>
-      <Box flexDirection='row' display="flex" m={2} justifyContent='center' alignItems='center'>
-        <Typography
-          sx={{
-            color: botThemeColor,
-            textAlign: 'left',
-            flex: 1,
-            marginLeft: 1,
-            fontSize: '18px',
-            fontWeight: 500
-          }}>
-          {`${botData?.name ? botData?.name : `Denbot`}`}
-        </Typography>
-        <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
-      </Box>
-      {
-        !botData?.isDisable && <>
-          <Box
-            id="scrollContainer"
-            px={1}
-            style={{
-              overflowY: 'scroll',
-              flex: 1,
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              borderColor: '#00000010',
-            }}>
-            <MuiChat
-              chatController={chatCtl}
-              color={botThemeColor}
-              setCurrentNode={(nodeId) => {
-                console.log('Clicked on preview: ', nodeId);
-                setCurrentNode(nodes.find(node => node.id == nodeId));
+  const styles = {
+    repeatButtonContainer: {
+      position: 'fixed',
+      top: '5px',
+      right: '10px',
+      textAlign: 'center',
+      zIndex: '12',
+    },
+  }
 
-                const scrollContainer = document.getElementById('scrollContainer');
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                }
-              }}
-            />
+  return (
+    <>
+      {isTransparent &&
+        <Box sx={{
+          height: '100%',
+          width: '100%',
+          position: 'absolute',
+          display: "flex",
+          lineHeight: '19.36px',
+          flexDirection: "column",
+        }}>
+          <Box sx={styles.repeatButtonContainer}>
+            <IconButton size="small" onClick={handleMenuAction} style={{ marginRight: 10, backgroundColor: 'white', boxShadow: `0px 11px 24px rgba(0, 0, 0, 0.2)` }}>
+              <Icon fontSize="medium" style={{ color: color }} >autorenew</Icon>
+            </IconButton>
           </Box>
-        </> ||
-        <>
-          <Box
-            id="scrollContainer"
-            px={1}
-            style={{
-              overflowY: 'scroll',
-              flex: 1,
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              borderColor: '#00000010'
-            }}>
+          {
+            !botData?.isDisable && <>
+              <Box
+                id="scrollContainer"
+                style={{
+                  overflowY: 'scroll',
+                  flex: 1,
+                }}>
+                <MuiChatV2
+                  chatController={chatCtl}
+                  color={botThemeColor}
+                  setCurrentNode={(nodeId) => {
+                    console.log('Clicked on preview: ', nodeId);
+                    setCurrentNode(nodes.find(node => node.id == nodeId));
+
+                    const scrollContainer = document.getElementById('scrollContainer');
+                    if (scrollContainer) {
+                      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                    }
+                  }}
+                />
+              </Box>
+            </> ||
+            <>
+              <Box
+                id="scrollContainer"
+                px={1}
+                style={{
+                  overflowY: 'scroll',
+                  flex: 1,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#00000010'
+                }}>
+                <Typography
+                  sx={{
+                    color: '#00000050',
+                    textAlign: 'center',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    lineHeight: '28px',
+                    fontFamily: 'Helvetica',
+                    margin: '6px',
+                  }}>
+                  Your bot is disabled by admin, you should contact denbot support team.
+                </Typography>
+              </Box>
+            </>
+          }
+        </Box>}
+      {!isTransparent &&
+        <Box sx={{
+          height: '100%',
+          width: '100%',
+          borderRadius: '12px',
+          borderColor: '#00000010',
+          backgroundColor: '#ffffff',
+          position: 'absolute',
+          display: "flex",
+          borderWidth: 1,
+          lineHeight: '19.36px',
+          flexDirection: "column",
+        }}>
+          <Box flexDirection='row' display="flex" m={2} justifyContent='center' alignItems='center'>
+            <Typography
+              sx={{
+                color: botThemeColor,
+                textAlign: 'left',
+                flex: 1,
+                marginLeft: 1,
+                fontSize: '18px',
+                fontWeight: 500
+              }}>
+              {`${botData?.name ? botData?.name : `Denbot`}`}
+            </Typography>
+            <CustomizedMenus handleMenuAction={handleMenuAction} color={botThemeColor} />
+          </Box>
+          {
+            !botData?.isDisable && <>
+              <Box
+                id="scrollContainer"
+                px={1}
+                style={{
+                  overflowY: 'scroll',
+                  flex: 1,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#00000010',
+                }}>
+                <MuiChat
+                  chatController={chatCtl}
+                  color={botThemeColor}
+                  setCurrentNode={(nodeId) => {
+                    console.log('Clicked on preview: ', nodeId);
+                    setCurrentNode(nodes.find(node => node.id == nodeId));
+
+                    const scrollContainer = document.getElementById('scrollContainer');
+                    if (scrollContainer) {
+                      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                    }
+                  }}
+                />
+              </Box>
+            </> ||
+            <>
+              <Box
+                id="scrollContainer"
+                px={1}
+                style={{
+                  overflowY: 'scroll',
+                  flex: 1,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#00000010'
+                }}>
+                <Typography
+                  sx={{
+                    color: '#00000050',
+                    textAlign: 'center',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    lineHeight: '28px',
+                    fontFamily: 'Helvetica',
+                    margin: '6px',
+                  }}>
+                  Your bot is disabled by admin, you should contact denbot support team.
+                </Typography>
+              </Box>
+            </>
+          }
+          <Box>
             <Typography
               sx={{
                 color: '#00000050',
                 textAlign: 'center',
-                fontSize: '20px',
+                fontSize: '11px',
                 fontWeight: 400,
-                lineHeight: '28px',
+                lineHeight: '13.31px',
                 fontFamily: 'Helvetica',
                 margin: '6px',
               }}>
-              Your bot is disabled by admin, you should contact denbot support team.
+              powered by <button onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
             </Typography>
           </Box>
-        </>
-      }
-      <Box>
-        <Typography
-          sx={{
-            color: '#00000050',
-            textAlign: 'center',
-            fontSize: '11px',
-            fontWeight: 400,
-            lineHeight: '13.31px',
-            fontFamily: 'Helvetica',
-            margin: '6px',
-          }}>
-          powered by <button onClick={handleLink} style={{ color: getColorFromURL() }}>Denbot</button>
-        </Typography>
-      </Box>
-    </Box>
+        </Box>}
+    </>
   );
 }
 
