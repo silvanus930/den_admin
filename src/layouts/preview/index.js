@@ -37,7 +37,6 @@ function Preview() {
   const isTransparentMode = () => {
     const queryParams = new URLSearchParams(location.search);
     const isTransparent = queryParams.get('isTransparent') == 'true';
-    console.log('IsTransparent: ', window.location, location, queryParams.get('isTransparent'), isTransparent);
     return isTransparent;
   };
 
@@ -189,6 +188,16 @@ function Preview() {
           const data = JSON.parse(node?.data?.text);
           console.log('GA data: ', node?.data?.text);
           console.log('GA data===: ', data);
+
+          parent.window.postMessage({
+            action: 'sentGoogleAnalytics', data: {
+                id: data?.id,
+                category: data?.category,
+                action: data?.action,
+                label: data?.label,
+            }
+        }, '*');
+
           TrackGoogleAnalyticsEvent(data?.id || 'b', data?.category || 'b', data?.action || 'b23', data?.event || 'b432');
         } catch (error) {
           TrackGoogleAnalyticsEvent('a', 'a', 'a', 'a');
