@@ -97,6 +97,50 @@
   top: 0px;
 }
 
+.dt-bot-text-container {
+  position: fixed;
+  z-index: 99999999999999999999999;
+  right: 90px;
+  bottom: 40px;
+  width: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0px 0px 8px 0px rgba(19, 2, 0, 0.2);
+}
+
+.dt-bot-text-container-left {
+  position: fixed;
+  z-index: 99999999999999999999999;
+  left: 90px;
+  bottom: 40px;
+  width: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0px 0px 8px 0px rgba(19, 2, 0, 0.2);
+}
+
+.dt-text-active {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.dt-text-inActive {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
 .dt-app-active {
   right: 0px !important;
   transition: right 0.5s ease;

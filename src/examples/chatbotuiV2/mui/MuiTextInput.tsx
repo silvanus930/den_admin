@@ -105,6 +105,7 @@ export function MuiTextInput({
           borderWidth: '0',
           marginRight: 6,
           paddingLeft: '20px',
+          boxShadow: '0px 0px 8px 0px rgba(19, 2, 0, 0.2)',
           color: 'black'
         }}
         autoFocus

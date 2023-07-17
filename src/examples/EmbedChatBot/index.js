@@ -105,7 +105,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
       paddingBottom: '100px',
       backgroundImage: isLeft ? `linear-gradient(90deg, ${transBackColorValue}32 1%, rgba(255, 255, 255, 0) 100%)` : `linear-gradient(270deg, ${transBackColorValue}64 1%, rgba(254, 204, 2, 0) 100%)`,
     },
-    iframe : { height: '100%', width: '100%'},
+    iframe: { height: '100%', width: '100%' },
   }
 
   return (
@@ -120,9 +120,15 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
         />
       </div>}
 
+      <div className={`${showIframe ? 'text-active' : 'text-inActive'} bot-text-container${isLeft ? '-left' : ''}`}>
+        <p style={{ color: bubbleTextColor, fontSize: '12px', fontWeight: 600, whiteSpace: 'pre', textAlign: 'center' }}>
+          {`Powered by `}
+          <a href="https://denbot.co.uk" style={{ color: 'red' }} target="_blank">DenBot</a></p>
+      </div>
+
       <div
         className={`${isLeft ? 'bot-left' : 'bot-right'} bot-eb-trigger bot-active tooltip slide-up-animation`}
-        style={{bottom: '-100%'}}
+        style={{ bottom: '-100%' }}
         id="eb-bot-trigger"
         onClick={toggleIframe}
       >
