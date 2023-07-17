@@ -28,6 +28,8 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
     const ref = useRef(null);
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpen1, setModalOpen1] = useState(false);
+
     const [name, setName] = useState(item?.name || '');
     const [zapierUrl, setZapierUrl] = useState(item?.zapierUrl || '');
     const [bubbleText, setBubbleText] = useState(item?.bubbleText || '');
@@ -36,6 +38,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
     const [isLeft, setIsLeft] = useState(item?.isLeft || false);
     const [isAuto, setIsAuto] = useState(item?.isAuto || false);
     const [isTransparent, setIsTransparent] = useState(item?.isTransparent || false);
+    const [chatBackColor, setChatBackColor] = useState(item?.chatBackColor || '#FF6900');
     const [color, setColor] = useState(item?.color || '#FF6900');
     const [bubbleColor, setBubbleColor] = useState(item?.bubbleColor || (item?.color || '#FF6900'));
 
@@ -63,6 +66,7 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                 isTransparent: isTransparent,
                 isBubbleEnabled: isBubbleEnabled,
                 bubbleColor: bubbleColor,
+                chatBackColor: chatBackColor,
             });
             setIsLoading(false);
         } catch (error) {
@@ -89,12 +93,24 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
         setModalOpen(true);
     };
 
+    const handleBoxClick1 = () => {
+        setModalOpen1(true);
+    };
+
     const handleColorChange = (color) => {
         setBubbleColor(color.hex);
     };
 
+    const handleChatBackColor = (color) => {
+        setChatBackColor(color.hex);
+    };
+
     const handleModalClose = () => {
         setModalOpen(false);
+    };
+
+    const handleModalClose1 = () => {
+        setModalOpen1(false);
     };
 
     return (
@@ -227,6 +243,54 @@ export default function CreateModal({ item, open, setOpen, fetchData }) {
                                 checked={isTransparent}
                                 onChange={(e) => setIsTransparent(e.target.checked)}
                             />
+                            <Box
+                                sx={{
+                                    background: 'white',
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '8px',
+                                    margin: '10px',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    '&:hover': {
+                                        background: 'lightgray',
+                                    },
+                                    '&:active': {
+                                        background: 'gray',
+                                    },
+                                }}
+                                onClick={handleBoxClick1}
+                            >
+                                <Box sx={{
+                                    background: chatBackColor, width: '33px', height: '33px', borderRadius: '8px',
+                                }}>
+                                </Box>
+
+                            </Box>
+                            {modalOpen1 && (
+                                <div
+                                    style={{
+                                        position: 'fixed',
+                                        top: '0',
+                                        left: '0',
+                                        right: '0',
+                                        bottom: '0',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                        zIndex: 99,
+                                    }}
+                                >
+                                    <div style={{ background: 'white', padding: '20px' }}>
+                                        <SketchPicker color={chatBackColor} onChange={handleChatBackColor} />
+                                        <Button onClick={handleModalClose1}>Close</Button>
+                                    </div>
+                                </div>
+                            )}
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button sx={{ marginTop: 1, borderColor: 'white' }} onClick={handleSave}>Save</Button>

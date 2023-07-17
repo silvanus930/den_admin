@@ -34,12 +34,13 @@ function Test() {
 
     const color = getColorFromURL();
 
-    const bubbleColor = '#' + queryParams.get('bubbleColor') || queryParams.get('bubbleColor');
+    const bubbleColor = '#' + queryParams.get('bubbleColor') || color;
+    const chatBackColor = '#' + queryParams.get('chatBackColor') || 'ffffff';
 
     const bubbleTextTag = bubbleText.length ? `bubble-text="${bubbleText}" bubble-color="${bubbleColor}"` : '';
 
     const getText = () => {
-        return `<script src="${API_URL}denbot.js" botId="${id}" isLeft="${isLeft}" isAuto="${isAuto}" isTransparent="${isTransparent}" button-color="${color}" ${bubbleTextTag}></script>`;
+        return `<script src="${API_URL}denbot.js" botId="${id}" isLeft="${isLeft}" isAuto="${isAuto}" isTransparent="${isTransparent}" chatBackColor="${chatBackColor}" button-color="${color}" ${bubbleTextTag}></script>`;
     }
 
     return (
@@ -55,7 +56,16 @@ function Test() {
                         </CopyToClipboard>
                     </Button>
                 </Tooltip>
-                <EmbedChatBot id={id} color={color} bubbleText={bubbleText} isLeft={isLeft} isAuto={isAuto} bubbleColor={bubbleColor} isTransparent={isTransparent} />
+                <EmbedChatBot
+                    id={id}
+                    color={color}
+                    bubbleText={bubbleText}
+                    isLeft={isLeft}
+                    isAuto={isAuto}
+                    bubbleColor={bubbleColor}
+                    isTransparent={isTransparent}
+                    chatBackColor={chatBackColor}
+                />
             </MDBox>
         </DashboardLayout>
     );

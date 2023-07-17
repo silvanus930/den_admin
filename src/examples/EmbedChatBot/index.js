@@ -3,9 +3,10 @@ import "./bot.css";
 import "reactflow/dist/style.css";
 import { BOT_URL } from 'library/constant';
 
-function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false, isTransparent = false, bubbleColor }) {
+function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = false, isTransparent = false, bubbleColor, chatBackColor }) {
 
   const bubbleTextColor = bubbleColor ? bubbleColor : color;
+  const transBackColorValue = chatBackColor ? chatBackColor : '#ffffff';
 
   const [initial, setInitial] = useState(isAuto);
   const [showIframe, setShowIframe] = useState(false);
@@ -102,7 +103,7 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
       maxWidth: '50vh',
       width: '90%',
       paddingBottom: '100px',
-      backgroundImage: isLeft ? 'linear-gradient(90deg, rgba(204, 204, 204, 0.2) 1%, rgba(255, 255, 255, 0) 100%)' : 'linear-gradient(270deg, rgba(255, 255, 255, 0.4) 1%, rgba(254, 204, 2, 0) 100%)',
+      backgroundImage: isLeft ? `linear-gradient(90deg, ${transBackColorValue}32 1%, rgba(255, 255, 255, 0) 100%)` : `linear-gradient(270deg, ${transBackColorValue}64 1%, rgba(254, 204, 2, 0) 100%)`,
     },
     iframe : { height: '100%', width: '100%'},
   }
