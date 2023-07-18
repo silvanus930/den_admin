@@ -121,9 +121,9 @@ function EmbedChatBot({ id, color, bubbleText = '', isLeft = false, isAuto = fal
       </div>}
 
       <div className={`${showIframe ? 'text-active' : 'text-inActive'} bot-text-container${isLeft ? '-left' : ''}`}>
-        <p style={{ color: bubbleTextColor, fontSize: '12px', fontWeight: 600, whiteSpace: 'pre', textAlign: 'center' }}>
+        <p style={{ color: bubbleTextColor, fontSize: '12px', fontWeight: 500, whiteSpace: 'pre', textAlign: 'center' }}>
           {`Powered by `}
-          <a href="https://denbot.co.uk" style={{ color: 'red' }} target="_blank">DenBot</a></p>
+          <a href="https://denbot.co.uk" style={{ color: '#ba382e' }} target="_blank">DenBot</a></p>
       </div>
 
       <div

@@ -91,6 +91,7 @@ export function MuiSelectInput({
               textTransform: 'none !important',
               color: color,
               // borderColor: color, 
+              boxShadow: '0 0 10px 0 rgba(50, 50, 50, 0.2)',
               borderWidth: 0,
               '&:hover': {
                 borderColor: '#ffffff',
