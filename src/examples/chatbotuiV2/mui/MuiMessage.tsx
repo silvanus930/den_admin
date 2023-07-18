@@ -128,7 +128,7 @@ export function MuiMessage({
               maxWidth="100%"
               py="16px"
               px="18px"
-              bgcolor={!message.self ? '#ffffff' : '#fbfbfb'}
+              bgcolor={!message.self ? '#ffffff' : '#eee'}
               borderRadius={!message.self ? '0 6px 6px 6px' : '6px 6px 0px 6px'}
               sx={{boxShadow: `0px 11px 24px rgba(0, 0, 0, 0.2)`, marginRight: '10px'}}
             >
