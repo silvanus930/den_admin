@@ -100,14 +100,14 @@
 .dt-bot-text-container {
   position: fixed;
   z-index: 99999999999999999999999;
-  right: 90px;
-  bottom: 40px;
+  right: 95px;
+  bottom: 46px;
   width: 145px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 3px;
+  padding: 8px;
   box-sizing: border-box;
   border-radius: 20px;
   background-color: #fff;
@@ -117,14 +117,14 @@
 .dt-bot-text-container-left {
   position: fixed;
   z-index: 99999999999999999999999;
-  left: 90px;
-  bottom: 40px;
+  left: 95px;
+  bottom: 46px;
   width: 145px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 3px;
+  padding: 8px;
   box-sizing: border-box;
   border-radius: 20px;
   background-color: #fff;
